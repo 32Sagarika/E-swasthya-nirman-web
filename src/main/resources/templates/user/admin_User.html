@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<script>
+$(document).ready(function() {
+	var id = $("#hospitalId").val();
+	//alert($("#hospitalId").val())
+	var gridDiv = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv, gridOptions);
+
+	  agGrid.simpleHttpRequest({
+			url : "adminuser-view-allorganization-through-ajax"
+		}).then(function(data) {
+			 var len = data.length;
+			$('#totalReq').find('span').html(len); 
+			gridOptions.api.setRowData(data);
+		});  
+	 gridOptions.api.setRowData();
+	$('#myGrid').show();
+	//$('#new').show();
+	$('#addData').hide();
+
+	});
+const columnDefs = [
+	/* {
+		headerCheckboxSelection : false,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, */
+	 {
+
+		headerName : 'Organization Name',
+		field : "orgName"
+	}, {
+
+		headerName : 'Registation No',
+		field : "orgRegdNo"
+	}, {
+
+		headerName : 'Address',
+		field : "orgAddress"
+	}, {
+
+		headerName : 'Organization Type',
+		field : "orgTypeName"
+	}, {
+
+		headerName : 'Country',
+		field : "orgCountryName"
+	}, {
+
+		headerName : 'State',
+		field : "orgStateName"
+	}, {
+
+		headerName : 'Distirct',
+		field : "orgDistName"
+	},{
+
+		headerName : 'City',
+		field : "orgCityName"
+	},{
+
+		headerName : 'Attachment',
+		field : "orgAttachment",
+		cellRenderer : function(params) {
+			var dataimg = params.data.orgAttachment.split(",");
+			var div = "";
+			for(var i = 0; i < dataimg.length; i++) {
+				var ext = dataimg[i].split(".");
+				if(ext[1] == "pdf") {
+					div = div+" "+'<div class ="fa fa-file-pdf-o"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" style="cursor:pointer" onclick=editView("'
+					+ dataimg[i] + '")  > </div>';
+				} else {
+					div = div+" "+'<div class ="fa fa-image"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer" onclick=editView("'
+					+ dataimg[i] + '")  > </div>';
+				}
+				
+			}
+			return div;
+		}
+		},{
+			headerName : 'Status',
+			field : "status",
+			
+			cellStyle : {
+				textAlign : 'center'
+			},
+				 cellRenderer : function(params) {
+					
+					if (params.data.status == "1" ) {
+						
+						return '<div class ="fa fa-check-circle"  style="color:green"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer" onclick=editStatus("'
+							+ params.data.hospitalId + '")  > </div>';
+				} else {
+					return '<div class ="fa fa-times"  style="color:red"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer" onclick=editStatus("'
+					+ params.data.hospitalId + '")  > </div>';
+				}
+		}
+	
+		
+	} ];
+function editView(id) {
+
+	window.open("/document/organisation/"+id, '_blank');
+}
+
+function editStatus(id) {
+	$("#addData").show();
+	$("#myGrid").hide();
+	$("#totalReq").hide();
+ 	$.ajax({
+		type : "GET",
+		url : "adminuser-edit-allorganization?id=" + id,
+		success : function(response) {
+			if (response.message == "Success") {
+				
+			$("#hospitalId").val(response.body.hospitalId);
+				$("#orgName").val(response.body.orgName);
+			    $("#orgRegdNo").val(response.body.orgRegdNo);
+			    $("#orgAddress").val(response.body.orgAddress);
+				$("#orgTypeName").val(response.body.orgTypeName);
+				$("#orgCountryName").val(response.body.orgCountryName);
+				$("#orgStateName").val(response.body.orgStateName);
+				$("#orgDistName").val(response.body.orgDistName);
+				$("#orgCityName").val(response.body.orgCityName);
+				if(response.body.status == "1"){
+					$("#status").val("1");
+				} else{
+					$("#status").val("0");
+					
+				}
+				
+			}else("error"+console.message)
+		}
+	}); 
+
+
+
+}
+//save status 
+function save() {
+	var data = {};
+	
+		//var id = $("#patientId").val();
+	     data.orgName = $("#orgName").val();
+		data.orgRegdNo = $("#orgRegdNo").val();
+		data.orgAddress = $("#orgAddress").val();
+		data.orgTypeName = $("#orgTypeName").val();
+		data.orgCountryName = $("#orgCountryName").val();
+		data.orgStateName = $("#orgStateName").val();
+		data.orgDistName = $("#orgDistName").val();
+		data.orgCityName = $("#orgCityName").val();
+		data.hospitalId = $("#hospitalId").val();
+		data.orgAttachment = $("#orgAttachment").val(); 
+		data.status = $("#status").val();
+
+		console.log(data)
+		
+			$.ajax({
+				type : "POST",
+				url : "adminuser-modify",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(data),
+				success : function(response) {
+					if (response.message == "Success") {
+						
+						 agGrid.simpleHttpRequest({
+			url : "adminuser-view-allorganization-through-ajax"
+				}).then(function(data) {
+			 		var len = data.length;
+					$('#totalReq').find('span').html(len); 
+					gridOptions.api.setRowData(data);
+				});
+
+						Cancel();
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		
+
+}
+const gridOptions = {
+columnDefs : columnDefs,
+defaultColDef : {
+	rowSelection : 'single',
+	groupSelectsChildren : true,
+	suppressRowClickSelection : true,
+	suppressAggFuncInHeader : true,
+	rowHeight:40,
+	sortable : true,
+	filter : true,
+	resizable : true,
+	width : 295,
+	height : 10
+},
+
+
+};
+function Cancel() {
+	$('#new').show();
+	$('#addData').hide();
+	$('#myGrid').show();
+	
+}
+</script>
+</head>
+<body>
+<div layout:fragment="content" class="maincontent">
+							
+							<div class="panel-body">
+								<div class="row" id="main_content">
+									<div class="col-md-12">
+										<div class="row">
+                       					 <div class="col-md-9">
+												<div class="font-design" id="totalReq">
+													Organization List (<span></span>)
+												</div>
+											</div>
+											<!-- <div class ="col-md-3">
+										<button  id="new" onclick="add()" class="btn1" >ADD NEW </button></div>
+									 -->
+										</div>
+										<div id="myGrid" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div>
+								</div>
+								<div class="row" id="addData">
+
+									<div class="col-md-12" id="btnDiv">
+										<button id="save" onclick="save()" class="btn1">Save</button>
+										<button class="btn4" id="Cancel" onclick="Cancel()">Cancel</button>
+									</div>
+									<!-- <input type="hidden" id="patientId" th:value="${patId}"> -->
+									<!-- <input type="hidden" id="slNo"> -->
+									<div class="col-md-6">
+										<input type="hidden" id="hospitalId">
+										<div class="form-group">
+											<div class="user-dtlhd">Organization Name :</div>
+										<input type="text" class="user-id border_none" readonly
+											id="orgName">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="user-dtlhd">Registration No :</div>
+										<input type="text" class="user-id border_none" readonly
+											id="orgRegdNo">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="user-dtlhd">Address :</div>
+										<input type="text" class="user-id border_none" readonly
+											id="orgAddress">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="user-dtlhd">Organization Type :</div>
+										<input type="text" class="user-id border_none" readonly
+											id="orgTypeName">
+												</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="user-dtlhd">Country :</div>
+									 	<input type="text" class="user-id border_none" readonly
+											id="orgCountryName">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="user-dtlhd">State :</div>
+									 	<input type="text" class="user-id border_none" readonly
+											id="orgStateName">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="user-dtlhd">Distict :</div>
+									 	<input type="text" class="user-id border_none" readonly
+											id="orgDistName">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="user-dtlhd">City :</div>
+									 	<input type="text" class="user-id border_none" readonly
+											id="orgCityName">
+										</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="user-dtlhd">Status :</div>
+									 			<div class="select">
+												<select id="status">
+													<option value="">--Select--</option>
+													  <option value="1">Active</option>
+													   <option value="0">In-Active</option>
+													  </select>
+										    </div>	
+										</div>
+									</div>
+							</div>
+
+						</div>
+						</div>
+</body>
+</html>

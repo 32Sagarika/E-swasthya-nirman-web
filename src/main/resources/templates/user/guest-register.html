@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Login</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style type="text/css">
+.login-form-1 {
+	background: #0076ba;
+	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0
+		rgba(0, 0, 0, 0.19);
+	height: 750px;
+	padding: 50px;
+}
+
+.signup-subtxt {
+	font-size: 20px;
+	margin-bottom: 20px;
+	color: #FFF;
+	text-align: center;
+	padding: 0px 20px;
+}
+
+.signin-txt {
+	font-size: 36px;
+	font-weight: 200;
+	margin-bottom: 6px;
+	text-align: center;
+	color: #fff;
+}
+
+/*.guest_regd {
+	width: 1200px;
+	margin: 0 auto;
+}*/
+label {
+	display: inline-block;
+	margin-bottom: .5rem;
+	color: #fff;
+}
+
+.mb-10 {
+	margin-bottom: 15px;
+}
+
+.formValidation1 {
+	font-size: 15px;
+	font-weight: 100;
+	color: #ff0000;
+	background-color: transparent;
+	position: relative;
+	top: -1px;
+	padding: 3px 0px;
+}
+
+.formValidation1 {
+	font-size: 15px;
+	font-weight: 100;
+	color: #ff6f6f;
+	background-color: transparent;
+	position: relative;
+	top: -1px;
+	padding: 3px 0px;
+}
+
+.right-text {
+	font-size: 14px;
+	color: #0076ba;
+	vertical-align: middle;
+	font-weight: 600;
+	text-align: center;
+	position: relative;
+	top: 35%;
+}
+
+.login-form-2 {
+	padding: 5%;
+	background: #fff;
+	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0
+		rgba(0, 0, 0, 0.19);
+}
+
+.login-form-2 .btnSubmit {
+	font-weight: 600;
+	color: #0062cc;
+	background-color: #fff;
+}
+
+.login-form-2 .ForgetPwd {
+	color: #fff;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.ehealt-logo img {
+	height: 35px;
+}
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#otpDiv").hide();
+		$("#generateotpdiv").hide();
+		$("#generateOtpdivcon").hide();
+		$("#proceedBtnId").hide();
+		//$("#reOtpBtn").hide();
+
+		$('input[name="sence"]').on("change", function(e) {
+			var checkboxval = $("input:radio[name=sence]:checked").val();
+			if (checkboxval == "1") {
+				$("#generateotpdiv").show();
+				$("#generateOtpdivcon").hide();
+				$("#otp").attr('placeholder', 'Otp sent to Doctor..')
+				//otpVal();
+			} else {
+				$("#generateotpdiv").hide();
+				$("#generateOtpdivcon").show();
+				$("#otp").attr('placeholder', 'Otp sent to Patient..')
+
+			}
+		});
+	});
+	function checkNum(fieldId) {
+		var tempVal = $("#" + fieldId).val().replace(/[^0-9\.]/g, '');
+		$("#" + fieldId).val(tempVal);
+	}
+
+	function checkMobileNumberIN() {
+
+		var mobile = $('#doctormobilenoId').val();
+		var mobileReg = /^\d{10}$/;
+		/* /^[0][1-9]\d{9}$|^[1-9]\d{9}$/g; */
+
+		if (mobile != '') {
+			if (mobileReg.test(mobile)) {
+				$("#error4").hide();
+				return true;
+			} else {
+				$("#error4").html("Please Enter Valid Mobile Number");
+				return false;
+			}
+		} else {
+			$("#error4").html("Please Enter Valid Mobile Number");
+			return false;
+		}
+
+	}
+
+	//UHID Number validation
+	var uhidValid;
+
+	function uhidVal() {
+		var uhid = $('#patientUhidNo').val();
+		var uhidno = /^\d{16}$/;
+
+		if (uhid != '') {
+			if (uhid.match(uhidno)) {
+				$("#error1").hide();
+				uhidValid = true;
+				return true;
+			} else {
+				$("#error1").html("please enter  16 digit UHID number");
+				uhidValid = false;
+				return false;
+			}
+		} else {
+			$("#error1").html(" UHID Required");
+			uhidValid = false;
+			return false;
+		}
+
+	}
+	/* function for OTP */
+	function generateOTP() {
+		checkMobileNumberIN();
+		uhidVal();
+		if (uhidValid) {
+			$('#otpDiv').show();
+			if ($("input:radio[name=sence]:checked").val() == "1") {
+				$("#otp").attr('placeholder', 'Otp sent to Doctor..');
+			} else {
+				$("#otp").attr('placeholder', 'Otp sent to Patient..');
+			}
+			var data = {};
+			data.key = $("#patientUhidNo").val();
+			data.name = 'UHID';
+			data.code = $("#doctormobilenoId").val();
+			data.image = $("input:radio[name=sence]:checked").val();
+			$.ajax({
+				type : "POST",
+				url : "/guest-register-generate-otp",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(data),
+				success : function(response) {
+					if (response.message == "Success") {
+						$('#generateotpdiv').hide();
+						$('#generateOtpdivcon').hide();
+						$('#patientUhidNo').attr('disabled', true);
+						$("#hidotp").val(response.body.code);
+						$("#hiduserid").val(response.body.key);
+						$("#proceedBtnId").show();
+						$("#otpBtn").show();
+
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		} else {
+
+		}
+
+	}
+
+	/* function for otp validation */
+	var otpValid;
+	function otpVal() {
+		var otp = $('#otp').val();
+		var hidotp = $('#hidotp').val();
+		if (otp != '') {
+			if (otp.match(hidotp)) {
+				$("#error3").hide();
+				otpValid = true;
+				return true;
+			} else {
+				$("#error3").html("please enter valid OTP");
+				otpValid = false;
+				return false;
+			}
+		} else {
+			$("#error3").html(" OTP is Required");
+			otpValid = false;
+			return false;
+		}
+	}
+
+	//function to proceed
+	function proceed() {
+		otpVal();
+		data = {};
+		data.country = $("#countryId").val();
+		data.state = $("#state").val();
+		data.mobileno = $("#doctormobilenoId").val();
+		data.name = $("#doctorName").val();
+		data.regdno = $("#doctorRegdno").val();
+		data.email = $("#doctorEmail").val();
+		data.uhidno = $("#patientUhidNo").val();
+		data.userRole = 2;
+		uid = $("#patientUhidNo").val();
+		$
+				.ajax({
+					type : "POST",
+					url : "/guest-register-doctor-regd",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(data),
+					success : function(response) {
+						console.log(response)
+						var apptId = response.body.key;
+						if (response.message == "Success") {
+							sessionStorage.setItem('module', "MOD002");
+							sessionStorage.setItem('function', "FUN021");
+							sessionStorage.setItem('activity', "ACT0047");
+							window.location.href = "doctor/view-doctor-patient-details?id="
+									+ uid + "&apptId=" + apptId;
+						}
+					},
+					error : function(response) {
+						console.log(response);
+					}
+				})
+	}
+
+	function login() {
+		window.location.href = 'login';
+	}
+	/*********************      On change            ************************/
+
+	//get State list on change of Country
+	function getStateList() {
+		var country = $("#countryId").val();
+		if (country) {
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'register-getStateList?country=' + country,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#state").empty();
+						var option = $("<option>-- Select State --</option>");
+						$(option).val(null);
+						$(option).html("-- Select State --");
+						$("#state").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$("#state").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$("#dist").empty();
+		}
+
+	}
+</script>
+
+</head>
+<body>
+
+	<!-- <div class="guest_regd"> -->
+	<div class="justify-content-sm-center">
+		<div class="col-sm-12 col-md-12">
+			<div class="row">
+				<div class="col-md-6 login-form-1">
+					<input type="hidden" id="hidotp">
+					<div class="signin-txt">Guest Registration</div>
+					<div class="signup-subtxt">Fill in Doctor's Information(All
+						fields are mondatory)</div>
+					<div class="row">
+						<div class="col-md-6 mb-10">
+							<div>
+								<label>Country :</label>
+							</div>
+
+							<div class="select">
+								<input type="hidden" id=""> <select
+									class="form-control  countryclss" id="countryId" onchange="getStateList();">
+									<option value="">-- Select Country --</option>
+									<option th:each="c,iter:${countryList}" th:value="${c.key}"
+										th:text="${c.name}"></option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-6 mb-10">
+							<div>
+								<label>State :</label>
+							</div>
+
+							<div class="select">
+								<input type="hidden" id=""> <select 
+									class="form-control  countryclss" id="state">
+									<option value="">-- Select State --</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-md-6 mb-10">
+							<label>Doctor's Mobile No :</label> <input type="text"
+								class="form-control" id="doctormobilenoId"
+								placeholder="Enter Doctor's Mobile No."
+								onkeyup="checkNum(this.id);"><span id="error4"
+								class="formValidation1"></span>
+						</div>
+						<div class="col-md-6 mb-10">
+							<label>Doctor's Name :</label> <input type="text"
+								class="form-control" id="doctorName"
+								placeholder="Enter Doctor's Name">
+						</div>
+						<div class="col-md-6 mb-10">
+							<label>Registration No :</label> <input type="text"
+								class="form-control" id="doctorRegdno"
+								placeholder="Enter Doctor's Registration No">
+						</div>
+						<div class="col-md-6 mb-10">
+							<label>Email Id :</label> <input type="text" class="form-control"
+								id="doctorEmail" placeholder="Enter Doctor's Email Id">
+						</div>
+						<div class="col-md-6 mb-10">
+							<label>eHealthCard No :</label> <input type="text"
+								class="form-control" id="patientUhidNo"
+								placeholder="Enter Patient Uhid No..."> <span
+								id="error1" class="formValidation1"></span>
+						</div>
+					</div>
+					<div class="col-md-12" id="a9">
+						<div>
+							<div class="" style="">
+								<input type="radio" name="sence" value="1"> <span
+									style="color: #FFFFFF;"> Unconcious</span> &nbsp; <input
+									type="radio" name="sence" value='2'> <span
+									style="color: #FFFFFF;">Concious</span>
+							</div>
+						</div>
+					</div>
+					<div class="row mb-10" id="otpDiv">
+						<div class="col-md-5 ">
+							<label>Enter OTP:</label>
+						</div>
+						<div class="col-md-7 mb-10">
+							<input type="text" name="" id="otp" class="form-control"
+								onkeyup="checkNum('otp')" maxLength="4"
+								placeholder="Otp sent to Doctor"> <span id="error3"
+								class="formValidation1"></span>
+						</div>
+					</div>
+					<div class="row  mb-10" align="right" id="generateotpdiv">
+						<div class="col-md-12 btn-psn">
+							<button class="btn btn-primary" onclick="generateOTP()"
+								id="otpBtn">Generate OTP</button>
+						</div>
+					</div>
+					<div class="row  mb-10" align="right" id="generateOtpdivcon">
+						<div class="col-md-12 btn-psn">
+							<button class="btn btn-primary" onclick="generateOTP()"
+								id="otpBtn">Generate OTP</button>
+						</div>
+					</div>
+					<div class="row mb-10">
+						<div class="col-md-12" align="right">
+							<button class="btn btn-danger" id="proceedBtnId"
+								onclick="proceed();" style="cursor: pointer;">Proceed</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 login-form-2">
+					<div class="ehealt-logo" align="center">
+						<img src="" class="img-fluid">
+					</div>
+					<div class="right-text">
+						Comprehensive open-source platform which provides an end to end
+						solution for a wide range of business application. <br>
+						<button class="btn btn-primary"
+							style="position: relative; top: 50px; cursor: pointer;"
+							id="login" onclick="login()">Sign In</button>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

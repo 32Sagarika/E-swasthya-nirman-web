@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style>
+button {
+	cursor: pointer;
+	margin-left: 332px !important;
+}
+</style>
+<script>
+	$(document)
+			.ready(
+					function() {
+
+						$.ajax({
+							type : "GET",
+							url : "admin-homeCareOrders-CountList",
+							success : function(response) {
+								if (response.message == "Success") {
+									//alert(response.body[0].doctor)
+									$("#request")
+											.text(response.body[0].request);
+									$("#assign").text(response.body[0].assign);
+									$("#accept").text(response.body[0].accept);
+									$("#reject").text(response.body[0].reject);
+									$("#documentation").text(
+											response.body[0].documentation);
+									$("#serviceClosed").text(
+											response.body[0].serviceClosed);
+									$("#serviceCompleted").text(
+											response.body[0].serviceCompleted);
+									$("#serviceClosed").text(
+											response.body[0].serviceInProgress);
+									$("#serviceCompleted").text(
+											response.body[0].feedBackTaken);
+									
+
+								}
+							},
+
+						});
+
+						//var id = $("#patientId").val();
+						var gridDiv = document.querySelector('#myGrid');
+						new agGrid.Grid(gridDiv, gridOptions);
+
+						var gridDiv1 = document.querySelector('#assignGrid');
+						new agGrid.Grid(gridDiv1, assignGridOptions);
+
+						var gridDiv2 = document
+								.querySelector('#assignPartnerGrid');
+						new agGrid.Grid(gridDiv2, assignPartnerGridOptions);
+
+						var gridDiv3 = document
+								.querySelector('#acceptPartnerGrid');
+						new agGrid.Grid(gridDiv3, acceptPartnerGridOptions);
+
+						var gridDiv4 = document
+								.querySelector('#rejectPartnerGrid');
+						new agGrid.Grid(gridDiv4, rejectPartnerGridOptions);
+
+						var gridDiv5 = document
+								.querySelector('#documentationPartnerGrid');
+						new agGrid.Grid(gridDiv5,
+								documentationPartnerGridOptions);
+
+						var gridDiv6 = document.querySelector('#feedBackGrid');
+						new agGrid.Grid(gridDiv6, feedBackGridOptions);
+
+						var gridDiv7 = document
+								.querySelector('#inprogressServiceGrid');
+						new agGrid.Grid(gridDiv7, inprogressServiceGridOptions);
+						
+						
+						var gridDiv10 = document.querySelector('#serviceCompletedGrid');
+						new agGrid.Grid(gridDiv10, serviceCompletedGridOptions);
+
+						var gridDiv9 = document
+								.querySelector('#serviceClosedGrid');
+						new agGrid.Grid(gridDiv9, serviceClosedGridOptions);
+
+
+						$('#myGrid').hide();
+						$('#assignGrid').hide();
+						$('#new').show();
+						$('#addData').hide();
+						$('#searchRowDiv').hide();
+						$('#assignPartnerGrid').hide();
+						$('#acceptPartnerGrid').hide();
+						$('#rejectPartnerGrid').hide();
+						$('#documentationPartnerGrid').hide();
+						$('#feedBackGrid').hide();
+						$('#inprogressServiceGrid').hide();
+						$('#serviceCompletedGrid').hide();
+						$('#serviceClosedGrid').hide();
+						$('#back').hide();
+
+						var dateFormat = localStorage.getItem("dateFormat");
+						$("#fromDateCalendar3").datetimepicker({
+							format : 'd-m-Y',
+							closeOnDateSelect : true,
+							timepicker : false,
+							datepicker : true,
+							scrollMonth : false,
+						//minDate : new Date()
+						//step : 15
+						}).on("change", function() {
+							$('#startDate').val($(this).val());
+						})
+						$('#startDate').blur(function() {
+							$("#fromDateCalendar3").val($(this).val());
+						})
+						$("#fromDateCalendar4").datetimepicker({
+							format : 'd-m-Y',
+							closeOnDateSelect : true,
+							timepicker : false,
+							datepicker : true,
+							scrollMonth : false,
+						//minDate : new Date()
+						//step : 15
+						}).on("change", function() {
+							$('#endDate').val($(this).val());
+						})
+						$('#endDate').blur(function() {
+							$("#fromDateCalenda4").val($(this).val());
+						})
+
+					});
+
+	/ -------------------search bar for mygrid------------------------ /
+
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+	/ ----------------ag grid for myGrid parent table----------- /
+
+	const columnDefs1 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+
+				headerName : 'order Id',
+				field : "orderId",
+				width : 200,
+				hide : true
+			},
+			{
+
+				headerName : 'Name',
+				field : "name",
+				width : 200,
+			},
+			{
+
+				headerName : 'Mobile',
+				field : "mobile",
+				width : 150,
+
+			},
+			{
+
+				headerName : 'Location',
+				field : "location",
+
+			},
+			{
+
+				headerName : 'City',
+				field : "city",
+
+			},
+			{
+
+				headerName : 'Requested Service',
+				field : "requestedService",
+
+			},
+			{
+
+				headerName : 'Time Slot',
+				field : "timeSlot",
+				width : 150,
+
+			},
+			{
+
+				headerName : 'Status',
+				field : "status",
+				width : 150,
+				hide : true
+
+			},
+			{
+
+				headerName : 'Service Type Id',
+				field : "homeCareServiceId",
+				width : 150,
+				hide : true
+
+			},
+			{
+				headerName : "Action",
+				width : 150,
+				cellStyle : {
+					textAlign : 'center'
+				},
+
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editServiceOrderRequest(\""
+							+ params.data.orderId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+
+				}
+			} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			rowHeight : 40,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 295,
+			height : 10
+		},
+		rowSelection : 'single',
+		getRowNodeId : function(data) {
+			return data.orderId;
+		},
+	};
+	
+
+	const serviceCompletedcolumnDefs1 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : "HomeCarePartner Id",
+				field : "homeCarePartnerId",
+				width : 250,
+			},
+			{
+				headerName : "HomeCarePartner Name",
+				field : "homeCarePartnerName",
+				width : 300,
+			},
+			{
+				headerName : "Contact No",
+				field : "homeCarePartnerMobile",
+				width : 300,
+				hide : true
+			},
+			{
+				headerName : "Location",
+				field : "homeCarePartnerLoc",
+				width : 300,
+				hide : true
+			},
+			{
+
+				headerName : 'Service Type ',
+				field : "homeCareServiceType",
+				width : 300,
+
+			},
+			{
+
+				headerName : 'order Id',
+				field : "orderId",
+				width : 200,
+				hide : true
+			},
+			{
+
+				headerName : 'User Name',
+				field : "name",
+				width : 200,
+			},
+			{
+
+				headerName : 'Mobile',
+				field : "mobile",
+				width : 150,
+
+			},
+			{
+
+				headerName : 'Service Type Id',
+				field : "homeCareServiceId",
+				width : 150,
+				hide : true
+
+			},
+			{
+
+				headerName : 'Documentation',
+				field : "assign",
+				width : 150,
+				cellRenderer : function(params) {
+					if (params.data.assign == "5") {
+						return "YES";
+					} else {
+						return "NO";
+					} 
+				}
+
+			},
+			
+			{
+
+				headerName : 'Service Completed',
+				field : "assign",
+				width : 150,
+				cellRenderer : function(params) {
+					if (params.data.assign == "8") {
+						return "COMPLETED";
+					} else {
+						return "PENDING";
+					} 
+				}
+				//hide : true
+
+			},
+			{
+
+				headerName : 'Remarks',
+				field : "remark",
+				width : 150,
+
+			},
+			{
+				headerName : "Action",
+				width : 150,
+				cellStyle : {
+					textAlign : 'center'
+				},
+
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editServiceCompleteDetails(\""
+							+ params.data.orderId+ ','
+							+ params.data.homeCarePartnerId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+
+				}
+			} ];
+
+	const serviceCompletedGridOptions = {
+		columnDefs : serviceCompletedcolumnDefs1,
+		defaultColDef : {
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			rowHeight : 40,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 295,
+			height : 10
+		},
+		rowSelection : 'single',
+		getRowNodeId : function(data) {
+			return data.homeCarePartnerId;
+		},
+	};
+	
+
+	const serviceClosedcolumnDefs1 = [
+		{
+			headerCheckboxSelection : true,
+			headerCheckboxSelectionFilteredOnly : true,
+			checkboxSelection : true,
+			width : 10,
+			sortable : false,
+			filter : false,
+			resizable : true
+		},
+		{
+			headerName : "HomeCarePartner Id",
+			field : "homeCarePartnerId",
+			width : 250,
+		},
+		{
+			headerName : "HomeCarePartner Name",
+			field : "homeCarePartnerName",
+			width : 300,
+		},
+		{
+			headerName : "Contact No",
+			field : "homeCarePartnerMobile",
+			width : 300,
+			hide : true
+		},
+		{
+			headerName : "Location",
+			field : "homeCarePartnerLoc",
+			width : 300,
+			hide : true
+		},
+		{
+
+			headerName : 'Service Type ',
+			field : "homeCareServiceType",
+			width : 300,
+
+		},
+		{
+
+			headerName : 'order Id',
+			field : "orderId",
+			width : 200,
+			hide : true
+		},
+		{
+
+			headerName : 'User Name',
+			field : "name",
+			width : 200,
+		},
+		{
+
+			headerName : 'Mobile',
+			field : "mobile",
+			width : 150,
+
+		},
+		{
+
+			headerName : 'Service Type Id',
+			field : "homeCareServiceId",
+			width : 150,
+			hide : true
+
+		},
+		{
+
+			headerName : 'Documentation',
+			field : "assign",
+			width : 150,
+			cellRenderer : function(params) {
+				if (params.data.assign == "5") {
+					return "YES";
+				} else {
+					return "NO";
+				} 
+			}
+
+		},
+		
+		{
+
+			headerName : 'Service Completed',
+			field : "assign",
+			width : 150,
+			cellRenderer : function(params) {
+				if (params.data.assign == "8") {
+					return "COMPLETED";
+				} else {
+					return "PENDING";
+				} 
+			}
+			//hide : true
+
+		},
+		{
+
+			headerName : 'Remarks',
+			field : "remark",
+			width : 150,
+
+		},
+		{
+			headerName : "Action",
+			width : 150,
+			cellStyle : {
+				textAlign : 'center'
+			},
+
+			cellRenderer : function(params) {
+
+				s = "";
+				s = "<a href='javascript:void(0)' onclick='editServiceClosedDetails(\""
+						+ params.data.orderId+ ','
+						+ params.data.homeCarePartnerId
+						+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+				return s;
+
+			}
+		}  ];
+
+	const serviceClosedGridOptions = {
+		columnDefs : serviceClosedcolumnDefs1,
+		defaultColDef : {
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			rowHeight : 40,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 295,
+			height : 10
+		},
+		rowSelection : 'single',
+		getRowNodeId : function(data) {
+			return data.orderId;
+		},
+	};
+	
+	
+	function editServiceOrderRequest(id1) {
+		$('#docDone').hide();
+		$('#docDone1').hide();
+		
+		agGrid.simpleHttpRequest({
+			url : "admin-homeCareOrders-viewHomeServicePartnerDetails",
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq10').find('span').html(len);
+			assignGridOptions.api.setRowData(data);
+			console.log(data[0].homeCarePartnerId)
+		})
+		
+		$('#assignGrid').show();
+		$('#serviceModal').modal('show');
+		$('#divDoc').hide();
+		$('#divRsn').hide();
+		$('#phno').hide();
+
+		var id = id1;
+		$("#assignService").click(function() {
+			var item1 = {};
+			var selectedRows = gridOptions.api.getSelectedRows();
+			var homeCareServiceId1 = selectedRows[0].homeCareServiceId;
+			var partnerList = [];
+			var selectedRowsPartner = assignGridOptions.api.getSelectedRows();
+			var validation = true;
+			item1.orderId = id;
+			item1.status = $('#status').val();
+			item1.homeCareServiceId = homeCareServiceId1;
+			item1.remark = $("#remark").val();
+			item1.partnerList = selectedRowsPartner;
+			//item1.serviceDocumentUpload = $('#fileUpload').val();
+			console.log(item1)
+			if (validation) {
+				$.ajax({
+					type : "POST",
+					url : "admin-homeCareOrders-AssignServicePartner",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(item1),
+					success : function(response) {
+						if (response.message == "Success") {
+
+							$('#serviceModal').modal('hide');
+							/* agGrid.simpleHttpRequest({
+								url : 'admin-homeCareOrders-viewDetails',
+							}).then(function(data) {
+								var len = data.length;
+								$('#totalReq').find('span').html(len);
+								gridOptions.api.setRowData(data);
+							}) */
+							closeNav();
+
+						}
+					},
+					error : function(response) {
+						console.log(response);
+					}
+				})
+			}
+		})
+
+	}
+
+	var assignPartnerGridDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : "HomeCarePartner Id",
+				field : "homeCarePartnerId",
+				width : 250,
+			},
+			{
+				headerName : "HomeCarePartner Name",
+				field : "homeCarePartnerName",
+				width : 300,
+			},
+			{
+				headerName : "Contact No",
+				field : "homeCarePartnerMobile",
+				width : 300,
+			},
+			{
+				headerName : "Location",
+				field : "homeCarePartnerLoc",
+				width : 300,
+			},
+			{
+
+				headerName : 'Service Type ',
+				field : "homeCareServiceId",
+				width : 300,
+
+			},
+			{
+				headerName : "UserOrder Id",
+				field : "orderId",
+				hide : true
+
+			},
+			{
+				headerName : "Action",
+				width : 150,
+				cellStyle : {
+					textAlign : 'center'
+				},
+
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editServiceOrderRequest(\""
+							+ params.data.orderId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+
+				},
+				hide : true
+			} ];
+
+	var assignPartnerGridOptions = {
+		columnDefs : assignPartnerGridDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 190
+		},
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		getRowNodeId : function(data) {
+			return data.homeCarePartnerId;
+		},
+	};
+
+	var rejectPartnerGridDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : "HomeCarePartner Id",
+				field : "homeCarePartnerId",
+				width : 250,
+			},
+			{
+				headerName : "HomeCarePartner Name",
+				field : "homeCarePartnerName",
+				width : 300,
+			},
+			{
+				headerName : "Contact No",
+				field : "homeCarePartnerMobile",
+				width : 300,
+			},
+			{
+				headerName : "Location",
+				field : "homeCarePartnerLoc",
+				width : 300,
+			},
+			{
+
+				headerName : 'Service Type ',
+				field : "homeCareServiceType",
+				width : 300,
+
+			},
+			{
+				headerName : "UserOrder Id",
+				field : "orderId",
+				hide : true
+
+			},
+			{
+				headerName : "Reject Reason",
+				field : "rejectReason",
+
+			},
+			{
+				headerName : "Action",
+				width : 150,
+				cellStyle : {
+					textAlign : 'center'
+				},
+
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editServiceOrderRequest(\""
+							+ params.data.orderId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+
+				},
+				hide : true
+			} ];
+
+	var rejectPartnerGridOptions = {
+		columnDefs : rejectPartnerGridDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 190
+		},
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		getRowNodeId : function(data) {
+			return data.homeCarePartnerId;
+		},
+	};
+
+	var documentationPartnerGridDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : "HomeCarePartner Id",
+				field : "homeCarePartnerId",
+				width : 250,
+			},
+			{
+				headerName : "HomeCarePartner Name",
+				field : "homeCarePartnerName",
+				width : 300,
+			},
+			{
+				headerName : "Contact No",
+				field : "homeCarePartnerMobile",
+				width : 300,
+			},
+			{
+				headerName : "Location",
+				field : "homeCarePartnerLoc",
+				width : 300,
+			},
+			{
+
+				headerName : 'Service Type ',
+				field : "homeCareServiceType",
+				width : 300,
+
+			},
+			{
+				headerName : "UserOrder Id",
+				field : "orderId",
+				hide : true
+
+			},
+			{
+				headerName : "User Name",
+				field : "name",
+
+			},
+			{
+				headerName : "Service Price",
+				field : "servicePrice",
+
+			},
+			{
+				headerName : "Service Days",
+				field : "serviceDays",
+
+			},
+			{
+				headerName : "Service StartDate",
+				field : "startDate",
+
+			},
+			{
+				headerName : "Service EndDate",
+				field : "endDate",
+
+			},
+			{
+				headerName : "Description",
+				field : "description",
+
+			},
+			{
+				headerName : "Entry Time",
+				field : "entryTime",
+
+			},
+			{
+				headerName : "Action",
+				width : 150,
+				cellStyle : {
+					textAlign : 'center'
+				},
+
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editServiceOrderRequest(\""
+							+ params.data.orderId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+
+				},
+				hide : true
+			} ];
+
+	var documentationPartnerGridOptions = {
+		columnDefs : documentationPartnerGridDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 190
+		},
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		getRowNodeId : function(data) {
+			return data.homeCarePartnerId;
+		},
+	};
+
+	var feedBackGridDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : "HomeCarePartner Id",
+				field : "homeCarePartnerId",
+				width : 250,
+			},
+			{
+				headerName : "HomeCarePartner Name",
+				field : "homeCarePartnerName",
+				width : 300,
+			},
+			{
+				headerName : "Contact No",
+				field : "homeCarePartnerMobile",
+				width : 300,
+			},
+			{
+				headerName : "Location",
+				field : "homeCarePartnerLoc",
+				width : 300,
+			},
+			{
+
+				headerName : 'Service Type ',
+				field : "homeCareServiceType",
+				width : 300,
+
+			},
+			{
+				headerName : "UserOrder Id",
+				field : "orderId",
+				hide : true
+
+			},
+			{
+				headerName : "User Name",
+				field : "name",
+
+			},
+			{
+
+				headerName : "Service Price",
+				field : "servicePrice",
+
+			},
+			{
+				headerName : "Service Days",
+				field : "serviceDays",
+
+			},
+			{
+				headerName : "Service StartDate",
+				field : "startDate",
+
+			},
+			{
+				headerName : "Service EndDate",
+				field : "endDate",
+
+			},
+			{
+				headerName : "User FeedBack",
+				field : "description",
+
+			},
+			{
+				headerName : "Action",
+				width : 150,
+				cellStyle : {
+					textAlign : 'center'
+				},
+
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editServiceOrderRequest(\""
+							+ params.data.orderId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+
+				},
+				hide : true
+			} ];
+
+	var feedBackGridOptions = {
+		columnDefs : feedBackGridDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 190
+		},
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		getRowNodeId : function(data) {
+			return data.homeCarePartnerId;
+		},
+	};
+
+	var inprogressServiceGridDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : "HomeCarePartner Id",
+				field : "homeCarePartnerId",
+				width : 250,
+			},
+			{
+				headerName : "HomeCarePartner Name",
+				field : "homeCarePartnerName",
+				width : 300,
+			},
+			{
+				headerName : "Contact No",
+				field : "homeCarePartnerMobile",
+				width : 300,
+			},
+			{
+				headerName : "Location",
+				field : "homeCarePartnerLoc",
+				width : 300,
+			},
+			{
+
+				headerName : 'Service Type ',
+				field : "homeCareServiceType",
+				width : 300,
+
+			},
+			{
+				headerName : "UserOrder Id",
+				field : "orderId",
+				hide : true
+
+			},
+			{
+				headerName : "User Name",
+				field : "name",
+
+			},
+			{
+
+				headerName : "Service Price",
+				field : "servicePrice",
+
+			},
+			{
+				headerName : "Service Days",
+				field : "serviceDays",
+
+			},
+			{
+				headerName : "Service StartDate",
+				field : "startDate",
+
+			},
+			{
+				headerName : "Service EndDate",
+				field : "endDate",
+
+			},
+			{
+				headerName : "Action",
+				width : 150,
+				cellStyle : {
+					textAlign : 'center'
+				},
+
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editServiceOrderRequest(\""
+							+ params.data.orderId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+
+				},
+				hide : true
+			} ];
+
+	var inprogressServiceGridOptions = {
+		columnDefs : inprogressServiceGridDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 190
+		},
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		getRowNodeId : function(data) {
+			return data.homeCarePartnerId;
+		},
+	};
+	var acceptPartnerGridDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : "HomeCarePartner Id",
+				field : "homeCarePartnerId",
+				width : 250,
+			},
+			{
+				headerName : "HomeCarePartner Name",
+				field : "homeCarePartnerName",
+				width : 300,
+			},
+			{
+				headerName : "Contact No",
+				field : "homeCarePartnerMobile",
+				width : 300,
+			},
+			{
+				headerName : "Location",
+				field : "homeCarePartnerLoc",
+				width : 300,
+			},
+			{
+
+				headerName : 'Service Type ',
+				field : "homeCareServiceType",
+				width : 300,
+
+			},
+			{
+
+				headerName : 'Service Id ',
+				field : "homeCareServiceId",
+				width : 300,
+				hide : true
+
+			},
+			{
+				headerName : "UserOrder Id",
+				field : "orderId",
+				hide : true
+
+			},
+			{
+				headerName : "User Name",
+				field : "name",
+				hide : true
+
+			},
+			{
+				headerName : "User Contact No",
+				field : "mobile",
+				hide : true
+
+			},
+			{
+				headerName : "Action",
+				width : 150,
+				cellStyle : {
+					textAlign : 'center'
+				},
+
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editServiceOrderAccept(\""
+							+ params.data.orderId
+							+ ','
+							+ params.data.homeCarePartnerId
+							+ ','
+							+ params.data.mobile
+							+ ','
+							+ params.data.homeCareServiceId
+							+ ','
+							+ params.data.homeCareServiceType
+
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+
+					return s;
+
+				},
+			//hide : true
+			} ];
+
+	var acceptPartnerGridOptions = {
+		columnDefs : acceptPartnerGridDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 190
+		},
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		getRowNodeId : function(data) {
+			return data.homeCarePartnerId;
+		},
+	};
+
+	var assignGridDefs = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+	}, {
+		headerName : "HomeCarePartner Id",
+		field : "homeCarePartnerId",
+		width : 330,
+
+	}, {
+		headerName : "HomeCarePartner Name",
+		field : "homeCarePartnerName",
+		width : 370,
+
+	}/* , {
+		headerName : "Contact No",
+		field : "homeCarePartnerMobile",
+
+	}, {
+		headerName : "Location",
+		field : "homeCarePartnerLoc",
+
+	} */ ];
+
+	var assignGridOptions = {
+		columnDefs : assignGridDefs,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 190
+		},
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		getRowNodeId : function(data) {
+			return data.homeCarePartnerId;
+		},
+	};
+
+	function closeGrid() {
+		$('#myGrid').hide();
+		$('#back').hide();
+		$('#assignGrid').hide();
+		$('#dashboardContent').show();
+		$('#grp').show();
+		$('#new').show();
+		$('#addData').hide();
+		$('#searchRowDiv').hide();
+		$('#assignPartnerGrid').hide();
+		$('#acceptPartnerGrid').hide();
+		$('#rejectPartnerGrid').hide();
+		$('#documentationPartnerGrid').hide();
+		$('#feedBackGrid').hide();
+		$('#inprogressServiceGrid').hide();
+		$('#serviceClosedGrid').hide();
+		$('#serviceCompletedGrid').hide();
+		
+		
+	}
+
+	/ -------------------search bar for mygrid------------------------ /
+
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+	function closeNav() {
+		$('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+
+	function documentDetails(id) {
+		$('#back').show();
+		$('#docDone').hide();
+		$('#docDone1').hide();
+		agGrid.simpleHttpRequest({
+			url : "admin-homeCareOrders-viewDetails?id=" + id,
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		})
+		/* 	if(id!=1){
+				$('#services').hide();
+			}		
+			else{
+				$('#rmrks').hide();
+				$('#services').show();
+			} */
+		$('#grp').hide();
+		$('#myGrid').show();
+		$('#dashboardContent').hide();
+		$('#searchRowDiv').show();
+		$('#boxHide').hide();
+		$('#box1Hide').hide();
+		$('#divDoc').hide();
+		$('#divRsn').hide();
+		if (id == 3) {
+
+			$('#assignGrid').hide();
+
+		}
+
+	}
+	function assignDetails(id) {
+		$('#grp').hide();
+		$('#back').show();
+		if (id == 2) {
+			agGrid.simpleHttpRequest({
+				url : "admin-homeCareOrders-assignviewDetails",
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq1').find('span').html(len);
+				assignPartnerGridOptions.api.setRowData(data);
+			})
+
+			$('#docDone').hide();
+			$('#docDone1').hide();
+			//$('#grp').hide();
+			$('#assignPartnerGrid').show();
+			$('#dashboardContent').hide();
+			$('#searchRowDiv').show();
+			$('#boxHide').hide();
+			$('#box1Hide').hide();
+			$('#divDoc').hide();
+			$('#divRsn').hide();
+		}
+		if (id == 3) {
+			agGrid.simpleHttpRequest({
+				url : "admin-homeCareOrders-acceptviewDetails",
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq12').find('span').html(len);
+				acceptPartnerGridOptions.api.setRowData(data);
+			})
+			$('#acceptPartnerGrid').show();
+			$('#dashboardContent').hide();
+			$('#searchRowDiv').show();
+			$('#divDoc12').hide();
+
+		}
+	}
+	function rejectDetails(id) {
+		$('#back').show();
+		agGrid.simpleHttpRequest({
+			url : "admin-homeCareOrders-RejectviewDetails",
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq16').find('span').html(len);
+			rejectPartnerGridOptions.api.setRowData(data);
+		})
+
+		$('#grp').hide();
+		$('#rejectPartnerGrid').show();
+		$('#dashboardContent').hide();
+		$('#searchRowDiv').show();
+
+	}
+	function documentationDetails(id) {
+		$('#back').show();
+		agGrid.simpleHttpRequest({
+			url : "admin-homeCareOrders-DocumentationviewDetails",
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq12').find('span').html(len);
+			documentationPartnerGridOptions.api.setRowData(data);
+		})
+
+		$('#grp').hide();
+		$('#documentationPartnerGrid').show();
+		$('#dashboardContent').hide();
+		$('#searchRowDiv').show();
+	}
+	function serviceProgressDetails(id) {
+		$('#back').show();
+		$('#grp').hide();
+		$('#dashboardContent').hide();
+		$('#searchRowDiv').show();
+		if (id == 6) {
+			$('#inprogressServiceGrid').show();
+			
+			agGrid.simpleHttpRequest({
+				url : "admin-homeCareOrders-InProgressviewDetails",
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq1234').find('span').html(len);
+				inprogressServiceGridOptions.api.setRowData(data);
+			})
+		}
+		if (id == 7) {
+			$('#feedBackGrid').show();
+			agGrid.simpleHttpRequest({
+				url : "admin-homeCareOrders-FeedBackviewDetails",
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq1235').find('span').html(len);
+				feedBackGridOptions.api.setRowData(data);
+			})
+		}
+	}
+	function completedDetails(id){
+		$('#back').show();
+		$('#grp').hide();
+		$('#dashboardContent').hide();
+		$('#searchRowDiv').show();
+		if(id==8){
+			
+			$('#serviceCompletedGrid').show();
+		agGrid.simpleHttpRequest({
+			url : "admin-homeCareOrders-ViewServiceCompletedDetails",
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq1235h').find('span').html(len);
+			serviceCompletedGridOptions.api.setRowData(data);
+		})
+		
+		}
+		if(id==9){
+			$('#serviceClosedGrid').show();
+		
+		agGrid.simpleHttpRequest({
+				url : "admin-homeCareOrders-serviceCloseviewDetail",
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq1235').find('span').html(len);
+				serviceClosedGridOptions.api.setRowData(data);
+			})
+		}
+	
+	}
+	function serviceProgressDetails(id) {
+		$('#back').show();
+		$('#grp').hide();
+		$('#dashboardContent').hide();
+		$('#searchRowDiv').show();
+		if (id == 6) {
+			$('#inprogressServiceGrid').show();
+			
+			agGrid.simpleHttpRequest({
+				url : "admin-homeCareOrders-InProgressviewDetails",
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq1234').find('span').html(len);
+				inprogressServiceGridOptions.api.setRowData(data);
+			})
+		}
+		if (id == 7) {
+			$('#feedBackGrid').show();
+
+			agGrid.simpleHttpRequest({
+				url : "admin-homeCareOrders-FeedBackviewDetails",
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq1235').find('span').html(len);
+				feedBackGridOptions.api.setRowData(data);
+			})
+		}
+	}
+	function selectSts(sts) {
+		var status = $('#status').val();
+		if (status == 4) {
+			$('#divRsn').show();
+			$('#divDoc').hide();
+			$('#phnNo').hide();
+		} else if (status == 5) {
+			$('#divDoc').show();
+			$('#phnNo').show();
+			$('#divRsn').hide();
+		} else if (status == 2) {
+			$('#assignGrid').show();
+			//$('#divDoc').show();
+			//$('#phnNo').show();
+			//$('#divRsn').hide();
+		}
+		else {
+			$('#divRsn').hide();
+			$('#divDoc').hide();
+			$('#phnNo').hide();
+		}
+	}
+
+	function selectdocSts(sts) {
+		var status = $('#docstatus').val();
+		if (status == 4) {
+			$('#divDoc12').hide();
+		} else if (status == 5) {
+			$('#divDoc12').show();
+
+		} else {
+			$('#divDoc12').hide();
+		}
+	}
+	function closeDetails() {
+		$('#myModalSerReq').modal('hide');
+	}
+	function closeDetails1() {
+		$('#serviceModal').modal('hide');
+	}
+	function closeDetails2() {
+		$('#serviceModal2').modal('hide');
+	}
+	function saveFile() {
+
+		var uFile = $('#fileUpload')[0].files[0];
+		var fileName = $('#fileUpload').val();
+		var iURL = URL.createObjectURL(uFile);
+		var LightImg = "<div class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class=''></i></a></div>";
+		$("#uploadedBillDocDiv_").html(LightImg);
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var iURL = URL.createObjectURL(uFile);
+
+		$('#serviceDocumentUpload').attr('src', '');
+		$('#serviceDocumentUpload').attr('src', iURL);
+
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "admin-homeCareOrders-uploadDocument",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+
+	function editServiceOrderAccept(id) {
+		var data = id.split(",");
+		var oId = data[0];
+		var pid = data[1];
+		var mob = data[2];
+		var userService = data[3];
+		var serviceName = data[4];
+		$('#userService').val(serviceName);
+		var mobile = $('#phonNo').val(mob);
+		var orderId = $('#orderId').val(oId);
+		var homeCarePartnerId = $('#homeCarePartnerId').val(pid);
+		$('#serviceModal2').modal('show');
+		$('#docDone').hide();
+		$('#docDone1').hide();
+		$('#divDoc12').hide();
+		$("#documentationService").click(function() {
+			var item1 = {};
+			var validation = true;
+			item1.orderId = oId;
+			item1.homeCarePartnerId = pid;
+			item1.docstatus = $('#docstatus').val();
+			item1.description = $("#desp").val();
+			item1.mobile = mob;
+			item1.homeCareServiceId = userService;
+			item1.servicePrice = $('#servicePrice').val();
+			item1.serviceDays = $('#serviceDays').val();
+			item1.startDate = $('#startDate').val();
+			item1.endDate = $('#endDate').val();
+			item1.serviceDocumentUpload = $('#fileUpload').val();
+			console.log(item1)
+			if (validation) {
+				$.ajax({
+					type : "POST",
+					url : "admin-homeCareOrders-AcceptServicePartner",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(item1),
+					success : function(response) {
+						if (response.message == "Success") {
+
+							$('#serviceModal2').modal('hide');
+
+						}
+					},
+					error : function(response) {
+						console.log(response);
+					}
+				})
+			}
+		})
+
+	}
+	
+	function editServiceCompleteDetails(id){
+		var data = id.split(",");
+		var oId = data[0];
+		var pid = data[1];
+		$('#serviceModal1').modal('show');
+		$("#assignServiceDetails").click(function() {
+			var item1 = {};
+			var validation = true;
+			item1.orderId = oId;
+			item1.homeCarePartnerId = pid;
+			item1.remark = $('#remark1').val();
+			item1.status = $('#status1').val();
+			console.log(item1)
+			if (validation) {
+				$.ajax({
+					type : "POST",
+					url : "admin-homeCareOrders-ServiceCompleted",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(item1),
+					success : function(response) {
+						if (response.message == "Success") {
+
+							$('#serviceModal1').modal('hide');
+
+						}
+					},
+					error : function(response) {
+						console.log(response);
+					}
+				})
+			}
+		})
+
+		
+	}
+function editServiceClosedDetails(id){
+	
+	$("#assignServiceDetails").click(function() {
+		var item1 = {};
+		var validation = true;
+		item1.orderId = oId;
+		item1.homeCarePartnerId = pid;
+		item1.status = $('#status1').val();
+		item1.remark = $('#remark1').val();
+	
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "admin-homeCareOrders-ServiceClosed",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(item1),
+				success : function(response) {
+					if (response.message == "Success") {
+						$('#serviceModal1').modal('hide');
+
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+	})
+
+	
+	}
+
+	function showDocDetails() {
+
+		agGrid.simpleHttpRequest({
+			url : "admin-homeCareOrders-acceptviewDetails",
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq12').find('span').html(len);
+			acceptPartnerGridOptions.api.setRowData(data);
+
+		})
+
+		var mb = $('#phonNo').val();
+		$('#phonNo').val(mb);
+		$('#docDone').show();
+		$('#docDone1').show();
+
+	}
+</script>
+</head>
+<!-- /*************************************Body Part***********************************************/	 -->
+<body>
+	<div layout:fragment="content" class="maincontent">
+
+
+
+		<div class="panel-body">
+			<div class="row" id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="font-design" id="grp">!!!! WELCOME TO HOME CARE
+								SERVICES !!!!</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row margin_topbot" id="searchRowDiv">
+								<div class="input-style row">
+									<input type="text" placeholder="Search.." name="search"
+										class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()" id="quickFilter">
+									<div class="searchicon">
+										<a href="javascript:void(0)"><span
+											style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+											id="closeKey"
+											onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i"><i class="ti-close srchicon"></i></span></a><a
+											href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<button class="btn1" id="back" onclick="closeGrid()">BACK</button>
+						</div>
+
+					</div>
+				</div>
+				<div id="myGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+
+				<div id="assignPartnerGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+
+				<div id="acceptPartnerGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+
+				<div id="documentationPartnerGrid"
+					style="width: 100%; height: 500px;" class="ag-theme-alpine"></div>
+
+				<div id="rejectPartnerGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+
+				<div id="inprogressServiceGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+
+				<div id="feedBackGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+					
+				<div id="serviceClosedGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+
+				<div id="serviceCompletedGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+						
+					
+					
+
+			</div>
+		</div>
+
+		<div id="dashboardContent">
+			<div class="row" id="boxHide">
+				<div class="col-md-4 stretch-card padding_5"
+					onclick="documentDetails('1')">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #913ccd; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#"> <!-- <div class="font-weight-normal"> Wallet Balance</div> -->
+								<div class="font-weight-normal">Request</div>
+								<h4 id="request"></h4> <i
+								class="fa fa-hospital-o mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 stretch-card padding_5"
+					onclick="assignDetails('2')">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #2ca8c2; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#"> <!-- <div class="font-weight-normal">Warning Percent</div> -->
+								<div class="font-weight-normal">Assign</div>
+								<h4 id="assign"></h4> <i
+								class="fa fa-money mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-4 stretch-card padding_5">
+					<div class="card card-img-holder text-white mini-stat"
+						onclick="assignDetails('3')"
+						style="background: #839098; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#">
+								<div class="font-weight-normal">Accept</div>
+								<h4 id="accept"></h4> <i
+								class="fa fa-wheelchair mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="row" id="box1Hide">
+				<input type="hidden" id="bookId">
+				<div class="col-md-4 stretch-card padding_5"
+					onclick="rejectDetails('4')">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #3ccd75;; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#"> <!-- <div class="font-weight-normal"> Wallet Balance</div> -->
+								<div class="font-weight-normal">Reject</div>
+								<h4 id="reject"></h4> <i
+								class="fa fa-hospital-o mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 stretch-card padding_5"
+					onclick="documentationDetails('5')">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #c27e2c; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#"> <!-- <div class="font-weight-normal">Warning Percent</div> -->
+								<div class="font-weight-normal">Documentation</div>
+								<h4 id="documentation"></h4> <i
+								class="fa fa-money mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-4 stretch-card padding_5"
+					onclick="serviceProgressDetails('6')">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #0e5d8f; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#" onclick="details()"> <!-- 	<div class="font-weight-normal"> Restrict Percentage
+									</div> -->
+								<div class="font-weight-normal">Service In-Progress</div>
+								<h4 id="serviceInProgress"></h4> <i
+								class="fa fa-wheelchair mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-4 stretch-card padding_5"
+					onclick="serviceProgressDetails('7')">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #dfb322; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#"> <!-- <div class="font-weight-normal"> Wallet Balance</div> -->
+								<div class="font-weight-normal">Feed Back Taken</div>
+								<h4 id="feedBackTaken"></h4> <i
+								class="fa fa-hospital-o mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-4 stretch-card padding_5">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #b3c22c; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#" onclick="completedDetails('8')"> <!-- 	<div class="font-weight-normal"> Restrict Percentage
+									</div> -->
+								<div class="font-weight-normal">Service Completed</div>
+								<h4 id="serviceCompleted"></h4> <i
+								class="fa fa-money mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-4 stretch-card padding_5">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #ef7f0b; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#" onclick="completedDetails('9')"> <!-- 	<div class="font-weight-normal"> Restrict Percentage
+									</div> -->
+								<div class="font-weight-normal">Service Closed</div>
+								<h4 id="serviceClosed"></h4> <i
+								class="fa fa-wheelchair mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="serviceModal">
+			<div class="modal-dialog modal-lg"
+				style="margin-top: 130px; height: 900px;">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title md-color">Assign Services</h4>
+						<button type="button" class="close cp" onclick="closeDetails1()"
+							data-bs-dismiss="modal">&times;</button>
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+						<div class="col-md-12" id="paymentDetails">
+							<div class="card-title">
+								<h4>HomeCare Service Details</h4>
+							</div>
+							<div class="row">
+								<div class="col-md-12" id="serSts">
+									<div class="form-group">
+										<label>Status</label>
+										<div class="select">
+											<select id="status" onchange="selectSts('status')">
+												<option value="">--Select--</option>
+												<option value="1">Service Requested</option>
+												<option value="2">Assigned To Partner</option>
+												<option value="3">Service Request Accepted</option>
+												<option value="4">Service Request Rejected</option>
+												<option value="5">Documentation Done</option>
+												<option value="6">Service Delivery In Progress</option>
+												<option value="7">3 Week Feedback Taken</option>
+												<option value="8">Service Completed</option>
+												<option value="9">Service Closed</option>
+
+											</select>
+										</div>
+									</div>
+								</div>
+								<div id="assignGrid" style="width: 100%; height: 200px;"
+									class="ag-theme-alpine"></div>
+									
+								<!-- 	<div class="col-md-12" id="divDoc" >
+									<div class="user-dtlhd ">Image Upload</div>
+									<table id="docTbl">
+
+										<tbody id="doctbodyData">
+
+
+											<td><div class="form-group">
+													<img th:src="${profile}" id="serviceDocumentUpload"
+														style="height: 50px; weight: 50px"></img>
+												</div></td>
+
+											<td>
+												<div class="control-group position-r">
+													<label class="custom-file-upload" for="fileUpload" 
+														id="uploadFor_0"> <a class="btn btn-primary"
+														style="color: #FFF !important;"> <i id="clickImg_0"
+															class="ti ti-plus"></i> Add
+													</a>
+														<div id="uploadedBillDiv" align="center"
+															class="uploadedBillCls">
+															<div class=""></div>
+														</div>
+													</label>
+													<div class="controls">
+
+														<input type="file" id="fileUpload" name="userImage" onclick="showDocDetails()"
+															accept="image/*" onchange="saveFile()"
+															onblur="removeValid(event)">
+
+													</div>
+												</div> <input type="hidden" id="uploadHidden_0"
+												class="uploadHidCls">
+												<div id="uploadedBillDiv_0" align="center"
+													class="uploadedBillCls"></div>
+												<div id="imageName_0" class="imageName"></div>
+												<div id="dltImage_0"></div>
+											</td>
+
+										</tbody>
+									</table>
+								</div> -->
+
+								<!-- 	<div class="col-md-12" id="phnNo">
+									<div class="form-group">
+										<label>Phone Number</label> <input type="text" id="phonNo"
+											class="form-control transparenttxtbox" autocomplete="off">
+
+									</div>
+								</div> -->
+
+
+								<div class="col-md-12" id="divRsn">
+									<div class="form-group">
+										<label>Reason</label> <input type="text" id="reason"
+											class="form-control transparenttxtbox" autocomplete="off">
+
+									</div>
+								</div>
+
+								<div class="col-md-12" id="rmrks">
+									<div class="form-group">
+										<label>Remarks</label>
+										<textarea type="text" class="form-control" id="remark"
+											onblur="removeValid(event)"></textarea>
+									</div>
+								</div>
+
+							</div>
+
+
+
+							<div class="row">
+								<div class="form-group">
+									<button type="button" id="assignService" class="btn1">Submit</button>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<div class="chartbtnsec">
+
+							<!-- <button class="btn4" data-bs-dismiss="modal">CANCEL</button> -->
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+		<div class="modal fade" id="serviceModal2">
+			<div class="modal-dialog modal-lg"
+				style="margin-top: 130px; height: 900px;">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title md-color">Documentation For Services</h4>
+						<button type="button" class="close cp" onclick="closeDetails2()"
+							data-bs-dismiss="modal">&times;</button>
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+						<!-- 
+						<h4>HomeCare Service Details</h4> -->
+					</div>
+					<div class="row">
+						<div class="col-md-12" id="serSts">
+							<div class="form-group">
+								<label>Status</label>
+								<div class="select">
+									<select id="docstatus" onchange="selectdocSts('docstatus')">
+										<option value="">--Select--</option>
+										<option value="1">Service Requested</option>
+										<option value="2">Assigned To Partner</option>
+										<option value="3">Service Request Accepted</option>
+										<option value="4">Service Request Rejected</option>
+										<option value="5">Documentation Done</option>
+										<option value="6">Service Delivery In Progress</option>
+										<option value="7">3 Week Feedback Taken</option>
+										<option value="8">Service Completed</option>
+										<option value="9">Service Closed</option>
+
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-12" id="divDoc12">
+							<div class="user-dtlhd ">Image Upload</div>
+							<table id="docTbl">
+
+								<tbody id="doctbodyData">
+
+
+									<td><div class="form-group">
+											<img th:src="${profile}" id="serviceDocumentUpload"
+												style="height: 50px; weight: 50px"></img>
+										</div></td>
+
+									<td>
+										<div class="control-group position-r">
+											<label class="custom-file-upload" for="fileUpload"
+												id="uploadFor_0"> <a class="btn btn-primary"
+												style="color: #FFF !important;"> <i id="clickImg_0"
+													class="ti ti-plus"></i> Add
+											</a>
+												<div id="uploadedBillDiv" align="center"
+													class="uploadedBillCls">
+													<div class=""></div>
+												</div>
+											</label>
+											<div class="controls">
+
+												<input type="file" id="fileUpload" name="userImage"
+													onclick="showDocDetails()" accept="image/*"
+													onchange="saveFile()" onblur="removeValid(event)">
+
+											</div>
+										</div> <input type="hidden" id="uploadHidden_0" class="uploadHidCls">
+										<div id="uploadedBillDiv_0" align="center"
+											class="uploadedBillCls"></div>
+										<div id="imageName_0" class="imageName"></div>
+										<div id="dltImage_0"></div>
+									</td>
+
+								</tbody>
+							</table>
+						</div>
+						<!-- 	<input type="text" id="phonNo"> -->
+
+						<div class="col-md-12" id="desc">
+							<div class="form-group">
+								<label>Description</label>
+								<textarea type="text" class="form-control" id="desp"
+									onblur="removeValid(event)"></textarea>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="row" id="docDone">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Contact Number</label> <input type="text" id="phonNo"
+									class="form-control transparenttxtbox" autocomplete="off"
+									readonly>
+
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Service Name</label> <input type="text" id="userService"
+									class="form-control transparenttxtbox" autocomplete="off"
+									readonly>
+
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Service Price</label> <input type="text"
+									id="servicePrice" class="form-control transparenttxtbox"
+									autocomplete="off">
+
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Service Days</label> <input type="text" id="serviceDays"
+									class="form-control transparenttxtbox" autocomplete="off">
+
+							</div>
+						</div>
+					</div>
+					<div class="row" id="docDone1">
+
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Start Date</label> <input type="text" id="startDate"
+									class="form-control" disabled="disabled"
+									onblur="removeValid(event)"
+									th:attr="onkeyup=|formatDate('startDate','${session.DATEFORMAT_JS}')|">
+								<i class="ti-calendar picker_calendar" id="fromDateCalendar3"></i>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>End Date</label> <input type="text" id="endDate"
+									class="form-control" disabled="disabled"
+									onblur="removeValid(event)"
+									th:attr="onkeyup=|formatDate('endDate','${session.DATEFORMAT_JS}')|">
+								<i class="ti-calendar picker_calendar" id="fromDateCalendar4"></i>
+							</div>
+						</div>
+
+					</div>
+
+
+
+					<div class="row">
+						<div class="form-group">
+							<button type="button" id="documentationService" class="btn1">Submit</button>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<div class="chartbtnsec">
+
+					<!-- <button class="btn4" data-bs-dismiss="modal">CANCEL</button> -->
+				</div>
+			</div>
+
+		</div>
+	
+	
+	<div class="modal fade" id="serviceModal1">
+			<div class="modal-dialog modal-lg"
+				style="margin-top: 130px; height: 900px;">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title md-color">Update Status</h4>
+						<button type="button" class="close cp" onclick="closeDetails2()"
+							data-bs-dismiss="modal">&times;</button>
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+					<!-- text input -->
+					<div class="row">
+						
+
+						<div class="col-md-12" id="serSts">
+							<div class="form-group">
+								<label>Status</label>
+								<div class="select">
+									<select id="status1">
+										<option value="">--Select--</option>
+										<option value="1">Service Requested</option>
+										<option value="2">Assigned To Partner</option>
+										<option value="3">Service Request Accepted</option>
+										<option value="4">Service Request Rejected</option>
+										<option value="5">Documentation Done</option>
+										<option value="6">Service Delivery In Progress</option>
+										<option value="7">3 Week Feedback Taken</option>
+										<option value="8">Service Completed</option>
+										<option value="9">Service Closed</option>
+
+									</select>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-12" id="rmrks">
+							<div class="form-group">
+								<label>Remarks</label> <input type="text" id="remark1"
+									class="form-control transparenttxtbox" autocomplete="off">
+
+							</div>
+						</div>
+
+
+
+					</div>
+				</div>
+				
+					<div class="row">
+						<div class="form-group">
+							<button type="button" id="assignServiceDetails" class="btn1">Submit</button>
+
+						</div>
+					</div>
+			</div>
+		</div>
+			<div class="modal-footer">
+				<div class="chartbtnsec">
+
+					<!-- <button class="btn4" data-bs-dismiss="modal">CANCEL</button> -->
+				</div>
+			</div>
+	</div>
+
+
+
+
+
+
+	</div>
+
+
+
+</body>
+</html>

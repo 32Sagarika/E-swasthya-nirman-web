@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	//Document Ready For Page load
+
+	$(document).ready(function() {
+		$("#addTestList").hide();
+		$("#add").show();
+		$("#tab11").hide();
+		$("#edit").hide();
+		$("#deletes").show();
+		$("#add").show();
+		
+		
+		$("#fromDateCalendar1").datetimepicker({
+		    format : 'H:i',
+		    closeOnDateSelect : false,
+		    timepicker : true,
+		    datepicker : false,
+		    step: 15
+		  }).on("change", function() {
+		    $('#fromTime').val($(this).val());
+		  })
+
+		  $('#fromTime').blur(function() {
+		    $("#fromDateCalendar1").val($(this).val());
+		  })
+		  
+		  $("#fromDateCalendar2").datetimepicker({
+		    format : 'H:i',
+		    closeOnDateSelect : false,
+		    timepicker : true,
+		    datepicker : false,
+		    step: 15
+		  }).on("change", function() {
+		    $('#toTime').val($(this).val());
+		  })
+
+		  $('#toTime').blur(function() {
+		    $("#fromDateCalendar2").val($(this).val());
+		  })
+	});
+
+	$(document).ready(function() {
+		$("#showTab").show();
+		 var gridDiv2 = document.querySelector('#myGrid');
+			new agGrid.Grid(gridDiv2, gridOptions2);
+
+			agGrid.simpleHttpRequest({
+				url : "lab-timeslot-view"
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalCandidate').find('span').html(len);
+				gridOptions2.api.setRowData(data);
+			});
+	});
+	
+	
+	//---------EDIT-------------
+	function editLabDetails(id) {
+		$("#addData").show();
+		$("#myGrid").hide();
+		$("#new").hide();
+		$("#delete").hide();
+		$("#searchRowDiv").hide();
+		$("#totalReq").hide();
+		$.ajax({
+			type : "GET",
+			url : "lab-timeslot-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					openNav();
+					$("#myGrid").show();
+					$("#labId").val(response.body.labId);
+					$("#fromTime").val(response.body.fromTime);
+					$("#toTime").val(response.body.toTime);
+					$("#status").val(response.body.status);
+					
+				} else
+					("error" + console.message)
+			}
+		});
+
+	}
+	
+	/ ----------------ag grid for myGrid parent table----------- /	
+	
+	var columnDefs2 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	},{
+		headerName : 'Slot Id ',
+		field : "labId",
+		cellRenderer : function(params) {
+			return '<a id="" onclick=editLabDetails("'
+					+ params.data.labId
+					+ '") href="javascript:void(0)">'
+					+ params.data.labId + '</a>';
+		}
+	}, {
+		headerName : "From Time",
+		field : "fromTime",
+		width:420,
+	}, {
+		headerName : 'To Time',
+		field : "toTime",
+		width:420
+	} ,
+	, {
+		headerName : 'Status',
+		field : "status",
+		width:420,
+		cellStyle : {
+			textAlign : 'center'
+		},
+		cellRenderer : function(params) {
+			if (params.data.status == "1") {
+				return "IN-ACTIVE";
+			} else {
+				return "ACTIVE";
+			}
+		}
+	}];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,
+		//onSelectionChanged : saveTestManage1
+
+	};
+
+function editTestname(testId){
+
+	
+}
+
+function cancelEmp(){
+	$("#managetestlist").show();
+	$("#addTestList").hide();
+}
+
+
+/ ---------------------------function for new button------------------ /
+function add() {
+	$("#labId").val('');
+	$("#name").val('');
+	$("#location").val('');
+	$("#phoneNumber").val('');
+	$("#bankAccName").val('');
+	$("#bankAccNumber").val('');
+	$("#bankIfscCode").val('');
+	$('#new').hide();
+	$('#delete').hide();
+	$('#addData').show();
+	$('#myGrid').hide();
+	$('#searchRowDiv').hide();
+	$('#totalReq').hide();
+
+}
+/ -------------function for cancel button-------------- /
+function Cancel() {
+	$('#totalReq').show();
+	$('#searchRowDiv').show();
+	$('#new').show();
+	$('#delete').show();
+	$('#addData').hide();
+	$('#myGrid').show();
+	$("#labId").val('');
+	$("#name").val('');
+	$("#location").val('');
+	$("#phoneNumber").val('');
+	$("#bankAccName").val('');
+	$("#bankAccNumber").val('');
+	$("#bankIfscCode").val('');
+}
+
+	
+	function saveTest() {
+		var item1 = {};
+		var validation =true;
+				item1.labId = $("#labId").val();
+				item1.fromTime = $("#fromTime").val();
+				item1.toTime = $("#toTime").val();
+				item1.status = $("#status").val();
+				console.log(item1)
+				
+		
+		if(validation){
+		$.ajax({
+			type : "POST",
+			url : "lab-timeslot-addDetails",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(item1),
+			success : function(response) {
+				if (response.message == "Success") {
+					console.log(response)
+					closeNav();
+					$('#new').show();
+					$('#delete').show();
+					agGrid.simpleHttpRequest({
+						url : "lab-timeslot-view"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalCandidate').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+				}
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+		}
+	}
+
+	function openNav() {
+		$('#add').attr('disabled', true);
+		$('#fromTime').val("");
+		$('#toTime').val("");
+		$('#status').val("");
+		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:-5.4px; overflow: hidden; height:auto; top:7px;";
+
+		document.getElementById("main_content").style.width = "75%";
+	}
+
+	function closeNav() {
+		$('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+	
+	
+	function formatAMPM2() {
+		var closingTime = $("#toTime").val();
+	  var timeSplit = closingTime.split(':');
+	
+		var time= timeSplit[0];
+		var ampm = time >= 12 ? 'PM' : 'AM';
+		var time2 = timeSplit[1];
+		var pm="";
+	if(time <=12){
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#toTime").val(strTime);
+	}
+	else{
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#toTime").val(strTime);
+	}
+	}
+	function formatAMPM1() {
+		var fromTime = $("#fromTime").val();
+	  var timeSplit = fromTime.split(':');
+	
+		var time= timeSplit[0];
+		var ampm = time >= 12 ? 'PM' : 'AM';
+		var time2 = timeSplit[1];
+		var pm="";
+	if(time <=12){
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#fromTime").val(strTime);
+	}
+	else{
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#fromTime").val(strTime);
+	}
+	}
+	
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var id = selectedRows[0].labId;
+
+		$.ajax({
+			type : "POST",
+			url : "lab-timeslot-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : 'lab-timeslot-view',
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					})
+
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+	
+	
+	
+</script>
+
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div id="managetestlist">
+			<div id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="font-design" id="totalReq">City Listing</div>
+						</div>
+						<div class="col-md-6">
+							<button id="new" onclick="openNav()" class="btn1">NEW</button>
+							<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+					</div>
+
+					<!-- <div id="myGridassinlist" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div> -->
+
+					<div id="myGrid" style="width: 100%; height: 300px;"
+						class="ag-theme-alpine"></div>
+
+				</div>
+			</div>
+			<input type="hidden" id="labId"></input>
+			<div id="mySidenav" class="sidenav">
+				<div class="slidebox">
+					<div class="row" id="addData">
+						<div class="col-md-9">
+							<div class="edit">Add Time Slot</div>
+						</div>
+						<div class="col-md-3">
+							<div class="arrow">
+								<a href="javascript:void(0)" class="closebtn"
+									onclick="closeNav()"><i class="ti-arrow-right"></i></a>
+							</div>
+						</div>
+
+						<div class="chartbtnsec1">
+							<div align="right">
+								<button class="btn4" onclick="closeNav()">CANCEL</button>
+								<button class="btn1" onclick="saveTest()">SAVE</button>
+
+							</div>
+						</div>
+
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>From Time</label> <input type="text" id="fromTime"
+									onchange="formatAMPM1()" class="form-control"
+									placeholder="Enter Time" onblur="removeValid(event)"
+									th:attr="onkeyup=|formatDate('fromTime','${session.DATEFORMAT_JS}')|">
+								<i class="ti-calendar picker_calendar" id="fromDateCalendar1"
+									onchange="formatAMPM1()"></i>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>To Time</label> <input type="text" id="toTime"
+									onchange="formatAMPM2()" class="form-control"
+									placeholder="Enter Time" onblur="removeValid(event)"
+									th:attr="onkeyup=|formatDate('fromTime','${session.DATEFORMAT_JS}')|">
+								<i class="ti-calendar picker_calendar" id="fromDateCalendar2" onchange="formatAMPM2()"></i>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Status</label>
+								<div class="select">
+									<select id="status" class="form-control">
+										<option value="">--Select--</option>
+										<option value="0">Active</option>
+										<option value="1">In-Active</option>
+									</select>
+
+								</div>
+							</div>
+
+
+
+						</div>
+
+					</div>
+				</div>
+
+
+
+				<div class="col-md-12 padding_5" id="addTestList">
+					<div class="row" id="showTab">
+						<div class="col-md-5 buttonsec btn-hs"></div>
+						<div class="col-md-7 buttonsec btn-hs">
+							<button id="add" class="btn1" onclick="addTestNameDetails()">SAVE</button>
+							<button id="deletes" class="btn4" onclick="cancelEmp()">CANCEL</button>
+							<input type="hidden" id="pckgId">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<script>
+	$(document).ready(function() {
+		
+		//var id = $("#patientId").val();
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		agGrid.simpleHttpRequest({
+			url : 'lab-labtestorders-viewDetails',
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		})
+		$('#myGrid').show();
+		$('#new').show();
+		$('#addData').hide();
+		//$('#delete').hide();
+		});
+
+	/ -------------------search bar for mygrid------------------------ /
+
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+
+	
+/ ----------------ag grid for myGrid parent table----------- /
+
+	const columnDefs1 = [
+			 {
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			}, 
+			{
+
+				headerName : 'OrderId',
+				field : "orderId"
+			},
+			 {
+
+				headerName : 'Name',
+				field : "name"
+			}, {
+			
+				headerName : 'Mobile',
+				field : "mobile",
+				
+				
+				
+			},{
+
+				headerName : 'Location',
+				field : "location",
+				
+				
+			},{
+
+				headerName : 'City',
+				field : "city",
+				
+				
+			},{
+
+				headerName : 'TestName',
+				field : "testName",
+				
+				
+			},{
+
+				headerName : 'Tat',
+				field : "tat",
+				width : 200,
+				
+			},{
+
+				headerName : 'Order Date',
+				field : "orderdate",
+				
+				
+			},{
+
+				headerName : 'Time Slot',
+				field : "timeslot",
+				width : 200,
+				
+			},{
+
+				headerName : 'Price',
+				field : "price",
+				width :200,
+				
+			},{
+
+				headerName : 'Status',
+				field : "status",
+				width : 150,
+				
+			},	{
+				headerName : "Action",
+				cellRenderer : function(params) {
+
+					s = "";
+					s = "<a href='javascript:void(0)' onclick='editLabTestReport(\""
+							+ params.data.orderId
+							+ "\")'><i class=\"ti-support\" style=\"font-size:17px ;position: relative;top: 3px;left: 20px;\" aria-hidden=\"true\"></i></a>";
+							
+					s = s
+							+ "<a href='javascript:void(0)' onclick='viewLabTestReport(\""
+							+ params.data.orderId
+							+ "\")'><i class=\"ti-comment-alt\" style=\"font-size:17px ;position: relative;top: 3px;left: 50px;\" aria-hidden=\"true\"></i></a>";
+					return s;
+
+				}
+			}
+			];
+
+	const gridOptions = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			rowHeight:40,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 295,
+			height : 10
+		},
+		rowSelection : 'single',
+		getRowNodeId: function (data) {
+		    return data.bannerId;
+		  },
+	};
+	
+	function editLabTestReport(id1){
+	
+		$('#add').attr('disabled', true);
+		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:-3.4px; overflow: hidden; height:auto; top:38px;";
+
+		document.getElementById("main_content").style.width = "75%";
+		var id =id1;
+		//$('#searchRowDiv').hide();
+		$("#saveChanges").click(function() {
+		var item1 = {};
+		var validation = true;
+		item1.orderId = id;
+		item1.status = $("#status").val();
+		item1.remarks = $("#remarks").val();
+		console.log(item1)
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "lab-labtestorders-EditStatusDetails",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(item1),
+				success : function(response) {
+					if (response.message == "Success") {
+						//$('#totalReq').show();
+						
+						//console.log(response)
+						
+						agGrid.simpleHttpRequest({
+							url : 'lab-labtestorders-viewDetails',
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions.api.setRowData(data);
+						})
+						closeNav();
+
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+	})
+
+	}
+	
+	function closeNav() {
+		$('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+	function viewLabTestReport(id){
+		$('#myModalSerReq').modal('show');
+		$.ajax({
+			type : "GET",
+			url : "lab-labtestorders-viewDetailsById?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#orderId").val(response.body.orderId);
+					$("#name").val(response.body.name);
+					$("#mobile").val(response.body.mobile);
+					$("#location").val(response.body.location);
+					$("#city").val(response.body.city);
+					$("#testName").val(response.body.testName);
+					$("#paymentId1").val(response.body.paymentId);
+					$("#orderdate").val(response.body.orderdate);
+					$("#timeslot").val(response.body.timeslot);
+					$("#status1").val(response.body.status);
+					$("#remarks1").val(response.body.remarks);
+					$("#adress1").val(response.body.adress1);
+					$("#address2").val(response.body.address2);
+					
+					
+					
+					
+				}else("error"+console.message)
+			}
+		});  
+	}
+	
+	function closeDetails(){
+		$('#myModalSerReq').modal('hide');
+	}
+	
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+</script>
+</head>
+<!-- /*************************************Body Part***********************************************/	 -->
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="row margin_topbot" id="searchRowDiv">
+		
+		</div>
+		<div class="panel-body">
+			<div class="" id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="font-design" id="totalReq">
+								Lab Test Order (<span></span>)
+							</div>
+						</div>
+							<div class="col-md-4">
+							<div class="row margin_topbot" id="searchRowDiv">
+								<div class="input-style row">
+									<input type="text" placeholder="Search.." name="search"
+										class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()" id="quickFilter">
+									<div class="searchicon">
+										<a href="javascript:void(0)"><span
+											style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+											id="closeKey"
+											onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i"><i class="ti-close srchicon"></i></span></a><a
+											href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					
+					
+				</div>
+				<div id="myGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+			</div>
+		</div>
+
+
+		<div id="mySidenav" class="sidenav">
+			<div class="slidebox">
+				<div class="row">
+					<div class="col-md-9">
+						<div class="edit">Edit LabTest Report</div>
+					</div>
+					<div class="col-md-3">
+						<div class="arrow">
+							<a href="javascript:void(0)" class="closebtn"
+								onclick="closeNav()"></a>
+						</div>
+					</div>
+
+					<div class="chartbtnsec1">
+						<div align="right">
+							<button class="btn4" onclick="closeNav()">CANCEL</button>
+							<button class="btn1" id="saveChanges">SAVE</button>
+
+						</div>
+					</div>
+
+
+					<input type="hidden" id="orderId">
+
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>Status</label>
+							<div class="select">
+								<select id="status">
+									<option value="">--Select--</option>
+									<option value="1">Pending</option>
+									<option value="2">Accepted</option>
+									<option value="3">Completed</option>
+									<option value="4">Cancelled</option>
+									<option value="5">Assigned</option>
+									<option value="6">Sample Collect</option>
+									<option value="7">Result Pending</option>
+									<option value="8">Sample Under Processing</option>
+
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12">
+						<div class="form-group">
+							<label>Remarks</label> <input type="text" id="remarks"
+								class="form-control transparenttxtbox" autocomplete="off">
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		
+		
+
+			<!-- service request Modal Start-->
+			<!-- <div id="myModalSerReq" class="modal fade" role="dialog"> -->
+		<div class="modal fade" id="myModalSerReq">
+					<div class="modal-dialog modal-lg"
+						style="margin-top: 130px; height: 900px;">
+						<div class="modal-content">
+
+							<!-- Modal Header -->
+							<div class="modal-header">
+								<h4 class="modal-title md-color">VIEW TEST ORDER DETAILS</h4>
+								<button type="button" class="close cp" onclick="closeDetails()"data-bs-dismiss="modal">&times;</button>
+							</div>
+							<!-- Modal body -->
+							<div class="modal-body">
+
+								<div id="payGrid" style="width: 100%; height: 100px;"
+									class="ag-theme-alpine"></div>
+
+								<div class="col-md-12" id="paymentDetails">
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="form-group" >
+												<label> Name</label> <input type="text" autocomplete="off" 
+													class="form-control" id="name" readonly/>
+											</div>
+											<div class="form-group" >
+												<label>Mobile</label> <input type="text" autocomplete="off" 
+													class="form-control" id="mobile"  readonly />
+											</div>
+											<div class="form-group" >
+												<label>Location</label> <input type="text" autocomplete="off" 
+													class="form-control" id="location"  readonly />
+											</div>
+											<div class="form-group" >
+												<label>Date</label> <input type="text" autocomplete="off" 
+													class="form-control" id="orderdate" readonly />
+											</div>
+												<div class="form-group">
+												<label>Time</label> <input type="text" autocomplete="off" 
+													class="form-control" id="timeslot"  readonly />
+											</div>
+											
+											<div class="form-group" >
+												<label>AddressLine1</label> <input type="text" autocomplete="off" 
+													class="form-control" id="adress1" readonly />
+											</div>
+										
+										</div>
+										<div class="col-lg-6">
+											<div class="form-group">
+												<label>Status</label> <input type="text"
+													class="form-control" id="status1" readonly/>
+											</div>
+											
+											<div class="form-group" >
+												<label>City</label> <input type="text"
+													class="form-control" id="city" autocomplete="off" readonly />
+											</div>
+											<div class="form-group">
+												<label>Test Name</label> <input type="text"
+													class="form-control" id="testName"  autocomplete="off"
+													 readonly />
+											</div>
+											<div class="form-group" >
+												<label>Remarks</label> <input type="text"
+													class="form-control" id="remarks1" autocomplete="off"
+													readonly />
+											</div>
+											
+										<div class="form-group" >
+												<label>PaymentId</label> <input type="text" autocomplete="off" 
+													class="form-control" id="paymentId1" readonly />
+											</div>
+											
+											<div class="form-group" id="branchNamediv">
+												<label>Address Line2</label> <input type="text" autocomplete="off" 
+													class="form-control" id="address2"  readonly />
+											</div>
+										</div>
+									</div>
+								
+								
+								</div>
+							</div>
+
+							<!-- Modal footer -->
+							<div class="modal-footer">
+								<div class="chartbtnsec">
+
+									<!-- <button class="btn4" data-bs-dismiss="modal">CANCEL</button> -->
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+	</div>
+	</div>
+</body>
+</html>

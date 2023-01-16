@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+
+<head>
+
+<style type="text/css">
+body {
+	background: #f5f5f5;
+}
+.formValidation1 {
+    font-size: 10px;
+    font-weight: 100;
+    color: #ff9e99;
+    background-color: transparent;
+    position: relative;
+    top: -1px;
+    padding: 3px 0;
+}
+.content-wrapper {
+	background: transparent;
+	padding: .75rem 2.25rem;
+}
+.mecication-head a {
+    color: #fff;
+}
+
+.btnDisable {
+	color: #ccc !important;
+}
+
+/* .card-body a {
+	color: #000;
+} */
+
+.highcharts-axis-title {
+	display: none;
+}
+/*todaychanges*/
+.card {
+	margin: 0px;
+}
+
+.smlbox {
+	border: 1px solid #ccc;
+	background: #FFF;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 5px;
+	color: #333;
+}
+
+.smlbox1 {
+	border: 1px solid #ccc;
+	background: #FFF;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 11.5px 0px;
+	color: #333;
+}
+
+.smlbox11 {
+	border-radius: 5px;
+	padding: 10px;
+	color: #0071c1;
+}
+
+.smlbox11 .title {
+	width: 100px !important;
+	color: #000;
+	float: left;
+}
+
+.smlbox2 {
+	background: transparent;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin: 5px 0px;
+	color: #FFF;
+}
+
+.smlbox2 span {
+	float: right;
+	text-align: right;
+}
+
+.mrt_5 {
+	margin-top: 8px;
+}
+
+.text-left {
+	color: #0071c1;
+}
+
+.padding_8 {
+	padding: 0px 8px;
+}
+
+.heading {
+	background: rgba(0, 0, 0, 0.5);
+	padding: 8px;
+}
+
+.card_light {
+	background: #FFF;
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.card_light .card-title {
+	background: #0071c1;
+	color: #FFF;
+	padding:0px;
+	margin-bottom: 0px;
+}
+
+.cardtitle1 {
+	/*background: #0071c1;*/
+	font-size: 16px;
+	color: #333;
+	padding-top: 10px;
+	padding-left: 10px;
+}
+
+.card_light p {
+	color: #ccc;
+}
+
+.card {
+	margin: 0 !important;
+	margin-bottom:0px !important;
+}
+
+/*new*/
+.searchsec {
+	background: #dbdbdb;
+	height: 60px;
+	border-bottom: 3px solid #7bd4df;
+	padding: 5px;
+	width: 100%;
+	margin: 0px 5px;
+}
+
+.card-title {
+	padding: 0px 3px;
+	color: #333 !important;
+	font-size: 18px;
+}
+
+.highcharts-figure {
+	width: 100% !important;
+	margin: 0 !important;
+}
+
+.highcharts-drilldown-data-label text {
+	text-decoration: none !important;
+	color: #FFF !important;
+	fill: #FFF !important;
+}
+
+.padding_5 {
+	padding: 0px 5px;
+}
+
+/* .d-block {
+	display: block !important;
+	width: 100%;
+} */
+
+.card-body {
+	padding: 0.5rem 0.5rem;
+	text-align: left;
+}
+
+.highcharts-xaxis-labels text {
+	color: #333 !important;
+	fill: #333 !important;
+}
+
+.highcharts-yaxis-labels text {
+	color: #333 !important;
+	fill: #333 !important;
+}
+
+#sundargarh {
+	height: 500px;
+	min-width: 310px;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.loading {
+	margin-top: 10em;
+	text-align: center;
+	color: gray;
+}
+
+#area {
+	height: 200px;
+	position: relative;
+	right: 20px;
+	width: 300px;
+}
+
+.highcharts-a11y-proxy-button {
+	color: #333 !important;
+}
+
+#daywise {
+	height: 150px;
+	width: 150px;
+	position: relative;
+	right: 40px;
+}
+
+#daywise .highcharts-yaxis-labels {
+	display: none;
+}
+
+#chart .highcharts-a11y-proxy-button {
+	color: #333 !important;
+}
+
+.white {
+	color: #FFF;
+}
+
+/* .active {
+	background: #98cb4a;
+	border: 1px solid #FFF;
+} */
+
+.inactive {
+	background: #f76d3c;
+	color: #333;
+	border: 1px solid #FFF;
+}
+
+.inactive a {
+	color: #FFF;
+}
+
+.ulbar {
+	display: flex;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+	margin-bottom: 8px;
+}
+
+/* .card a {
+	color: #98cb4a;
+	padding: 0px 7px;
+	position: relative;
+	top: 10px;
+	right: 10px;
+} */
+
+.boxicon {
+	position: absolute;
+	bottom: 8px;
+	right: 8px;
+}
+
+/* .card-body a {
+	color: #FFF !important;
+	padding: 16px;
+	width: 100%;
+	position: relative;
+	top: -20px;
+	left: 0px;
+} */
+
+
+
+
+
+.profile {
+	border: 2px solid #ccc;
+	border-radius: 80px;
+	height: 104px;
+	width: 104px;
+	position: relative;
+	left: 33%;
+}
+
+.profile img {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+}
+
+.edit {
+	position: absolute;
+	background: #0071c1;
+	height: 30px;
+	width: 30px;
+	border-radius: 20px;
+	color: #FFF;
+	right: 0;
+	bottom: 0px;
+	padding: 3px 8px;
+}
+
+.card-title2 {
+	/* padding: 10px 3px; */
+	color: #333 !important;
+	font-size: 18px;
+	font-weight: 500;
+}
+
+.card-dsn {
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 315px;
+	border-bottom: 5px solid #913ccd;
+	border-radius: 5px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.card-emergency {
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 130px;
+	border-bottom: 5px solid #f2b40c;
+	border-radius: 5px;
+}
+
+.card-family {
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 130px;
+	border-bottom: 5px solid #f15f74;
+	border-radius: 5px;
+}
+
+.card-profile {
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	border-bottom: 5px solid #3000c6;
+	border-radius: 5px;
+}
+
+.mt-8 {
+	margin-top: 8px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.tbl-card {
+	background-color: #fff;
+	border-radius: 5px;
+	border-bottom: 5px solid #2ca8c2;
+	margin-bottom: 30px;
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 315px;
+}
+
+.tbl-head {
+	font-size: 18px;
+	color: #fff;
+	background-color: #2ca8c2;
+	padding: 5px 10px;
+	border-radius: 5px 5px 0px 0px;
+}
+
+.table thead th {
+	border: none;
+}
+
+.table td, .table th {
+	border-top: none;
+}
+
+.inr-tbl {
+	padding: 10px;
+}
+
+.date-clnd {
+	border: 1px solid #2d9f9e;
+	border-radius: 7px;
+	text-align: center;
+	background-color: #fff;
+	font-weight: 700;
+	color: #000;
+}
+
+.btm-txt {
+	background-color: #2d9f9e;
+	border-radius: 0px 0px 7px 7px;
+	color: #fff;
+	font-weight: 500;
+}
+
+.disble-clnd {
+	border: 1px solid #cacaca;
+	border-radius: 7px;
+	text-align: center;
+	background-color: #fff;
+	font-weight: 700;
+	color: #000;
+}
+
+.disble-txt {
+	background-color: #cacaca;
+	border-radius: 0px 0px 7px 7px;
+	font-weight: 500;
+}
+
+.rlt-nm {
+	font-size: 16px;
+	color: #000;
+	border-right: 2px solid #000;
+	width: 165px;
+	float: left;
+}
+
+.rlt {
+	font-size: 16px;
+	color: #000;
+	margin-left: 10px;
+}
+
+.ph-no {
+	font-size: 16px;
+	color: #000;
+}
+
+.ph-no span {
+	color: #056fe2;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.user-dtlhd {
+	font-size: 16px;
+	color: #000;
+	font-weight: 500;
+}
+
+.user-id {
+	font-size: 16px;
+	font-weight: 400;
+	color: #056fe2;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mdtbl-scrl {
+	height: 400px;
+	overflow-y: scroll;
+}
+.tbl-scrl {
+	height: 380px;
+	overflow-y: scroll;
+}
+.since-txt {
+	font-size: 16px;
+	color: #000;
+}
+
+.since-txt span {
+	font-size: 16px;
+	color: #000;
+	margin-left: 10px;
+}
+
+.more {
+	text-align: right;
+	font-size: 16px;
+	color: #000;
+	margin-right: 20px;
+	margin-bottom: 8px;
+}
+
+.rpt-nm {
+	font-size: 16px;
+	color: #000;
+}
+
+.lab-name {
+	font-size: 16px;
+	color: #056fe2;
+}
+
+.btn-book {
+	color: #fff;
+	background-color: #3000c6;
+	border-color: #3000c6;
+}
+
+.btn-book:hover {
+	color: #fff;
+	background-color: #5129ce;
+	border-color: #5129ce;
+}
+
+.prf-ht {
+	height: 600px;
+}
+
+.mecication-head {
+	font-size: 18px;
+	color: #fff;
+	background-color: #2ca8c2;
+	padding: 5px 10px;
+	border-radius: 5px 5px 0px 0px;
+}
+
+
+.md-tbl td, .md-tbl th {
+	padding: 6px 5px;
+}
+
+.md-tbl td {
+	color: #056fe2;
+	font-size: 16px;
+}
+
+.mecication-card {
+	background-color: #fff;
+	border-radius: 5px;
+	border-bottom: 5px solid #2ca8c2;
+	/* margin-bottom: 30px; */
+	box-shadow: 0 1px 6px 0 rgb(32 33 36/ 28%);
+	height: 454px;	
+}
+
+.mini-stat .mini-stat-img {
+    background: url(../../../assets/images/bg-1.png);
+    background-size: cover;
+}
+.mb-8 {
+	margin-bottom: 8px;
+}
+.grn-btn {
+	background: #00a330;
+	color: #FFF;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	border-radius: 30px;
+	padding: 4px 10px 4px 10px;
+	text-decoration: none;
+	font-family: roboto;
+}
+.chart-card {
+    background-color: #fff;
+    border-radius: 5px;
+    border-bottom: 5px solid #2ca8c2;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 6px 0 rgb(32 33 36 / 28%);
+    height: 350px;
+}
+</style>
+
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+<script>
+$(document).ready(function() {
+//alert("hyyy")
+    $.ajax({
+      type : "GET",
+      url : "admin-dashboard-count-details",
+      success : function(response) {
+        if (response.message == "Success") {
+        	//alert(response.body[0].doctor)
+          $("#doctor").text(response.body[0].doctor);
+          $("#patient").text(response.body[0].patient);
+          $("#appointments").text(response.body[0].appointments);
+        
+           
+        }
+      },
+
+    });
+});
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="col-md-12">
+			<div class="row" id="rechargebtn">
+				<div class="col-md-6">
+					<div class="font-design" id="totalReq"></div>
+				</div>
+				
+					<!-- <text id="recharge" onclick="recharge()" class="btn1">Welcome Admin Dashboard!!</text> -->
+					<div class="col-md-9">
+												<div class="font-design" id="totalReq">
+													Welcome Admin Dashboard!!  
+												</div>
+											</div>
+				
+			</div>
+			<div class="row">
+			<input type="hidden" id="bookId">
+				<div class="col-md-4 stretch-card padding_5">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #913ccd; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#">
+								<!-- <div class="font-weight-normal"> Wallet Balance</div> -->
+								<div class="font-weight-normal"> Doctor</div>
+								<h4 id="doctor"></h4> <i
+								class="fa fa-hospital-o mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+					<div class="col-md-4 stretch-card padding_5">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #2ca8c2; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#">
+								<!-- <div class="font-weight-normal">Warning Percent</div> -->
+								<div class="font-weight-normal">Patients</div>
+								<h4 id="patient"></h4> <i
+								class="fa fa-money mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-4 stretch-card padding_5">
+					<div class="card card-img-holder text-white mini-stat"
+						style="background: #839098; height: 60px;">
+						<div class="card-body mini-stat-img">
+							<a href="#">
+							<!-- 	<div class="font-weight-normal"> Restrict Percentage
+									</div> -->
+										<div class="font-weight-normal">  Appointments
+									</div>
+								<h4 id="appointments"></h4> <i
+								class="fa fa-wheelchair mdi-36px float-right icon"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				
+			       <!--  <div class="row">
+					<div class ="col-md-9">
+										<button  id="new" onclick="todaybooking()" class="btn1" >Today Booking </button></div>
+										</div> -->
+										
+			<div class="col-md-12">
+			<div class="row" id="todaybookingbtn">
+				<div class="col-md-2">
+					<div class="font-design" id="totalReq"></div>
+					<button id="todaybooking" onclick="todaybookingbtn()" class="btn1">Today Booking</button>
+				</div>
+				<!-- <div class="col-md-6">
+					<button id="todaybooking" onclick="todaybookingbtn()" class="btn1">Today Booking</button>
+				</div> -->
+			</div>
+				
+
+			</div>
+
+
+		
+		</div>
+		</div>
+	</div>
+</body>
+</html>

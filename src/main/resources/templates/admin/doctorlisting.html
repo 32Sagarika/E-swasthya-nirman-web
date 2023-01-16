@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/js/moment.js"></script>
+<style>
+.mt-14 {
+	margin-top: 14px;
+}
+.formValidation {
+    font-size: 13px;
+    font-weight: 100;
+    color: #FF0000;
+    background-color: transparent;
+    position: relative;
+    top: -1px;
+    padding: 3px 0;
+    width: 100%;
+    margin-left: 0%;
+}
+.top-sec {
+	box-shadow: 0 1px 6px 0 rgb(25 27 30/ 20%);
+	padding: 12px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+}
+</style>
+
+<script>
+	$(document).ready(function() {
+
+		agGrid.simpleHttpRequest({
+			url : 'admin-doctor-viewDetails',
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		})
+			$('#myGrid').show();
+		$('#addData').hide();
+		$('#delete').attr('disabled', true);
+		$("#collapsefour").collapse({
+			toggle : false
+		}).collapse('show');
+
+		$("#collapsetwo").collapse({
+			toggle : false
+		}).collapse('show');
+
+		$("#collapsethree").collapse({
+			toggle : false
+		}).collapse('show');
+
+		$("#collapsefour").collapse({
+			toggle : false
+		}).collapse('show');
+		$("#myGridtest1").hide();
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		
+
+		gridOptions.api.setRowData();
+	
+		
+		//Open time start
+		$("#openingTime").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		})
+		 
+		$("#fromTimeCalendarTimeOpen").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		}).on("change", function() {
+			$('#openingTime').val($(this).val());
+		})
+
+		$('#openingTime').blur(function() {
+			$("#fromTimeCalendarTimeOpen").val($(this).val());
+		}) 
+		
+		var dateFormat = localStorage.getItem("dateFormat");
+		$("#fromDateCalendar34").datetimepicker({
+			format : 'd-m-Y',
+			closeOnDateSelect : true,
+			timepicker : false,
+			datepicker : true,
+			scrollMonth : false,
+			//minDate : new Date()
+		//step : 15
+		}).on("change", function() {
+			$('#docPYear').val($(this).val());
+		})
+		$('#docPYear').blur(function() {
+			$("#fromDateCalendar34").val($(this).val());
+		})
+		
+		var dateFormat = localStorage.getItem("dateFormat");
+		$("#fromDateCalendarfrom").datetimepicker({
+			format : 'd-m-Y',
+			closeOnDateSelect : true,
+			timepicker : false,
+			datepicker : true,
+			scrollMonth : false,
+			//minDate : new Date()
+		//step : 15
+		}).on("change", function() {
+			$('#leaveFrom').val($(this).val());
+		})
+		$('#leaveFrom').blur(function() {
+			$("#fromDateCalendarfrom").val($(this).val());
+		})
+		
+			var dateFormat = localStorage.getItem("dateFormat");
+		$("#fromDateCalendarto").datetimepicker({
+			format : 'd-m-Y',
+			closeOnDateSelect : true,
+			timepicker : false,
+			datepicker : true,
+			scrollMonth : false,
+			//minDate : new Date()
+		//step : 15
+		}).on("change", function() {
+			$('#leaveTo').val($(this).val());
+		})
+		$('#leaveTo').blur(function() {
+			$("#fromDateCalendarto").val($(this).val());
+		})
+ 
+ 
+      //open time end
+
+		//close time start
+		$("#toTimeCalendarTimeClose").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		}).on("change", function() {
+			$('#closingTime').val($(this).val());
+		})
+
+		$('#closingTime').blur(function() {
+			$("#toTimeCalendarTimeClose").val($(this).val());
+		})
+		$("#closingTime").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		})
+		
+		//from time start
+		$("#fromTime").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		})
+		 
+		$("#fromTimeCalendarTime").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		}).on("change", function() {
+			$('#fromTime').val($(this).val());
+		})
+
+		$('#fromTime').blur(function() {
+			$("#fromTimeCalendarTime").val($(this).val());
+		}) 
+      //from time end
+
+		//to time start
+		$("#toTimeCalendarTime").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		}).on("change", function() {
+			$('#toTime').val($(this).val());
+		})
+
+		$('#toTime').blur(function() {
+			$("#toTimeCalendarTime").val($(this).val());
+		})
+		$("#toTime").datetimepicker({
+			format : 'H:i',
+			closeOnDateSelect : false,
+			timepicker : true,
+			datepicker : false,
+			step : 15
+		})
+
+		$("#fromDateCalendar").datetimepicker({
+			format : 'd-m-Y',
+			closeOnDateSelect : true,
+			timepicker : false,
+			scrollMonth : false
+		}).on("change", function() {
+			$('#fromDate').val($(this).val());
+		})
+
+		$('#fromDate').blur(function() {
+			$("#fromDateCalendar").val($(this).val());
+		})
+
+		$("#fromDateCalendar1").datetimepicker({
+			format : 'd-m-Y',
+			closeOnDateSelect : true,
+			timepicker : false,
+			scrollMonth : false
+		}).on("change", function() {
+			$('#toDate').val($(this).val());
+		})
+
+		$('#toDate').blur(function() {
+			$("#fromDateCalendar1").val($(this).val());
+		})
+
+	});
+
+	const columnDefs = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+
+				headerName : 'Doctor Id',
+				field : "docId",
+				cellRenderer : function(params) {
+					return '<a id="" onclick=editDetails("' + params.data.docId +
+							','+params.data.docRegNo+ '") href="javascript:void(0)">'
+							+ params.data.docId + '</a>';
+		       }
+			},
+			{
+
+				headerName : 'Name',
+				field : "docName"
+			}, {
+
+				headerName : 'Email',
+				field : "docEmail",
+
+			},
+			{
+
+				headerName : 'Reg No',
+				field : "docRegNo",
+
+			},  {
+
+				headerName : 'Clinic Name',
+				field : "docClinic",
+
+			},
+			{
+
+				headerName : 'Profile Pic',
+				field : "docImg",
+				cellRenderer : function(params) {
+					var dataimg = params.data.docImg;
+					var div = "";
+					div = div
+							+ " "
+							+ '<div class ="fa fa-image"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer" onclick=editView("'
+							+ dataimg + '")  > </div>';
+					return div;
+				}
+			},  {
+
+				headerName : 'Top Doctor',
+				field : "topDoctor",
+
+			} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs,
+		defaultColDef : {
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			rowHeight : 40,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 295,
+			height : 10
+		},
+		onSelectionChanged : onSelectionChanged,
+		rowSelection : 'single',
+		getRowNodeId : function(data) {
+			return data.docId;
+		},
+	};
+	function onSelectionChanged() {
+
+		var selectedRows = gridOptions.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr('disabled', false);
+			$('#new').attr('disabled', true);
+		} else {
+			$('#delete').attr('disabled', true);
+			$('#new').attr('disabled', false);
+		}
+
+	}
+
+
+
+	function Cancel() {
+		$('#add1').hide();
+		$('#new').show();
+		$('#delete').attr('disabled', true);
+		$('#addData').hide();
+		//$('#myGrid').empty();
+		$('#myGrid').show();
+		$('#totalReq').show();
+		$("#myGridtest").hide();
+		$("#myGrid5").hide();
+		$("#docId").val();
+		$("#docRegNo").val(null);
+		$("#docSpeciality").val(null);
+		$("#docClinic").val(null);
+		$("#docName").val(null);
+		$("#docEmail").val(null);
+		$("#docMobile").val(null);
+		$("#docAge").val(null);
+		$("#docGender").val(null);
+		$("#docQualification").val(null);
+		$("#docAbout").val(null);
+		$("#docPassword").val(null);
+		$("#docPYear").val(null);
+		$("#docLang").val(null);
+		$("#docImg").val(null);
+		
+		$("#docCity").val(null);
+		$("#docAddress").val(null);
+		$("#docLongitude").val(null);
+		$("#docLatitude").val(null);
+		$("#docAudio").val(null);
+		$("#docVideo").val(null);
+		$("#docPhy").val(null);
+		$("#openingTime").val(null);
+		$("#closingTime").val(null);
+		$("#fromTime").val(null);
+		$("#toTime").val(null);
+		$("#slotBooking").val(null);
+		$("#offDays").val(null);
+		$("#accountName").val(null);
+		$("#accountNo").val(null);
+		$("#ifscCode").val(null);
+	}
+
+	function addNewData() {
+		$('#add1').hide();
+		$('#new').hide();
+		$('#new').hide();
+		$('#delete').hide();
+		$("#createpckg").hide();
+		$("#addAssign").show();
+		$('#addData').show();
+		$('#myGrid').hide();
+		$('#totalReq').hide();
+		$("#docId").val();
+		$("#docRegNo").val();
+		$("#docSpeciality").val();
+		$("#docClinic").val();
+		$("#docName").val();
+		$("#docEmail").val();
+		$("#docMobile").val();
+		$("#docAge").val();
+		$("#docGender").val();
+		$("#docQualification").val();
+		$("#docAbout").val();
+		$("#docPassword").val();
+		$("#docPYear").val();
+		$("#docLang").val();
+		$("#docImg").val();
+		$("#docCity").val();
+		$("#docAddress").val();
+		$("#docLongitude").val();
+		$("#docLatitude").val();
+		$("#docAudio").val();
+		$("#docVideo").val();
+		$("#docPhy").val();
+		$("#openingTime").val();
+		$("#closingTime").val();
+		$("#fromTime").val();
+		$("#toTime").val();
+		$("#slotBooking").val();
+		$("#offDays").val();
+		$("#accountName").val();
+		$("#accountNo").val();
+		$("#ifscCode").val();
+		$("#add").show();
+		$('#searchRowDiv').hide();
+	}
+
+
+	function editDetails(idd)
+	{
+		var data = idd.split(",");
+		var docid= data[0];
+		var id = data[1];
+		$("#addAssign").show();
+		$('#addData').show();
+		$('#add').show();
+		$('#myGrid').hide();
+		$('#totalReq').hide();
+		$('#new').hide();
+		$('#delete').hide();
+		$.ajax({
+			type : "GET",
+			url : "admin-doctor-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+				
+					
+					$("#docId").val(response.body.docId);
+					$("#docRegNo").val(response.body.docRegNo);
+					$("#docSpeciality").val(response.body.docSpeciality);
+					$("#docClinic").val(response.body.docClinic);
+					$("#docName").val(response.body.docName);
+					$("#docEmail").val(response.body.docEmail);
+					$("#docMobile").val(response.body.docMobile);
+					$("#docAge").val(response.body.docAge);
+					$("#docGender").val(response.body.docGender);
+					$("#docQualification").val(response.body.docQualification);
+					$("#docAbout").val(response.body.docAbout);
+					$("#docPassword").val(response.body.docPassword);
+					$("#docPYear").val(response.body.docPYear);
+					$("#docLang").val(response.body.docLang);
+					
+					$("#docCity").val(response.body.docCity);
+					$("#docAddress").val(response.body.docAddress);
+					 $("#docLongitude").val(response.body.docLongitude);
+					 $("#docLatitude").val(response.body.docLatitude);
+
+					$("#docAudio").val(response.body.docAudio);
+					$("#docVideo").val(response.body.docVideo);
+					$("#docPhy").val(response.body.docPhy);
+
+					$("#openingTime").val(response.body.openingTime);
+					$("#closingTime").val(response.body.closingTime);
+					$("#fromTime").val(response.body.fromTime);
+					$("#toTime").val(response.body.toTime);
+					$("#slotBooking").val(response.body.slotBooking);
+					$("#offDays").val(response.body.offDays);
+
+					$("#accountName").val(response.body.accountName);
+					$("#accountNo").val(response.body.accountNo);
+					$("#ifscCode").val(response.body.ifscCode);
+					$("#leaveFrom").val(response.body.leaveFrom);
+					$("#leaveTo").val(response.body.leaveTo);
+					
+					$('#docImg').attr('src', '');
+					if(response.body.imgLoc!=null && response.body.docImg!="") {
+						$('#docImg').attr('src', response.body.docImg);
+					} else {
+						$('#docImg').attr('src', response.body.docImg);
+					}
+				}else("error"+console.message)
+			}
+		}); 
+
+	}
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		 var id=selectedRows[0].docId;
+		
+		
+			$.ajax({
+				type : "POST",
+				url : "admin-doctor-delete?id="+ id,
+				success : function(response) {
+				 if (response.message == "Success") {
+					 agGrid.simpleHttpRequest({
+							url : 'admin-doctor-viewDetails',
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions.api.setRowData(data);
+						})	
+
+					 Cancel();
+				} 
+				},
+				error : function(data) {
+				console.log(data);
+				}
+			})
+	} 	
+
+
+	listItem = [];
+
+	function saveSchemePackage() {
+		$('#createpckg').attr('disabled', false);
+	}
+
+	listItem = [];
+
+	
+	function editView(id) {
+
+		window.open("/document/images/"+id, '_blank');
+	}
+
+ 	function formatAMPM() {
+		var openingTime = $("#openingTime").val();
+	  var timeSplit = openingTime.split(':');
+	
+		var time= timeSplit[0];
+		var ampm = time >= 12 ? 'PM' : 'AM';
+		var time2 = timeSplit[1];
+		var pm="";
+	if(time <=12){
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#openingTime").val(strTime);
+	}
+	else{
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#openingTime").val(strTime);
+	}
+	} 
+	function formatAMPM1() {
+		var closingTime = $("#closingTime").val();
+	  var timeSplit = closingTime.split(':');
+	
+		var time= timeSplit[0];
+		var ampm = time >= 12 ? 'PM' : 'AM';
+		var time2 = timeSplit[1];
+		var pm="";
+	if(time <=12){
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#closingTime").val(strTime);
+	}
+	else{
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#closingTime").val(strTime);
+	}
+	}
+	function formatAMPM2() {
+		var fromTime = $("#fromTime").val();
+	  var timeSplit = fromTime.split(':');
+	
+		var time= timeSplit[0];
+		var ampm = time >= 12 ? 'PM' : 'AM';
+		var time2 = timeSplit[1];
+		var pm="";
+	if(time <=12){
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#fromTime").val(strTime);
+	}
+	else{
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#fromTime").val(strTime);
+	}
+	}
+ 	function formatAMPM3() {
+		var toTime = $("#toTime").val();
+	  var timeSplit = toTime.split(':');
+	
+		var time= timeSplit[0];
+		var ampm = time >= 12 ? 'PM' : 'AM';
+		var time2 = timeSplit[1];
+		var pm="";
+	if(time <=12){
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#toTime").val(strTime);
+	}
+	else{
+		var strTime = time + ':' + time2+ ' ' + ampm;
+		$("#toTime").val(strTime);
+	}
+	} 
+
+	function saveData() {
+		
+		var event = {};
+		var validation = true;
+
+		event.docId = $("#docId").val();
+		
+		event.docRegNo = $("#docRegNo").val();
+		event.docSpeciality = $("#docSpeciality").val();
+		event.docClinic = $("#docClinic").val();
+		event.docName = $("#docName").val();
+		event.docEmail = $("#docEmail").val();
+		event.docMobile = $("#docMobile").val();
+		event.docAge = $("#docAge").val();
+		event.docGender = $("#docGender").val();
+		event.docQualification = $("#docQualification").val();
+		event.docAbout = $("#docAbout").val();
+		event.docPassword = $("#docPassword").val();
+		event.docPYear = $("#docPYear").val();
+		event.docLang = $("#docLang").val();
+		event.docImg = $("#fileUpload").val();
+		event.docCity = $("#docCity").val();
+		event.docAddress = $("#docAddress").val();
+		event.docLongitude = $("#docLongitude").val();
+		event.docLatitude = $("#docLatitude").val();
+		event.docAudio = $("#docAudio").val();
+		event.docVideo = $("#docVideo").val();
+		event.docPhy = $("#docPhy").val();
+		event.openingTime = $("#openingTime").val();
+		event.closingTime = $("#closingTime").val();
+		event.fromTime = $("#fromTime").val();
+		event.toTime = $("#toTime").val();
+		event.slotBooking = $("#slotBooking").val();
+		event.offDays = $("#offDays").val();
+		event.accountName = $("#accountName").val();
+		event.accountNo = $("#accountNo").val();
+		event.ifscCode = $("#ifscCode").val();
+		event.leaveFrom = $("#leaveFrom").val();
+		event.leaveTo = $("#leaveTo").val();
+	
+		var starts=$("#openingTime").val();
+		var starttime=starts.substring(0,5);
+		var cDate=new Date().toJSON().slice(0, 10);
+		var time3=cDate.concat(" "+starttime)
+		
+		var ends=$("#closingTime").val();
+		var endtime=ends.substring(0,5);
+		var cDate=new Date().toJSON().slice(0, 10);
+		var time4=cDate.concat(" "+endtime)
+		
+		
+		var breakFrom=$("#fromTime").val();
+		var breakFroms=breakFrom.substring(0,5);
+		var cDate=new Date().toJSON().slice(0, 10);
+		var time5=cDate.concat(" "+breakFroms)
+		
+		var breakTo=$("#toTime").val();
+		var breakTos=breakTo.substring(0,5);
+		var cDate=new Date().toJSON().slice(0, 10);
+		var time6=cDate.concat(" "+breakTos)
+		//intervals(time3, time4,time5,time6);
+		  // return result;
+		  
+		     var start = moment(time3, 'YYYY-MM-DD hh:mm a');
+	    var end = moment(time4, 'YYYY-MM-DD hh:mm a');
+
+	    // round starting minutes up to nearest 15 (12 --> 15, 17 --> 30)
+	    // note that 59 will round up to 60, and moment.js handles that correctly
+	    start.minutes(Math.ceil(start.minutes() / 15) * 15);
+
+	    var result = [];
+
+	    var current = moment(start);
+
+	    while (current <= end) {
+	        result.push(current.format('YYYY-MM-DD HH:mm'));
+	        current.add(15, 'minutes');
+	    }
+
+	    
+	    var starttime5 = moment(time5, 'YYYY-MM-DD hh:mm a');
+	    var endtime6 = moment(time6, 'YYYY-MM-DD hh:mm a');
+
+	    // round starting minutes up to nearest 15 (12 --> 15, 17 --> 30)
+	    // note that 59 will round up to 60, and moment.js handles that correctly
+	    starttime5.minutes(Math.ceil(starttime5.minutes() / 15) * 15);
+
+	    var breakList = [];
+
+	    var current = moment(starttime5);
+
+	    while (current <= endtime6) {
+	    	breakList.push(current.format('YYYY-MM-DD HH:mm'));
+	        current.add(15, 'minutes');
+	    }
+	 event.timeSlotList=result;
+	    console.log('allSlotList',result)
+	    console.log('breakList',breakList)
+	      // Storing the first item in a variable
+      let first=breakList[0];
+       
+      // Storing the last item
+      let last=breakList[breakList.length-1];
+      event.first=first;
+      event.last=last;
+	    console.log('first',first)
+	    console.log('last',last) 
+	    console.log(event)
+		if (event.docRegNo == null || event.docRegNo == "") {
+			validation = validationUpdated("Registration Number  Required", "docRegNo");
+		}
+		if (event.docSpeciality == null || event.docSpeciality == "") {
+			validation = validationUpdated("Speciality Required", "docSpeciality");
+		}
+		if (event.docName == null || event.docName == "") {
+			validation = validationUpdated("Doctor Name Required", "docName");
+		}
+		if (event.docEmail == null || event.docEmail == "") {
+			validation = validationUpdated("Email Required", "docEmail");
+		}
+		
+		if (event.docMobile == null || event.docMobile == "") {
+			validation = validationUpdated("Mobile Number  Required", "docMobile");
+		}
+		if (event.docQualification == null || event.docQualification == "") {
+			validation = validationUpdated("Qualification Required", "docQualification");
+		}
+		if (event.docAbout == null || event.docAbout == "") {
+			validation = validationUpdated("About Required", "docAbout");
+		}
+		if (event.docPassword == null || event.docPassword == "") {
+			validation = validationUpdated("Password Required", "docPassword");
+		}
+		
+		if (event.docPYear == null || event.docPYear == "") {
+			validation = validationUpdated("Passing Year  Required", "docPYear");
+		}
+		if (event.docLang == null || event.docLang == "") {
+			validation = validationUpdated("Language Required", "docLang");
+		}
+		/* if (event.docImg == null || event.docImg == "") {
+			validation = validationUpdated("Image Required", "docImg");
+		} */
+		if (event.docCity == null || event.docCity == "") {
+			validation = validationUpdated("City Required", "docCity");
+		}
+		
+		if (event.docAddress == null || event.docAddress == "") {
+			validation = validationUpdated("Address Required", "docAddress");
+		}
+		if (event.docAudio == null || event.docAudio == "") {
+			validation = validationUpdated("Audio Type Required", "docAudio");
+		}
+		if (event.docVideo == null || event.docVideo == "") {
+			validation = validationUpdated("Video Type Required", "docVideo");
+		} 
+		if (event.openingTime == null || event.openingTime == "") {
+			validation = validationUpdated("Opening Time Required", "openingTime");
+		}
+		
+		if (event.closingTime == null || event.closingTime == "") {
+			validation = validationUpdated("Closing Time Required", "closingTime");
+		}
+		
+		if (event.fromTime == null || event.fromTime == "") {
+			validation = validationUpdated("From Time Required", "fromTime");
+		}
+		if (event.toTime == null || event.toTime == "") {
+			validation = validationUpdated("To Time Required", "toTime");
+		}
+		if (event.slotBooking == null || event.slotBooking == "") {
+			validation = validationUpdated("Slot Booking Required", "slotBooking");
+		} 
+		if (event.offDays == null || event.offDays == "") {
+			validation = validationUpdated("Off Days Required", "offDays");
+		}
+		
+		if (event.accountName == null || event.accountName == "") {
+			validation = validationUpdated("Account Name Required", "accountName");
+		}
+		if (event.accountNo == null || event.accountNo == "") {
+			validation = validationUpdated("To Time Required", "accountNo");
+		}
+		if (event.leaveFrom == null || event.leaveFrom == "") {
+			validation = validationUpdated("Leave From Required", "leaveFrom");
+		} 
+		if (event.leaveTo == null || event.leaveTo == "") {
+			validation = validationUpdated("Leave To Required", "leaveTo");
+		}
+		
+		if (validation) {
+			//$('.loader').show();
+			$.ajax({
+				type : "POST",
+				url : "admin-doctor-addDocDetails",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(event),
+				success : function(response) {
+					if (response.message == "Success") {
+						
+						$('#myGrid').show();
+						$('#addData').hide();
+						 $('#totalReq').show();
+						 $('#delete').attr('disabled', true);
+						$('#new').show();
+						agGrid.simpleHttpRequest({
+							url : 'admin-doctor-viewDetails',
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions.api.setRowData(data);
+						})	
+					}
+
+				},
+				error : function(response) {
+					console.log(response);
+
+				}
+			})
+		}
+	}
+	
+	
+	function intervals(time3, time4,time5,time6) {
+		var event = {};
+	    var start = moment(time3, 'YYYY-MM-DD hh:mm a');
+	    var end = moment(time4, 'YYYY-MM-DD hh:mm a');
+
+	    // round starting minutes up to nearest 15 (12 --> 15, 17 --> 30)
+	    // note that 59 will round up to 60, and moment.js handles that correctly
+	    start.minutes(Math.ceil(start.minutes() / 15) * 15);
+
+	    var result = [];
+
+	    var current = moment(start);
+
+	    while (current <= end) {
+	        result.push(current.format('YYYY-MM-DD HH:mm'));
+	        current.add(15, 'minutes');
+	    }
+
+	    
+	    var starttime5 = moment(time5, 'YYYY-MM-DD hh:mm a');
+	    var endtime6 = moment(time6, 'YYYY-MM-DD hh:mm a');
+
+	    // round starting minutes up to nearest 15 (12 --> 15, 17 --> 30)
+	    // note that 59 will round up to 60, and moment.js handles that correctly
+	    starttime5.minutes(Math.ceil(starttime5.minutes() / 15) * 15);
+
+	    var breakList = [];
+
+	    var current = moment(starttime5);
+
+	    while (current <= endtime6) {
+	    	breakList.push(current.format('YYYY-MM-DD HH:mm'));
+	        current.add(15, 'minutes');
+	    }
+	 
+	    event.timeSlotList=result;
+	    console.log('allSlotList',result)
+	    console.log('breakList',breakList)
+	      // Storing the first item in a variable
+      let first=breakList[0];
+       
+      // Storing the last item
+      let last=breakList[breakList.length-1];
+      event.first=first;
+      event.last=last;
+	    console.log('first',first)
+	    console.log('last',last)
+	   
+	}
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+	function saveFile() {
+
+		var uFile = $('#fileUpload')[0].files[0];
+		var fileName = $('#fileUpload').val();
+		var iURL = URL.createObjectURL(uFile);
+		var LightImg = "<div class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class=''></i></a></div>";
+		$("#uploadedBillDocDiv_").html(LightImg);
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var iURL = URL.createObjectURL(uFile);
+
+		$('#docImg').attr('src', '');
+		$('#docImg').attr('src', iURL);
+
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "admin-doctor-image-upload-file",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+
+	
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="panel-body">
+				<div class="row" id="main_content">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="font-design" id="totalReq">
+									Doctor List (<span></span>)
+								</div>
+							</div>
+							<div class="col-md-4">
+							<div class="row margin_topbot" id="searchRowDiv">
+								<div class="input-style row">
+									<input type="text" placeholder="Search.." name="search"
+										class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()" id="quickFilter">
+									<div class="searchicon">
+										<a href="javascript:void(0)"><span
+											style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+											id="closeKey"
+											onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i"><i class="ti-close srchicon"></i></span></a><a
+											href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+							<div class="col-md-4">
+								<button id="new" onclick="addNewData()" class="btn1">ADD
+									DOCTOR</button>
+								<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+							</div>
+
+						</div>
+						</div>
+						<div id="myGrid" style="width: 100%; height: 500px;"
+							class="ag-theme-alpine"></div>
+					</div>
+		
+			</div>
+			<div id="addAssign">
+				<div class="row" id="addData">
+
+					<div class="col-md-12">
+
+						<button id="add" class="btn1" onclick="saveData()">Save</button>
+						<button id="cancel" class="btn4" onclick="Cancel()">Cancel</button>
+					</div>
+					<div class="col-md-12">
+						<div class="top-sec">
+							<input type="hidden" id="docId" />
+							<!--  <input type="hidden" id="docRegNo" /> -->
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+
+										<label>Registration Number:</label> <input type="text"
+											class="form-control" id="docRegNo"
+											onblur="removeValid(event)">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Specialization</label>
+										<div class="select">
+											<select onblur="removeValid(event)" id="docSpeciality">
+												<option value="">--Select--</option>
+												<option th:each="c,iter:${Specialist}" th:value="${c.key}"
+													th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Name:</label> <input type="text" class="form-control"
+											id="docName" onblur="removeValid(event)">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Clinic Name:</label> <input type="text"
+											class="form-control" id="docClinic"
+											onblur="removeValid(event)">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Email:</label> <input type="text" class="form-control"
+											id="docEmail" onblur="removeValid(event)">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Mobile:</label> <input type="text" class="form-control"
+											id="docMobile" onblur="removeValid(event)">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Age:</label> <input type="text" class="form-control"
+											id="docAge" onblur="removeValid(event)">
+									</div>
+								</div>
+
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Gender</label>
+										<div class="select">
+											<select onblur="removeValid(event)" id="docGender">
+												<option value="">--Select--</option>
+												<option th:each="c,iter:${getGenderList}"
+													th:value="${c.key}" th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Qualification:</label> <input type="text"
+											class="form-control" id="docQualification"
+											onblur="removeValid(event)">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>About Me:</label>
+										<textarea type="text" class="form-control" id="docAbout"
+											onblur="removeValid(event)"></textarea>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Password:</label> <input type="text"
+											class="form-control" id="docPassword"
+											onblur="removeValid(event)">
+									</div>
+								</div>
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Practicing Since Year:</label> <input type="text"
+											id="docPYear" class="form-control" placeholder="Enter Date"
+											disabled="disabled" onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('docPYear','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendar34"></i>
+									</div>
+								</div>
+
+
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Language:</label> <input type="text"
+											class="form-control" id="docLang" onblur="removeValid(event)">
+									</div>
+								</div>
+
+
+								<div class="col-md-12">
+									<div class="user-dtlhd ">Image Upload</div>
+									<table id="docTbl">
+										<tbody id="doctbodyData">
+											<td><div class="form-group">
+													<img th:src="${profile}" id="docImg"
+														style="height: 50px; weight: 50px"></img>
+												</div></td>
+
+											<td>
+												<div class="control-group position-r">
+													<label class="custom-file-upload" for="fileUpload"
+														id="uploadFor_0"> <a class="btn btn-primary"
+														style="color: #FFF !important;"> <i id="clickImg_0"
+															class="ti ti-plus"></i> Add
+													</a>
+														<div id="uploadedBillDiv" align="center"
+															class="uploadedBillCls">
+															<div class=""></div>
+														</div>
+													</label>
+													<div class="controls">
+
+														<input type="file" id="fileUpload" name="userImage"
+															accept="image/*" onchange="saveFile()"
+															onblur="removeValid(event)">
+
+													</div>
+												</div> <input type="hidden" id="uploadHidden_0"
+												class="uploadHidCls">
+												<div id="uploadedBillDiv_0" align="center"
+													class="uploadedBillCls"></div>
+												<div id="imageName_0" class="imageName"></div>
+												<div id="dltImage_0"></div>
+											</td>
+
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+						</div>
+
+
+
+						<div id="main_content1">
+
+							<input type="hidden" id="rowId" />
+							<div class="panel-group" id="accordion1" role="tablist"
+								aria-multiselectable="true">
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingone">
+										<h1 class="panel-title">
+											<a role="button" data-toggle="collapse"
+												data-parent="#accordion1" href="#collapsefour"
+												aria-expanded="true" aria-controls="collapsefour">
+												Address</a>
+										</h1>
+									</div>
+									<div id="collapsefour" class="panel-collapse collapse "
+										role="tabpanel" aria-labelledby="headingone">
+
+
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label> City</label> <input type="text" id="docCity"
+														class="form-control" autocomplete="off">
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Longitude</label> <input type="text"
+														id="docLongitude" class="form-control" autocomplete="off">
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Latitude</label> <input type="text" id="docLatitude"
+														class="form-control" autocomplete="off">
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+													<label> Address</label>
+													<textarea type="text" id="docAddress" class="form-control"
+														autocomplete="off"></textarea>
+												</div>
+											</div>
+
+										</div>
+
+
+									</div>
+								</div>
+							</div>
+
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingtwo">
+										<h1 class="panel-title">
+											<a role="button" data-toggle="collapse"
+												data-parent="#accordion12" href="#collapsetwo"
+												aria-expanded="true" aria-controls="collapsetwo">
+												Consultation Fee</a>
+										</h1>
+									</div>
+									<div id="collapsetwo" class="panel-collapse collapse "
+										role="tabpanel" aria-labelledby="headingone">
+
+
+
+										<div class="row">
+											<div class="col-md-4">
+												<div class="form-group">
+													<label> Audio Fees</label> <input type="text" id="docAudio"
+														class="form-control" autocomplete="off">
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label> Video Fees</label> <input type="text" id="docVideo"
+														class="form-control" autocomplete="off">
+												</div>
+											</div>
+
+
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Physical Fees</label> <input type="text" id="docPhy"
+														class="form-control" autocomplete="off">
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingone34">
+										<h1 class="panel-title">
+											<a role="button" data-toggle="collapse"
+												data-parent="#accordion13" href="#collapsethree"
+												aria-expanded="true" aria-controls="collapsethree">
+												Available Time</a>
+										</h1>
+									</div>
+									<div id="collapsethree" class="panel-collapse collapse "
+										role="tabpanel" aria-labelledby="headingone">
+
+										<div class="row">
+
+
+											<div class="col-md-4">
+												<div class="form-group">
+													<label> Available Time</label>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="calendarbox1">
+													<label>Opening Time</label> <input type="text"
+														id="openingTime" onchange="formatAMPM()"
+														autocomplete="off" onblur="removeValid(event)"
+														th:attr="onkeyup=|formatDate('openingTime','${session.DATEFORMAT_JS}')|">
+													<i class="ti-calendar picker_calendar"
+														id="fromTimeCalendarTimeOpen" onchange="formatAMPM()"></i>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="calendarbox1">
+													<label>Closing Time</label> <input type="text"
+														id="closingTime" onchange="formatAMPM1()"
+														autocomplete="off" onblur="removeValid(event)"
+														th:attr="onkeyup=|formatDate('closingTime','${session.DATEFORMAT_JS}')|">
+													<i class="ti-calendar picker_calendar"
+														id="toTimeCalendarTimeClose" onchange="formatAMPM1()"></i>
+												</div>
+											</div>
+
+											<div class="col-md-4">
+												<div class="form-group">
+													<label> Break Time</label>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="calendarbox1">
+													<label>From Time</label> <input type="text" id="fromTime"
+														onchange="formatAMPM2()" autocomplete="off"
+														onblur="removeValid(event)"
+														th:attr="onkeyup=|formatDate('fromTime','${session.DATEFORMAT_JS}')|">
+													<i class="ti-calendar picker_calendar"
+														id="fromTimeCalendarTime" onchange="formatAMPM2()"></i>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="calendarbox1">
+													<label>To Time</label> <input type="text" id="toTime"
+														onchange="formatAMPM3()" autocomplete="off"
+														onblur="removeValid(event)"
+														th:attr="onkeyup=|formatDate('toTime','${session.DATEFORMAT_JS}')|">
+													<i class="ti-calendar picker_calendar"
+														id="toTimeCalendarTime" onchange="formatAMPM3()"></i>
+												</div>
+											</div>
+
+
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Slot Booking</label>
+													<div class="select">
+														<select id="slotBooking">
+															<option value="">--Select--</option>
+															<option value="15min">15 Min.</option>
+															<option value="30min">30 Min.</option>
+															<option value="45min">45 Min.</option>
+															<option value="60min">60 Min.</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Off Days</label>
+													<div class="select">
+														<select id="offDays">
+															<option value="">--Select--</option>
+															<option value="Sun">SunDay</option>
+															<option value="Mon">MonDay</option>
+															<option value="Tue">TuesDay</option>
+															<option value="Wed">WednesDay</option>
+															<option value="Thu">ThursDay</option>
+															<option value="Fri">Friday</option>
+															<option value="Sat">SaturDay</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											
+											
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Leave From </label> <input type="text"
+											id="leaveFrom" class="form-control" 
+											th:attr="onkeyup=|formatDate('leaveFrom','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendarfrom"></i>
+									</div>
+								</div>
+								
+								
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Leave To</label> <input type="text"
+											id="leaveTo" class="form-control" 
+											disabled="disabled" onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('leaveTo','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendarto"></i>
+									</div>
+								</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="panel-group" id="accordion" role="tablist"
+								aria-multiselectable="true">
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingtens">
+										<h1 class="panel-title">
+											<a role="button" data-toggle="collapse"
+												data-parent="#accordion14" href="#collapsetens"
+												aria-expanded="true" aria-controls="collapsetens"> Bank
+												Account Details</a>
+										</h1>
+									</div>
+									<div id="collapsetens" class="panel-collapse collapse "
+										role="tabpanel" aria-labelledby="headingtens">
+										<div class="row">
+
+
+
+											<div class="col-md-4">
+												<div class="form-group">
+													<label> Account Name</label> <input type="text"
+														id="accountName" class="form-control" autocomplete="off">
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label> Account Number</label> <input type="text"
+														id="accountNo" class="form-control" autocomplete="off">
+												</div>
+											</div>
+
+
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>IFSC Code</label> <input type="text" id="ifscCode"
+														class="form-control" autocomplete="off">
+												</div>
+											</div>
+
+
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+						</div>
+					</div>
+				</div>
+
+				<div id="myModalAssignScheme" class="modal fade show"
+					aria-modal="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header flex-column"></div>
+
+							<div class="modal-footer justify-content-center"
+								style="margin-top: -50px;"></div>
+
+							<div class="row">
+
+								<!-- Modal body -->
+								<div class="modal-body">
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="font-design" id="totalReqAssign">ASSIGNED
+												TEST LIST</div>
+										</div>
+										<div class="col-md-6">
+											<!-- <button class="btn1" id="submitAssign"
+											onclick="submitAssign();">Save</button> -->
+											<button class="btn4" id="cancelAssign"
+												onclick="cancelAssignTestList();">Cancel</button>
+										</div>
+									</div>
+									<div id="myGridAssign" style="width: 100%; height: 200px;"
+										class="ag-theme-alpine"></div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+	
+		</div>
+</body>
+</html>

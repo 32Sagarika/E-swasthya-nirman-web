@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	//Document Ready For Page load
+
+	$(document).ready(function() {
+		$("#addTestList").hide();
+		$("#add").show();
+		$("#tab11").hide();
+		$("#edit").hide();
+		$("#deletes").show();
+		$("#add").show();
+		$('#delete').attr('disabled', true);
+	});
+
+	$(document).ready(function() {
+		$("#showTab").show();
+		var gridDiv2 = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv2, gridOptions2);
+
+		agGrid.simpleHttpRequest({
+			url : "admin-languages-viewDetails"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions2.api.setRowData(data);
+		});
+	});
+
+	var columnDefs2 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+
+			},
+			{
+				headerName : "Offer Id",
+				field : "offerId",
+				width : 350,
+				cellRenderer : function(params) {
+					return '<a id="" onclick=editOfferDetails("'
+							+ params.data.offerId
+							+ '") href="javascript:void(0)">'
+							+ params.data.offerId + '</a>';
+				}
+			},
+			{
+				headerName : 'Title',
+				field : "offerName",
+				width : 480
+			},{
+				headerName : 'Image',
+				field : "offerImg",
+				width : 480
+			}, , {
+				headerName : 'Status',
+				field : "status",
+				width : 400,
+				cellStyle : {
+					textAlign : 'center'
+				},
+				cellRenderer : function(params) {
+					if (params.data.languageStatus == "1") {
+						return "IN-ACTIVE";
+					} else {
+						return "ACTIVE";
+					}
+				}
+			} ];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		onSelectionChanged : deleteDetailsfor,
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,
+
+	};
+	function deleteDetailsfor() {
+
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr('disabled', false);
+			$('#add').attr('disabled', true);
+		} else {
+			$('#delete').attr('disabled', true);
+			$('#add').attr('disabled', false);
+		}
+
+	}
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var id = selectedRows[0].languageId;
+
+		$.ajax({
+			type : "POST",
+			url : "admin-languages-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : "admin-languages-viewDetails"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+
+					Cancel();
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+	function editOfferDetails(id) {
+		$("#add").attr('disabled', true);
+		$("#totalReq").hide();
+		openNav();
+		$.ajax({
+			type : "GET",
+			url : "admin-languages-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#offerId").val(response.body.offerId);
+					$("#offerName").val(response.body.offerName);
+					$("#offerImg").val(response.body.offerImg);
+					$("#status").val(response.body.status);
+
+				} else
+					("error" + console.message)
+			}
+		});
+	}
+	function saveOffer() {
+		var item1 = {};
+		var validation = true;
+		item1.offerId = $("#offerId").val();
+		item1.offerName = $("#offerName").val();
+		item1.offerImg = $('#fileUpload').val();
+		item1.status = $("#status").val();
+		
+		console.log(item1)
+
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "admin-languages-addDetails",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(item1),
+				success : function(response) {
+					if (response.message == "Success") {
+						$('#totalReq').show();
+						$('#delete').attr('disabled', true);
+						$('#add').attr('disabled', false);
+						console.log(response)
+						closeNav();
+						agGrid.simpleHttpRequest({
+							url : "admin-languages-viewDetails"
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions2.api.setRowData(data);
+						});
+
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+	}
+	function openNav() {
+		$('#add').attr('disabled', true);
+		$('#offerId').val("");
+		$('#offerName').val("");
+		$('#fileUpload').val("");
+		$("#status").val("");
+		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:-5.4px; overflow: hidden; height:auto; top:7px;";
+
+		document.getElementById("main_content").style.width = "75%";
+	}
+	function closeNav() {
+		$('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div id="managetestlist">
+			<div id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="font-design" id="totalReq">
+								Offers (<span></span>)
+							</div>
+						</div>
+						<div class="col-md-6">
+							<button id="add" onclick="openNav()" class="btn1">ADD OFFERS</button>
+							<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+					</div>
+					<div id="myGrid" style="width: 100%; height: 300px;"
+						class="ag-theme-alpine"></div>
+				</div>
+			</div>
+			<div id="mySidenav" class="sidenav">
+				<div class="slidebox">
+					<div class="row">
+						<div class="col-md-9">
+							<div class="edit">Add Language</div>
+						</div>
+						<div class="col-md-3">
+							<div class="arrow">
+								<a href="javascript:void(0)" class="closebtn"
+									onclick="closeNav()"></a>
+							</div>
+						</div>
+
+						<div class="chartbtnsec1">
+							<div align="right">
+								<button class="btn4" onclick="closeNav()">CANCEL</button>
+								<button class="btn1" onclick="saveOffer()">SAVE</button>
+
+							</div>
+						</div>
+						 <input type="hidden"
+							id="offerId">
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Title</label> <input type="text" id="offerName"
+									class="form-control transparenttxtbox" autocomplete="off" >
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Status</label>
+								<div class="select">
+									<select id="languageStatus">
+										<option value="">--Select--</option>
+										<option value="0">Active</option>
+										<option value="1">In-Active</option>
+									</select>
+								</div>
+							</div>
+						</div>
+							<div class="col-md-12">
+				<div class="user-dtlhd ">Image Upload</div>
+				<table id="docTbl">
+
+					<tbody id="doctbodyData">
+
+
+						<td><div class="form-group">
+								<img th:src="${profile}" id="offerImg"
+									style="height: 50px; weight: 50px"></img>
+							</div></td>
+
+						<td>
+							<div class="control-group position-r">
+								<label class="custom-file-upload" for="fileUpload"
+									id="uploadFor_0"> <a class="btn btn-primary"
+									style="color: #FFF !important;"> <i id="clickImg_0"
+										class="ti ti-plus"></i> Add
+								</a>
+									<div id="uploadedBillDiv" align="center"
+										class="uploadedBillCls">
+										<div class=""></div>
+									</div>
+								</label>
+								<div class="controls">
+
+									<input type="file" id="fileUpload" name="userImage"
+										accept="image/*" onchange="saveFile()"
+										onblur="removeValid(event)">
+
+								</div>
+							</div> <input type="hidden" id="uploadHidden_0" class="uploadHidCls">
+							<div id="uploadedBillDiv_0" align="center"
+								class="uploadedBillCls"></div>
+							<div id="imageName_0" class="imageName"></div>
+							<div id="dltImage_0"></div>
+						</td>
+
+					</tbody>
+				</table>
+			</div>
+						
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

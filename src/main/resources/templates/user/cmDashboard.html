@@ -1,0 +1,3050 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>eHealth System</title>
+    <link rel="stylesheet" title="blue" href="../assets/dm/css/blue.css">
+  <!--   <link rel="alternate stylesheet" title="black" href="http://matrujyoti.in/public/assets/css/style.css"> -->
+    
+    <link rel="stylesheet" href="../assets/eHealth/icon/themify-icons/themify-icons.css">
+    
+     <script src="https://code.highcharts.com/stock/highstock.js"></script>
+     <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+  body
+  {
+    background: #f5f5f5;
+  }
+  .content-wrapper {
+    background: transparent;
+    padding: .75rem 2.25rem;
+  }
+  .btnDisable
+  {
+    color: #ccc!important;
+  }
+
+  .card-body a{
+    color:#000;
+  }
+  .highcharts-axis-title
+  {
+    display: none;
+  }
+  /*todaychanges*/
+  .card
+  {
+    margin:8px 0px;
+  }
+
+  .smlbox
+  {
+    border:1px solid #ccc;
+    background: #FFF;
+    border-radius: 5px;
+    padding: 10px;
+    margin:5px;
+    color: #333;
+  }
+  .smlbox1
+  {
+    border:1px solid #ccc;
+    background: #FFF;
+    border-radius: 5px;
+    padding: 10px;
+    margin:11.5px 0px;
+    color: #333;
+  }
+  .smlbox2
+  {
+    background: transparent;
+    border-radius: 5px;
+    padding:5px 10px;
+    margin:5px 0px;
+    color: #FFF;
+  }
+  .smlbox2 span
+  {
+    float:right;
+    text-align: right;
+  }
+  .mrt_5
+  {
+    margin-top: 8px;
+  }
+  .text-left
+  {
+    color:#f5f5f5;
+  }
+  .padding_8
+  {
+    padding: 0px 8px;
+  }
+  .heading
+  {
+    background: rgba(0,0,0,0.5);
+    padding: 8px;
+  }
+  .card_light
+  {
+    background: #FFF;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  .card_light .card-title
+  {
+    background: #0071c1;
+    color: #FFF;
+    padding:12px 10px;
+    margin-bottom: 18px;
+  }
+  .cardtitle1
+  {
+    /*background: #0071c1;*/
+    font-size: 14px;
+    color: #333;
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+  .card_light p
+  {
+    color: #ccc;
+  }
+  .card {
+    margin:0!important;
+    margin-bottom: 8px !important;
+  }
+
+  /*new*/
+  .searchsec
+  {
+    background:#dbdbdb;
+    height:58px;
+    border-bottom: 3px solid #7bd4df;
+    padding: 5px;
+    width: 100%;
+    margin: 0px 5px;
+    margin-bottom:10px;
+  }
+
+
+
+  .card-title
+  {
+    padding:10px 3px;
+    color: #333!important;
+  }
+  .highcharts-figure
+  {
+    width: 100%!important;
+    margin: 0!important;
+  }
+
+  .highcharts-drilldown-data-label text{
+    text-decoration:none !important;
+    color: #FFF!important;
+    fill:#FFF!important;
+  }
+  .padding_5
+  {
+    padding:0px 5px;
+  }
+  .btn{
+    padding: 0.875rem .5rem !important;
+  }
+  .card-body {
+    padding: 0.5rem 0.5rem;
+    text-align: left;
+  }
+  .highcharts-xaxis-labels text
+  {
+    color: #333!important;
+    fill:#333!important;
+  }
+  .highcharts-yaxis-labels text
+  {
+    color: #333!important;
+    fill:#333!important;
+  }
+
+  #sundargarh {
+    height: 500px; 
+    min-width: 310px; 
+    max-width: 800px; 
+    margin: 0 auto; 
+  }
+  .loading {
+    margin-top: 10em;
+    text-align: center;
+    color: gray;
+  }
+  #area {
+    height: 200px;
+    position: relative;
+    right: 20px;
+    width: 300px;
+  }
+  .highcharts-a11y-proxy-button
+  {
+    color: #333!important;
+  }
+  #daywise
+  {
+    height:150px;
+    width: 150px;
+    position: relative;
+    right: 40px;
+  }
+
+  #daywise .highcharts-yaxis-labels
+  {
+    display: none;
+  }
+
+  #chart .highcharts-a11y-proxy-button
+  {
+    color:#333!important;
+  }
+  .white
+  {
+    color: #FFF;
+  }
+  .nav
+  {
+    margin-top: 10px;
+  }
+
+  .nav>li>a {
+    position: relative;
+    display: block;
+    padding: 10px 58px;
+    font-size: 16px;
+  }
+  .submenuactive
+  {
+    background: #98cb4a;
+    border:1px solid #FFF;
+  }
+  .submenuinactive
+  {
+    background: #f76d3c;
+    color: #333;
+    border:1px solid #FFF;
+  }
+  .submenuinactive a
+  {
+    color: #FFF;
+  }
+  .ulbar
+  {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-bottom: 8px;
+  }
+  .card a
+  {
+    color: #98cb4a;
+    padding: 0px 7px;
+    position: relative;
+    top: 10px;
+    right: 10px;
+  }
+  .boxicon
+  {
+    position: absolute;
+    bottom:8px;
+    right: 8px;
+  }
+
+  .card-body a 
+  {
+    color: #FFF!important;
+    padding: 16px;
+    width: 100%;
+    position: relative;
+    top: -20px;
+    left: 0px;
+  }
+  .card-body a .icon
+  {
+    position: relative;
+    top: -20px;
+  }
+  .font-weight-normal {
+    font-family: "ubuntu-regular", sans-serif;
+    font-size: 13px;
+  }
+
+  .table
+  {
+    color:#333;
+    margin:5px 15px;
+    width: 95%;
+  }
+  .table th td
+  {
+    padding: 6px!important;
+  }
+  .form-control
+  {
+      height:43px;
+  }
+  .page-header {
+    margin: 0 0 .5rem 0;
+    margin-left: -15px;
+    margin-right: -33px;
+}
+
+@media (max-width:600px) {
+	.searchsec{
+		height:auto!important;
+	}
+	
+	.searchsec .d-flex{
+		display:block!important;
+		
+	}
+	
+	.searchsec .d-flex .padding_5{
+		margin-bottom:5px!important;
+		
+	}
+	.highcharts-figure
+	{
+	    position: relative!important;
+        left: 0px!important;
+	}
+	
+}
+
+
+</style>
+
+ <style>
+
+  .ag-theme-alpine .ag-header {
+    background-color: #ffffff!important;
+    border-bottom: solid 1px;
+    border-bottom-color: #babfc7;
+    border-bottom-color: var(--ag-border-color, #babfc7);
+}
+
+.ag-theme-alpine .ag-row {
+height:40px!important;
+}
+.ag-row
+{
+min-height:40px!important;
+}
+.ag-row-even
+{height:40px!important; display:block;
+}
+.ag-theme-alpine .ag-ltr .ag-cell {
+    border-right-width: 1px;
+    height:40px!important;
+}
+.ag-center-cols-container
+{
+height:500px!important;
+}
+/* .ag-center-cols-viewport
+{height:500px!important;
+} */
+ .ag-cell .photo 
+{
+border-radius:50px!important;
+height:50px!important;
+margin:0px!important;
+}
+.icon_view 
+{
+  font-size:16px;
+  color:#006ce2;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.icon_edit
+{
+  font-size: 16px;
+  color:#013064;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.icon_delete 
+{
+  font-size:16px;
+  color:#ed1c24;
+  cursor: pointer;
+  margin:0px 10px;
+}
+.ag-cell .ag-cell-not-inline-editing .ag-cell-auto-height
+{
+min-height:50px!important;
+}
+.ag-cell .active {
+    background: #e6f1fc;
+    color: #02356c;
+}
+.ag-cell span {
+    position: relative;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+}
+
+ .ag-cell a 
+ {
+    background:#ed1c24;
+    color: #FFF;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 30px;
+    padding: 4px 10px 4px 10px;
+    text-decoration: none;
+    font-family: roboto;
+}
+
+
+
+.ag-theme-alpine .ag-ltr .ag-cell {
+    border-right-width: 1px;
+    height: 40px!important;
+    color: #000!important;
+    font-weight: 500!important;
+}
+
+</style>
+ 
+</style>
+
+	<link rel="stylesheet" href="../assets/css/extend/style-extend.css">
+	<script src="../assets/eHealth/js/jquery/jquery.min.js"></script>
+	<script src="../assets/js/newbootstrap.js"></script>
+<script src="../assets/dm/js/bundle.js"></script>
+<script src="../assets/dm/js/hoverable-collapse.js"></script>
+<script src="../assets/dm/js/misc.js"></script>
+<!-- endinject -->
+<!-- End custom js for this page -->
+
+<script>
+function modalthree() {
+	$("#myModal3").modal('show');
+}
+$(document).ready(function() {
+	var stateId = "";
+	 stateId =$("#stId").val();
+	 alert( stateId);
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-view-count?stateId="+ stateId,
+		success : function(response) {
+			console.log(response);
+			if (response.message == "Success") {
+				
+				$("#totalRegs").text(response.body.totalRegs);
+				$("#total_tested").text(response.body.total_tested);
+				$("#total_normal").text(response.body.total_normal);
+				$("#total_abnrml").text(response.body.total_abnrml);
+				$("#total_highrisk").text(response.body.total_highrisk);
+				$("#todays_regs").text(response.body.todays_regs);
+				$("#total_smpl_clctd").text(response.body.total_tested);
+				$("#total_smpl_prcsd").text(response.body.total_tested);
+				
+				
+
+			}
+		},
+
+	});
+	
+	/ Age Wise Test /
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-view-ageWiseTotalTest?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "Success") {
+				var testresult1 =[];
+				var testresult2 =[];
+				var testresult3 =[];
+				var testresult4 =[];
+				testresult1.push(parseInt(response.body.totalRegs));
+				testresult2.push(parseInt(response.body.total_tested));
+				testresult3.push(parseInt(response.body.total_normal));
+				testresult4.push(parseInt(response.body.total_abnrml));
+				
+				Highcharts.chart('age', {
+					chart : {
+						type : 'bar'
+					},
+					exporting : {
+						enabled : false
+					},
+					title : {
+						text : ''
+					},
+					subtitle : {
+						text : ''
+					},
+
+					xAxis : {
+						categories : [ '0-18', '19-35', '36-60',
+								'60 Above' ],
+						title : {
+							text : null
+						}
+					},
+					yAxis : {
+						min : 0,
+						title : {
+							text : '',
+							align : 'high'
+						},
+						labels : {
+							overflow : 'justify'
+						}
+					},
+					tooltip : {
+						valueSuffix : ' '
+					},
+					plotOptions : {
+						bar : {
+							dataLabels : {
+								enabled : true
+							}
+						}
+					},
+
+					credits : {
+						enabled : false
+					},
+					series : [ {
+						name : 'Total Health Check-up',
+						data : [ testresult1, testresult2, testresult3, testresult4 ]
+					}, ]
+				});
+			
+			}
+		},
+
+	});
+	/ Area Wise Test /
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-view-areaWiseTotalTest?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "success") {
+				 var testname = [];
+					var testresult = [];
+					   for (var i = 0; i < response.body.length; i++) {
+						   testname.push(response.body[i].name);
+	                        testresult.push(parseInt(response.body[i].key));
+	                       
+	                    }
+			
+				/ Activity /
+				Highcharts
+						.chart(
+								'activity',
+								{
+									chart : {
+										backgroundColor : 'transparent',
+										type : 'column'
+									},
+									title : {
+										text : ''
+									},
+
+									plotOptions : {
+										series : {
+
+											dataLabels : {
+												enabled : true,
+												format : '{point.y:.1f}'
+											}
+										}
+									},
+
+									xAxis : {
+
+										labels : {
+											style : {
+												color : '#333',
+												font : '11px Trebuchet MS, Verdana, sans-serif'
+											}
+										},
+										categories : testname,
+										crosshair : true,
+
+									},
+									credits : {
+										enabled : false
+									},
+									exporting : {
+										enabled : false
+									},
+									series : [ {
+										type : 'column',
+										color : '#47C99A',
+										data : testresult,
+										showInLegend : false
+									}
+
+									],
+
+									yAxis : {
+
+										gridLineColor : '#ccc',
+										gridLineWidth : '1px',
+
+										labels : {
+											style : {
+												color : '#333',
+												font : '11px Trebuchet MS, Verdana, sans-serif'
+											}
+										},
+
+									}
+
+								});
+				
+			}
+		},
+
+	});	
+	/ Disease Wise High Risk /
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-view-diseaseWiseTotalHighRisk?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "success") {
+				 var testname = [];
+					var testresult = [];
+					   for (var i = 0; i < response.body.length; i++) {
+	                        testresult.push(parseInt(response.body[i].key));
+	                        testname.push(response.body[i].name);
+	                    }
+			if(testname.length === 0){
+				testname = ['','','','',];
+				testresult = [0,0,0,0];
+			}
+			
+						/ High Risk Disease wise /
+						Highcharts
+								.chart(
+										'highrisk',
+										{
+											chart : {
+												backgroundColor : 'transparent',
+												type : 'column'
+											},
+											title : {
+												text : ''
+											},
+
+											plotOptions : {
+												series : {
+
+													dataLabels : {
+														enabled : true,
+														format : '{point.y:.1f}'
+													}
+												}
+											},
+
+											xAxis : {
+
+												labels : {
+													style : {
+														color : '#333',
+														font : '11px Trebuchet MS, Verdana, sans-serif'
+													}
+												},
+												categories : testname,
+												crosshair : true,
+
+											},
+											credits : {
+												enabled : false
+											},
+											exporting : {
+												enabled : false
+											},
+											series : [ {
+												type : 'column',
+												color : '#2db5a9',
+												data : testresult,
+												showInLegend : false
+											}
+
+											],
+
+											yAxis : {
+
+												gridLineColor : '#ccc',
+												gridLineWidth : '1px',
+
+												labels : {
+													style : {
+														color : '#333',
+														font : '11px Trebuchet MS, Verdana, sans-serif'
+													}
+												},
+
+											}
+
+										});
+			}
+		},
+
+	});	
+	
+	
+	/ Disease Wise Abnormal /
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-view-diseaseWiseTotalAbnormal?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "success") {
+				 var testname = [];
+					var testresult = [];
+					   for (var i = 0; i < response.body.length; i++) {
+	                        testresult.push(parseInt(response.body[i].key));
+	                        testname.push(response.body[i].name);
+	                    }
+			
+		
+						/ Abnormal disease wise /
+						Highcharts
+								.chart(
+										'abnormal',
+										{
+											chart : {
+												backgroundColor : 'transparent',
+												type : 'column'
+											},
+											title : {
+												text : ''
+											},
+
+											plotOptions : {
+												series : {
+
+													dataLabels : {
+														enabled : true,
+														format : '{point.y:.1f}'
+													}
+												}
+											},
+
+											xAxis : {
+
+												labels : {
+													style : {
+														color : '#333',
+														font : '11px Trebuchet MS, Verdana, sans-serif'
+													}
+												},
+												categories : testname,
+												crosshair : true,
+
+											},
+											credits : {
+												enabled : false
+											},
+											exporting : {
+												enabled : false
+											},
+											series : [ {
+												type : 'column',
+												color : '#71ce5e',
+												data : testresult,
+												showInLegend : false
+											}
+
+											],
+
+											yAxis : {
+
+												gridLineColor : '#ccc',
+												gridLineWidth : '1px',
+
+												labels : {
+													style : {
+														color : '#333',
+														font : '11px Trebuchet MS, Verdana, sans-serif'
+													}
+												},
+
+											}
+
+										});
+			}
+		},
+
+	});	
+/////////////////////////////////////////////
+	
+	/* Combine Zoom abnormal or normal */
+
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-health-check-up-normal-abNormal?stateId="+ stateId,
+		success : function(response) {
+			console.log(response);
+			if (response.message == "Success") {
+				var normal = parseFloat(response.body[0].key.substring(0, 5));
+				var abnormal = parseFloat(response.body[0].name.substring(0, 5));
+				var highrisk = parseFloat(response.body[0].code.substring(0, 5));
+				console.log(normal);
+				console.log(abnormal);
+				console.log(highrisk);
+	Highcharts
+			.chart(
+					'combine_zoom',
+					{
+						chart : {
+							plotBackgroundColor : null,
+							plotBorderWidth : 0,
+							plotShadow : false
+						},
+						title : {
+							text : '',
+							align : 'center',
+							verticalAlign : 'middle',
+							y : 60
+						},
+						tooltip : {
+							pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+						},
+						accessibility : {
+							point : {
+								valueSuffix : '%'
+							}
+						},
+						credits : {
+							enabled : false
+						},
+
+						exporting : {
+							enabled : false
+						},
+						plotOptions : {
+							pie : {
+								dataLabels: {
+						               enabled: true,
+						                format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+						                distance: -50,
+						                color: '#FFF',
+						                outerglow:'none',
+						                style: {
+						                  textShadow: false,
+						                  textOutline: false,
+						                }
+								
+								},
+								startAngle : -180,
+								endAngle : 180,
+								center : [ '50%', '50%' ],
+								size : '100%'
+							}
+						},
+						series : [ {
+							type : 'pie',
+							name : 'Value',
+							innerSize : '50%',
+							data :  [ [ 'Normal', normal ],
+								[ 'Abnormal',abnormal ],
+								[ 'High Risk', highrisk ], ]
+						} ]
+					});
+			}
+		}
+	})
+	// total abnormal or normal 
+	
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-health-check-up-normal-abNormal?stateId="+stateId,
+		success : function(response) {
+			if (response.message == "Success") {
+				var normal = parseFloat(response.body[0].key.substring(0, 5));
+				var abnormal = parseFloat(response.body[0].name.substring(0, 5))
+				var highrisk = parseFloat(response.body[0].code.substring(0, 5))
+			
+				/* Combine */
+				Highcharts
+						.chart(
+								'combineNormalAbNormal',
+								{
+									chart : {
+										plotBackgroundColor : null,
+										plotBorderWidth : 0,
+										plotShadow : false
+									},
+									title : {
+										text : '',
+										align : 'center',
+										verticalAlign : 'middle',
+										y : 60
+									},
+									tooltip : {
+										pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+									},
+									accessibility : {
+										point : {
+											valueSuffix : '%'
+										}
+									},
+									credits : {
+										enabled : false
+									},
+
+									exporting : {
+										enabled : false
+									},
+									plotOptions : {
+										pie : {
+											dataLabels : {
+												enabled : false,
+												distance : -50,
+												style : {
+													fontWeight : 'bold',
+													color : 'white'
+												}
+											},
+											startAngle : -180,
+											endAngle : 180,
+											center : [ '50%', '50%' ],
+											size : '100%'
+										}
+									},
+									series : [ {
+										type : 'pie',
+										name : 'VAlue',
+										innerSize : '50%',
+										data : [ [ 'Normal', normal ],
+												[ 'Abnormal',abnormal ],
+												[ 'High Risk', highrisk ], ]
+									} ]
+								});
+				
+				
+				}
+			}
+		})
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Total Male or Female Zoom*/
+	
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-health-check-up-male-female?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "Success") { 
+				
+				var male = parseFloat(response.body[0].key.substring(0, 5));
+				var female = parseFloat(response.body[0].name.substring(0, 5))
+						Highcharts.chart('maleFemale_zoom', {
+					    chart: {
+					        plotBackgroundColor: null,
+					        plotBorderWidth: 0,
+					        plotShadow: false
+					    },
+					    title: {
+					        text: '',
+					        align: 'center',
+					        verticalAlign: 'middle',
+					        y: 60
+					    },
+					    tooltip: {
+					        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+					    },
+					    accessibility: {
+					        point: {
+					            valueSuffix: '%'
+					        }
+					    },
+					    credits: {
+					        enabled: false
+					    },
+
+					    exporting: {
+					        enabled: false
+					    },
+					    plotOptions: {
+					        pie: {
+					        	dataLabels: {
+					                enabled: true,
+					                 format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+					                 distance: -50,
+					                 color: '#FFF',
+					                 outerglow:'none',
+					                 style: {
+					                   textShadow: false,
+					                   textOutline: false,
+					                 }
+					            },
+					            startAngle: -180,
+					            endAngle: 180,
+					            center: ['50%', '50%'],
+					            size: '100%'
+					        }
+					    },
+					    series: [{
+					        type: 'pie',
+					        name: 'value',
+					        innerSize: '50%',
+					        data : [ ['male',  male], [  'Female', female] ]
+					    }]
+					});
+			}}})
+	
+	/* Total Male or Female*/
+	
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-health-check-up-male-female?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "Success") { 
+				
+				var male = parseFloat(response.body[0].key.substring(0, 5));
+				var female = parseFloat(response.body[0].name.substring(0, 5))
+				
+	Highcharts
+			.chart(
+					'maleFemale',
+					{
+						chart : {
+							plotBackgroundColor : null,
+							plotBorderWidth : 0,
+							plotShadow : false
+						},
+						title : {
+							text : '',
+							align : 'center',
+							verticalAlign : 'middle',
+							y : 60
+						},
+						tooltip : {
+							pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+						},
+						accessibility : {
+							point : {
+								valueSuffix : '%'
+							}
+						},
+						credits : {
+							enabled : false
+						},
+
+						exporting : {
+							enabled : false
+						},
+						plotOptions : {
+							pie : {
+								dataLabels : {
+									enabled : false,
+									distance : -50,
+									style : {
+										fontWeight : 'bold',
+										color : 'white'
+									}
+								},
+								startAngle : -180,
+								endAngle : 180,
+								center : [ '50%', '50%' ],
+								size : '100%'
+							}
+						},
+						series : [ {
+							type : 'pie',
+							name : 'Value',
+							innerSize : '50%',
+							data : [ ['male',  male], [  'Female', female] ]
+						} ]
+					});
+	
+			}}})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Area Zoom */
+$.ajax({
+		type : "GET",
+		url : "cmdashboard-health-check-up-disease-area-wise?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "Success") { 
+				var dataset = [];
+				for(i = 0; i<response.body.length;i++){
+					var obj = {};
+					obj.name = response.body[i].name;
+					var y = parseFloat(response.body[i].code);
+					obj.y = parseFloat(y.toFixed(2));
+					dataset.push(obj);
+				}
+			Highcharts
+					.chart(
+							'area_zoom',
+							{
+								chart : {
+									type : 'pie',
+									backgroundColor : 'transparent',
+									color : 'white'
+
+								},
+								legend : {
+									itemStyle : {
+										color : 'black',
+									}
+								},
+								title : {
+									text : ''
+								},
+								exporting : {
+									enabled : false
+								},
+								credits : {
+									enabled : false
+								},
+								accessibility : {
+									point : {
+										valueSuffix : '%'
+									}
+								},
+								tooltip : {
+									pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+								},
+								plotOptions : {
+									pie : {
+										allowPointSelect : true,
+										cursor : 'pointer',
+										showInLegend : true,
+										depth : 35,
+										dataLabels : {
+											enabled : true,
+											distance : -50,
+											format : '{point.percentage:.1f} %',
+											color : '#FFF',
+											outerglow : 'none',
+											style : {
+												textShadow : false,
+												textOutline : false,
+											}
+										}
+									}
+								},
+								series : [ {
+									type : 'pie',
+									name : 'Total Health Check-up',
+									data : dataset
+								} ]
+							});
+			}}})
+	/* Area */
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-health-check-up-disease-area-wise?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "Success") { 
+				var dataset = [];
+				for(i = 0; i<response.body.length;i++){
+					var obj = {};
+					obj.name = response.body[i].name;
+					var y = parseFloat(response.body[i].code);
+					obj.y = parseFloat(y.toFixed(2));
+					dataset.push(obj);
+				}
+				
+				Highcharts
+						.chart(
+								'area',
+								{
+									chart : {
+										type : 'pie',
+										backgroundColor : 'transparent',
+										color : 'white'
+
+									},
+									legend : {
+										itemStyle : {
+											color : 'black',
+										}
+									},
+									title : {
+										text : ''
+									},
+									exporting : {
+										enabled : false
+									},
+									credits : {
+										enabled : false
+									},
+									accessibility : {
+										point : {
+											valueSuffix : '%'
+										}
+									},
+									tooltip : {
+										pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+									},
+									plotOptions : {
+										pie : {
+											allowPointSelect : true,
+											cursor : 'pointer',
+											showInLegend : false,
+											depth : 35,
+											dataLabels : {
+												enabled : false,
+												format : '{point.percentage:.1f} %',
+												color : '#FFF',
+												outerglow : 'none',
+												style : {
+													textShadow : false,
+													textOutline : false,
+												}
+											}
+										}
+									},
+									series : [ {
+										type : 'pie',
+										name : 'Total Health Check-up',
+										data : dataset
+									} ]
+								});
+				
+			}}})
+			/* Area wise Normal*/
+	$.ajax({
+		type : "GET",
+		url : "cmdashboard-health-check-up-area-wise-normal?stateId="+ stateId,
+		success : function(response) {
+			if (response.message == "Success") { 
+				
+				var dataset = [];
+				for(i = 0; i<response.body.length;i++){
+					var obj = {};
+					obj.name = response.body[i].name;
+					var y = parseFloat(response.body[i].code);
+					obj.y = parseFloat(y.toFixed(2));
+					dataset.push(obj);
+				}
+				
+			 	Highcharts
+						.chart(
+								'normalwise',
+								{
+									chart : {
+										type : 'pie',
+										backgroundColor : 'transparent',
+										color : 'white'
+
+									},
+									legend : {
+										itemStyle : {
+											color : 'black',
+										}
+									},
+									title : {
+										text : ''
+									},
+									exporting : {
+										enabled : false
+									},
+									credits : {
+										enabled : false
+									},
+									accessibility : {
+										point : {
+											valueSuffix : '%'
+										}
+									},
+									tooltip : {
+										pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+									},
+									plotOptions : {
+										pie : {
+											allowPointSelect : true,
+											cursor : 'pointer',
+											showInLegend : false,
+											depth : 35,
+											dataLabels : {
+												enabled : false,
+												format : '{point.percentage:.1f} %',
+												color : '#FFF',
+												outerglow : 'none',
+												style : {
+													textShadow : false,
+													textOutline : false,
+												}
+											}
+										}
+									},
+									series : [ {
+										type : 'pie',
+										name : 'Total Health Check-up',
+										data : dataset
+									} ] 
+								});
+				
+			}}})	
+		
+			/* Area wise Normal Zoom*/
+			$.ajax({
+				type : "GET",
+				url : "cmdashboard-health-check-up-area-wise-normal?stateId="+ stateId,
+				success : function(response) {
+					if (response.message == "Success") { 
+						
+						var dataset = [];
+						for(i = 0; i<response.body.length;i++){
+							var obj = {};
+							obj.name = response.body[i].name;
+							var y = parseFloat(response.body[i].code);
+							obj.y = parseFloat(y.toFixed(2));
+							dataset.push(obj);
+						}
+						
+					 	Highcharts
+								.chart(
+										'normalwise_zoom',
+										{
+											chart : {
+												type : 'pie',
+												backgroundColor : 'transparent',
+												color : 'white'
+
+											},
+											legend : {
+												itemStyle : {
+													color : 'black',
+												}
+											},
+											title : {
+												text : ''
+											},
+											exporting : {
+												enabled : false
+											},
+											credits : {
+												enabled : false
+											},
+											accessibility : {
+												point : {
+													valueSuffix : '%'
+												}
+											},
+											tooltip : {
+												pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+											},
+											plotOptions : {
+												pie : {
+													allowPointSelect : true,
+													cursor : 'pointer',
+													showInLegend : false,
+													depth : 35,
+													dataLabels : {
+														enabled : false,
+														format : '{point.percentage:.1f} %',
+														color : '#FFF',
+														outerglow : 'none',
+														style : {
+															textShadow : false,
+															textOutline : false,
+														}
+													}
+												}
+											},
+											series : [ {
+												type : 'pie',
+												name : 'Total Health Check-up',
+												data : dataset
+											} ] 
+										});
+						
+					}}})	
+	/* Area wise HighRisk*/
+					$.ajax({
+						type : "GET",
+						url : "cmdashboard-health-check-up-area-wise-highrisk?stateId="+ stateId,
+						success : function(response) {
+							if (response.message == "Success") { 
+								
+								var dataset = [];
+								for(i = 0; i<response.body.length;i++){
+									var obj = {};
+									obj.name = response.body[i].name;
+									var y = parseFloat(response.body[i].code);
+									obj.y = parseFloat(y.toFixed(2));
+									dataset.push(obj);
+								}
+								
+							 	Highcharts
+										.chart(
+												'piecontainer',
+												{
+													chart : {
+														type : 'pie',
+														backgroundColor : 'transparent',
+														color : 'white'
+
+													},
+													legend : {
+														itemStyle : {
+															color : 'black',
+														}
+													},
+													title : {
+														text : ''
+													},
+													exporting : {
+														enabled : false
+													},
+													credits : {
+														enabled : false
+													},
+													accessibility : {
+														point : {
+															valueSuffix : '%'
+														}
+													},
+													tooltip : {
+														pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+													},
+													plotOptions : {
+														pie : {
+															allowPointSelect : true,
+															cursor : 'pointer',
+															showInLegend : false,
+															depth : 35,
+															dataLabels : {
+																enabled : false,
+																format : '{point.percentage:.1f} %',
+																color : '#FFF',
+																outerglow : 'none',
+																style : {
+																	textShadow : false,
+																	textOutline : false,
+																}
+															}
+														}
+													},
+													series : [ {
+														type : 'pie',
+														name : 'Total Health Check-up',
+														data : dataset
+													} ] 
+												});
+								
+							}}})	
+							/* Area wise HighRisk*/
+							$.ajax({
+								type : "GET",
+								url : "cmdashboard-health-check-up-area-wise-highrisk?stateId="+ stateId,
+								success : function(response) {
+									if (response.message == "Success") { 
+										
+										var dataset = [];
+										for(i = 0; i<response.body.length;i++){
+											var obj = {};
+											obj.name = response.body[i].name;
+											var y = parseFloat(response.body[i].code);
+											obj.y = parseFloat(y.toFixed(2));
+											dataset.push(obj);
+										}
+										
+									 	Highcharts
+												.chart(
+														'piecontainer_zoom',
+														{
+															chart : {
+																type : 'pie',
+																backgroundColor : 'transparent',
+																color : 'white'
+
+															},
+															legend : {
+																itemStyle : {
+																	color : 'black',
+																}
+															},
+															title : {
+																text : ''
+															},
+															exporting : {
+																enabled : false
+															},
+															credits : {
+																enabled : false
+															},
+															accessibility : {
+																point : {
+																	valueSuffix : '%'
+																}
+															},
+															tooltip : {
+																pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+															},
+															plotOptions : {
+																pie : {
+																	allowPointSelect : true,
+																	cursor : 'pointer',
+																	showInLegend : false,
+																	depth : 35,
+																	dataLabels : {
+																		enabled : false,
+																		format : '{point.percentage:.1f} %',
+																		color : '#FFF',
+																		outerglow : 'none',
+																		style : {
+																			textShadow : false,
+																			textOutline : false,
+																		}
+																	}
+																}
+															},
+															series : [ {
+																type : 'pie',
+																name : 'Total Health Check-up',
+																data : dataset
+															} ] 
+														});
+										
+									}}})				
+			
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	
+
+		
+	
+});
+
+	$(document)
+			.ready(
+					function() {
+						
+						
+					
+					/* 	Highcharts.chart('normalabnormalfemale_zoom', {
+						    chart: {
+						        plotBackgroundColor: null,
+						        plotBorderWidth: 0,
+						        plotShadow: false
+						    },
+						    title: {
+						        text: '',
+						        align: 'center',
+						        verticalAlign: 'middle',
+						        y: 60
+						    },
+						    tooltip: {
+						        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+						    },
+						    accessibility: {
+						        point: {
+						            valueSuffix: '%'
+						        }
+						    },
+						    credits: {
+						        enabled: false
+						    },
+
+						    exporting: {
+						        enabled: false
+						    },
+						    plotOptions: {
+						        pie: {
+						            dataLabels: {
+						                enabled: true,
+						                distance: -50,
+						                style: {
+						                    fontWeight: 'bold',
+						                    color: 'white'
+						                }
+						            },
+						            startAngle: -180,
+						            endAngle: 180,
+						            center: ['50%', '50%'],
+						            size: '100%'
+						        }
+						    },
+						    series: [{
+						        type: 'pie',
+						        name: 'Browser share',
+						        innerSize: '50%',
+						        data: [
+						            ['Normal', 25.32],
+						            ['Abnormal', 42.34],
+						            ['Others', 32.34],
+						        ]
+						    }]
+						}); */
+						
+						/* Highcharts.chart('combinehighlowrisk_zoom', {
+						    chart: {
+						        plotBackgroundColor: null,
+						        plotBorderWidth: 0,
+						        plotShadow: false
+						    },
+						    title: {
+						        text: '',
+						        align: 'center',
+						        verticalAlign: 'middle',
+						        y: 60
+						    },
+						    tooltip: {
+						        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+						    },
+						    accessibility: {
+						        point: {
+						            valueSuffix: '%'
+						        }
+						    },
+						    credits: {
+						        enabled: false
+						    },
+
+						    exporting: {
+						        enabled: false
+						    },
+						    plotOptions: {
+						        pie: {
+						            dataLabels: {
+						                enabled: true,
+						                distance: -50,
+						                style: {
+						                    fontWeight: 'bold',
+						                    color: 'white'
+						                }
+						            },
+						            startAngle: -180,
+						            endAngle: 180,
+						            center: ['50%', '50%'],
+						            size: '100%'
+						        }
+						    },
+						    series: [{
+						        type: 'pie',
+						        name: 'Browser share',
+						        innerSize: '50%',
+						        data: [['Patient', 19.32],
+						            ['Normal', 25.32],
+						            ['Highrisk', 32.12],
+						            ['Lowrisk', 17.20],
+						            ['Critical', 5.04],
+						        ]
+						    }]
+						});
+ */
+						
+						
+						/* Normal-Abnormal Female */
+						/* Highcharts
+								.chart(
+										'normalabnormalfemale',
+										{
+											chart : {
+												plotBackgroundColor : null,
+												plotBorderWidth : 0,
+												plotShadow : false
+											},
+											title : {
+												text : '',
+												align : 'center',
+												verticalAlign : 'middle',
+												y : 60
+											},
+											tooltip : {
+												pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+											},
+											accessibility : {
+												point : {
+													valueSuffix : '%'
+												}
+											},
+											credits : {
+												enabled : false
+											},
+
+											exporting : {
+												enabled : false
+											},
+											plotOptions : {
+												pie : {
+													dataLabels : {
+														enabled : false,
+														distance : -50,
+														style : {
+															fontWeight : 'bold',
+															color : 'white'
+														}
+													},
+													startAngle : -180,
+													endAngle : 180,
+													center : [ '50%', '50%' ],
+													size : '100%'
+												}
+											},
+											series : [ {
+												type : 'pie',
+												name : 'Browser share',
+												innerSize : '50%',
+												data : [ [ 'Normal', 25.32 ],
+														[ 'Abnormal', 42.34 ],
+														[ 'Others', 32.34 ], ]
+											} ]
+										}); */
+
+						/* Combine High Low Risk */
+						/* Highcharts
+								.chart(
+										'combinehighlowrisk',
+										{
+											chart : {
+												plotBackgroundColor : null,
+												plotBorderWidth : 0,
+												plotShadow : false
+											},
+											title : {
+												text : '',
+												align : 'center',
+												verticalAlign : 'middle',
+												y : 60
+											},
+											tooltip : {
+												pointFormat : '{series.name}: <b>{point.percentage:.1f}%</b>'
+											},
+											accessibility : {
+												point : {
+													valueSuffix : '%'
+												}
+											},
+											credits : {
+												enabled : false
+											},
+
+											exporting : {
+												enabled : false
+											},
+											plotOptions : {
+												pie : {
+													dataLabels : {
+														enabled : false,
+														distance : -50,
+														style : {
+															fontWeight : 'bold',
+															color : 'white'
+														}
+													},
+													startAngle : -180,
+													endAngle : 180,
+													center : [ '50%', '50%' ],
+													size : '100%'
+												}
+											},
+											series : [ {
+												type : 'pie',
+												name : 'Browser share',
+												innerSize : '50%',
+												data : [ [ 'Patient', 19.32 ],
+														[ 'Normal', 25.32 ],
+														[ 'Highrisk', 32.12 ],
+														[ 'Lowrisk', 17.20 ],
+														[ 'Critical', 5.04 ], ]
+											} ]
+										});
+
+						 */
+
+						/* Age */
+						Highcharts.chart('age', {
+							chart : {
+								type : 'bar'
+							},
+							exporting : {
+								enabled : false
+							},
+							title : {
+								text : ''
+							},
+							subtitle : {
+								text : ''
+							},
+
+							xAxis : {
+								categories : [ '0-18', '19-35', '36-60',
+										'60 Above' ],
+								title : {
+									text : null
+								}
+							},
+							yAxis : {
+								min : 0,
+								title : {
+									text : '',
+									align : 'high'
+								},
+								labels : {
+									overflow : 'justify'
+								}
+							},
+							tooltip : {
+								valueSuffix : ' '
+							},
+							plotOptions : {
+								bar : {
+									dataLabels : {
+										enabled : true
+									}
+								}
+							},
+
+							credits : {
+								enabled : false
+							},
+							series : [ {
+								name : 'Total Health Check-up',
+								data : [ 52, 219, 290, 155 ]
+							}, ]
+						});
+
+						/* Pie Container */
+						/* Highcharts
+								.chart(
+										'piecontainer',
+										{
+											chart : {
+												type : 'pie',
+												backgroundColor : 'transparent',
+												color : 'white',
+												options3d : {
+													enabled : true,
+													alpha : 45,
+													beta : 0
+												}
+											},
+											credits : {
+												enabled : false
+											},
+											title : {
+												text : ''
+											},
+											subtitle : {
+												text : ''
+											},
+
+											accessibility : {
+												announceNewData : {
+													enabled : true
+												},
+												point : {
+													valueSuffix : '%'
+												}
+
+											},
+
+											plotOptions : {
+												pie : {
+													allowPointSelect : true,
+													cursor : 'pointer',
+													depth : 45,
+													dataLabels : {
+														enabled : false,
+														format : '{point.percentage:.1f} %',
+														distance : -50,
+														color : '#FFF',
+														outerglow : 'none',
+														style : {
+															textShadow : false,
+															textOutline : false,
+														}
+													}
+												}
+											},
+
+											tooltip : {
+												headerFormat : '<span style="font-size:11px">{series.name}</span><br>',
+												pointFormat : '<span>{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+											},
+											exporting : {
+												enabled : false
+											},
+											series : [ {
+												name : "Total High Risk Area Wise",
+												colorByPoint : true,
+												data : [ {
+													name : "JARANGLOI",
+													y : 97
+
+												},
+
+												]
+											} ]
+										});
+ */
+						/* Pie Container Zoom */
+						/* Highcharts
+								.chart(
+										'piecontainer_zoom',
+										{
+											chart : {
+												type : 'pie',
+												backgroundColor : 'transparent',
+												color : 'white',
+												options3d : {
+													enabled : true,
+													alpha : 45,
+													beta : 0
+												}
+											},
+											credits : {
+												enabled : false
+											},
+											title : {
+												text : ''
+											},
+											subtitle : {
+												text : ''
+											},
+
+											accessibility : {
+												announceNewData : {
+													enabled : true
+												},
+												point : {
+													valueSuffix : '%'
+												}
+
+											},
+
+											plotOptions : {
+												pie : {
+													allowPointSelect : true,
+													cursor : 'pointer',
+													depth : 45,
+													dataLabels : {
+														enabled : true,
+														format : '{point.percentage:.1f} %',
+														distance : -50,
+														color : '#FFF',
+														outerglow : 'none',
+														style : {
+															textShadow : false,
+															textOutline : false,
+														}
+													}
+												}
+											},
+
+											tooltip : {
+												headerFormat : '<span style="font-size:11px">{series.name}</span><br>',
+												pointFormat : '<span>{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+											},
+											exporting : {
+												enabled : false
+											},
+											series : [ {
+												name : "Total High Risk Area Wise",
+												showInLegend : true,
+												colorByPoint : true,
+												data : [
+
+												{
+													name : "JARANGLOI",
+													y : 97
+
+												},
+
+												]
+											} ]
+
+										});
+ */
+						/* Activity */
+						Highcharts
+								.chart(
+										'activity',
+										{
+											chart : {
+												backgroundColor : 'transparent',
+												type : 'column'
+											},
+											title : {
+												text : ''
+											},
+
+											plotOptions : {
+												series : {
+
+													dataLabels : {
+														enabled : true,
+														/* format : '{point.y:.1f}' */
+													}
+												}
+											},
+
+											xAxis : {
+
+												labels : {
+													style : {
+														color : '#333',
+														font : '11px Trebuchet MS, Verdana, sans-serif'
+													}
+												},
+												categories : [ 'DHH ',
+														'JARANGLOI',
+														'Jarangloi PHC', ],
+												crosshair : true,
+
+											},
+											credits : {
+												enabled : false
+											},
+											exporting : {
+												enabled : false
+											},
+											series : [ {
+												type : 'column',
+												color : '#47C99A',
+												data : [ 26, 82, 21, ],
+												showInLegend : false
+											}
+
+											],
+
+											yAxis : {
+
+												gridLineColor : '#ccc',
+												gridLineWidth : '1px',
+
+												labels : {
+													style : {
+														color : '#333',
+														font : '11px Trebuchet MS, Verdana, sans-serif'
+													}
+												},
+
+											}
+
+										});
+
+						/* NormalWise */
+						/* Highcharts
+								.chart(
+										'normalwise',
+										{
+											chart : {
+												type : 'pie',
+												backgroundColor : 'transparent',
+												color : 'white',
+											},
+											credits : {
+												enabled : false
+											},
+											title : {
+												text : ''
+											},
+											subtitle : {
+												text : ''
+											},
+
+											accessibility : {
+												announceNewData : {
+													enabled : true
+												},
+												point : {
+													valueSuffix : '%'
+												}
+
+											},
+
+											plotOptions : {
+												series : {
+
+													dataLabels : {
+														enabled : false,
+														format : '{point.percentage:.1f} %',
+														distance : -50,
+														color : '#FFF',
+														outerglow : 'none',
+														style : {
+															textShadow : false,
+															textOutline : false,
+														}
+													}
+
+												}
+											},
+
+											tooltip : {
+												headerFormat : '<span style="font-size:11px">{series.name}</span><br>',
+												pointFormat : '<span>{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+											},
+											exporting : {
+												enabled : false
+											},
+											series : [ {
+												name : "Total Normal Area Wise",
+												colorByPoint : true,
+												data : [ {
+													name : "DHH ",
+													y : 10
+
+												}, {
+													name : "JARANGLOI",
+													y : 17
+
+												}, {
+													name : "Jarangloi PHC",
+													y : 23
+
+												},
+
+												]
+											} ]
+
+										}); */
+
+						/* NormalWise Zoom */
+						/* Highcharts
+								.chart(
+										'normalwise_zoom',
+										{
+											chart : {
+												type : 'pie',
+												backgroundColor : 'transparent',
+												color : 'white',
+											},
+											credits : {
+												enabled : false
+											},
+											title : {
+												text : ''
+											},
+											subtitle : {
+												text : ''
+											},
+
+											accessibility : {
+												announceNewData : {
+													enabled : true
+												},
+												point : {
+													valueSuffix : '%'
+												}
+
+											},
+
+											plotOptions : {
+												series : {
+
+													dataLabels : {
+														enabled : true,
+														format : '{point.percentage:.1f} %',
+														distance : -50,
+														color : '#FFF',
+														outerglow : 'none',
+														style : {
+															textShadow : false,
+															textOutline : false,
+														}
+													}
+
+												}
+											},
+
+											tooltip : {
+												headerFormat : '<span style="font-size:11px">{series.name}</span><br>',
+												pointFormat : '<span>{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+											},
+											exporting : {
+												enabled : false
+											},
+											series : [ {
+												name : "Total Normal Area Wise",
+												showInLegend : true,
+												colorByPoint : true,
+												data : [
+
+												{
+													name : "DHH ",
+													y : 10
+
+												}, {
+													name : "JARANGLOI",
+													y : 17
+
+												}, {
+													name : "Jarangloi PHC",
+													y : 23
+
+												},
+
+												]
+											} ]
+
+										});
+ */
+						/* Age Wise */
+						Highcharts
+								.chart(
+										'agewise',
+										{
+											chart : {
+												type : 'column',
+												backgroundColor : 'transparent',
+											},
+											title : {
+												text : ''
+											},
+
+											xAxis : {
+												categories : [ 'Disease 1',
+														'Disease 2',
+														'Disease 3',
+														'Disease 4',
+														'Disease 5',
+														'Disease 6',
+														'Disease 7' ],
+												crosshair : true,
+												labels : {
+													style : {
+														color : '#B8B8B8',
+														font : '11px Trebuchet MS, Verdana, sans-serif'
+													}
+												}
+											},
+											yAxis : {
+												min : 0,
+												title : {
+													text : ''
+												},
+												labels : {
+													style : {
+														color : '#B8B8B8',
+														font : '11px Trebuchet MS, Verdana, sans-serif'
+													}
+												}
+											},
+											tooltip : {
+												headerFormat : '<span style="font-size:10px">{point.key}</span><br/>',
+												pointFormat : '<span>{point.name}</span> <b>{point.y:.2f}%</b> <br/>',
+												shared : true,
+												useHTML : true
+											},
+											plotOptions : {
+												column : {
+													pointPadding : 0.2,
+													borderWidth : 0
+												}
+											},
+
+											credits : {
+												enabled : false
+											},
+
+											exporting : {
+												enabled : false
+											},
+
+											series : [
+													{
+														name : 'Malnutrition',
+														color : '#4372A6',
+														data : [ 60, 71.5,
+																106.4, 129.2,
+																144.0, 176.0,
+																135.6 ]
+
+													},
+
+											]
+										});
+
+						/* Radialize the colors */
+						Highcharts
+								.setOptions({
+									colors : Highcharts
+											.map(
+													Highcharts.getOptions().colors,
+													function(color) {
+														return {
+															radialGradient : {
+																cx : 0.5,
+																cy : 0.3,
+																r : 0.7
+															},
+															stops : [
+																	[ 0, color ],
+																	[
+																			1,
+																			Highcharts
+																					.color(
+																							color)
+																					.brighten(
+																							-0.3)
+																					.get(
+																							'rgb') ] // darken
+															]
+														};
+													})
+								});
+
+					})
+					
+	function hideDashboardContent(id) {
+		$("#hidedashboard").hide();
+		$("#showdashboard").show();
+		getAgGridData(id);
+	}
+</script>
+
+</head>
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+		<nav
+			class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+			<div
+				class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+				<a class="navbar-brand brand-logo" href="javascript:void(0);"><img  th:attr='src=|assets/dm/img/logo.png|' alt="profile"></a> <a
+					class="navbar-brand brand-logo-mini" href="javascript:void(0);">
+					<!-- <img src="assets/images/logo-mini.png" alt="logo" /> -->
+				</a>
+				
+				
+			</div>
+			
+			<div class="navbar-menu-wrapper d-flex align-items-stretch">
+				<button class="navbar-toggler navbar-toggler align-self-center"
+					type="button" data-toggle="minimize">
+					<span class="fa fa-bars"></span>
+				</button>
+				<div class="page-name">
+					<div class="row">
+						<div class="col-md-6">
+						 <input type="hidden" id ="dmdistrictId" th:value ="${cmDashboardGetIdd[0].name}">
+							<select id="cmbDist" name="cmbDist"
+								onchange="setDataAndImage(this.value);">
+ <input type="hidden" id="stId" th:value ="${cmDashboardGetIdd[0].id}"> 
+								<!-- <option value="SNG" selected="selected">Bihar</option> -->
+								<!--  <option value="SNG" selected="selected" th:text ="${cmDashboardGetIdd[0].name}"></option> -->
+							</select>
+						</div>
+						<a href="/cmdashboard"><div class="col-md-6 dashtext">DASHBOARD</div></a>
+					</div>
+				</div>
+				<ul class="navbar-nav navbar-nav-right">
+					<li>
+						<p class="header_txt"><br>
+						</p>
+					</li>
+					<li class="nav-item nav-profile dropdown"><select>
+							<option>English</option>
+							<option>ଓଡ଼ିଆ</option>
+					</select></li>
+
+					<li class="nav-item nav-logout d-lg-block"><a href="/logout"
+						title="Sign Out" class="nav-link"> <i class="fa fa-power-off" style="color:#FFF;"></i>
+					</a></li>
+					<li class="header_btn">
+						<div class="content">
+							Download<br> App Now
+						</div>
+						<div class="icon">
+							<a href="javascript:void(0);" target="blank"><img
+								src="../assets/dm/img/appstore_icon1.png" class="img-fluid"></a>
+						</div>
+						<div class="icon">
+							<a href="javascript:void(0);" target="blank"><img
+								src="../assets/dm/img/appstore_icon2.png" class="img-fluid"></a>
+						</div>
+					</li>
+					<li class="header_btn">
+						<div class="content">
+							Click To<br> Chat Now
+						</div>
+						<div class="icon">
+							<a href="javascript:void(0);"><img
+								src="../assets/dm/img/appstore_icon3.png" class="img-fluid"></a>
+						</div>
+						<div class="icon">
+							<a href="javascript:void(0);"><img
+								src="../assets/dm/img/appstore_icon4.png" class="img-fluid"></a>
+						</div>
+					</li>
+				</ul>
+				<button
+					class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
+					type="button" data-toggle="offcanvas">
+					<span class="mdi mdi-menu"></span>
+				</button>
+			</div>
+		</nav>
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+				<nav class="sidebar sidebar-offcanvas" id="sidebar">
+				<div
+					class="nav-profile-text d-flex flex-column text-center logoname">
+					<div class="mb-2">
+					<!-- <div style="height: 100px; width: 100px; margin: 0 auto;">
+						<img id="faceImg"
+							src="../assets/eHealth/images/sundargarh_logo.png"
+							alt="profile" style="border-radius: 50%;"> <strong></strong>
+							</div> -->
+					</div>
+					<!-- <div>
+						e-Swasthya <br>
+						<div>Sundargarh</div>
+					</div> -->
+				</div>
+				<div align="center" style="margin-top: 15px; font-size: 16px; color:#FFF;">
+								e-Swasthya </div>
+				<!-- <div class="text-center">Mr. Kalyan<br>District Collector</div> -->
+				<ul class="nav">
+					<li class="nav-item nav-profile"><a href="javascript:void(0);"
+						class="nav-link"> <!--<div align="center">
+                  <div class="sidebar_icon">0</div>
+                  <span class="login-status online"></span>
+                 
+                </div>
+                <div class="clearfix  mb-2"></div>
+                <div class="nav-profile-text d-flex flex-column text-center">
+                  <span class="font-weight-bold mb-2">Today’s </span>
+                  <span class="text-secondary text-small">Delivery</span>
+                </div>-->
+							<div style="height: 100px; width: 100px; margin: 0 auto;">
+								<img id="faceImg"
+									src="../assets/eHealth/images/uttarakhand_logo.png"
+									alt="uttarakhand" class="img-fluid"
+									style="border-radius: 50%;">
+							</div>
+							
+							<div align="center" style="margin-top: 5px; font-size: 16px;">
+								Uttarakhand</div>
+							
+					</a></li>
+					<li class="nav-item nav-profile"><a href="javascript:void(0);"
+						class="nav-link">
+						<div style="height: 100px; width: 100px; margin: 0 auto;">
+								<img id="faceImg"
+									src="../assets/eHealth/images/uttarakhand_cm.jpg"
+									alt="sundargarh" class="img-fluid"
+									style="border-radius: 50%;">
+							</div>
+							<div align="center" style="margin-top: 15px; font-size: 16px;">
+								Shri Pushkar Singh Dhami</div>
+							<div align="center" style="margin-top: 5px; font-size: 16px;">Chief Minister 
+								</div>
+							<div align="center" style="margin-top: 5px; font-size: 16px;">Uttarakhand
+								</div>
+					</a></li>
+					<li class="nav-item nav-profile">
+              <a href="javascript:void(0);" class="nav-link">
+                <div align="center">
+                  <i class="fa fa-phone fa-5x"></i>
+                  <span class="login-status online"></span>
+                  <!--change to offline or busy as needed-->
+                </div>
+                <div class="clearfix  mb-2"></div>
+                <div class="nav-profile-text d-flex flex-column text-center">
+                  <span class="font-weight-bold mb-2">Toll Free No.</span>
+                  <span class="text-secondary text-small" style="font-size:30px;">1800 345 7461</span>
+                </div>
+                
+              </a>
+            </li>
+
+
+
+				</ul>
+			</nav>
+
+			<div class="main-panel">
+				<div class="content-wrapper" id="showdashboard" style="display:none;">
+					
+								<div id="myGrid" style="width: 100%; height: 550px;" class="ag-theme-alpine"></div>
+							
+				</div>
+				<div class="content-wrapper" id="hidedashboard">
+
+					<div class="row">
+
+
+
+						<div class="col-md-3 stretch-card padding_5">
+
+							<div class="card card-img-holder text-white"
+								style="background: #913ccd; height: 80px;">
+								<div class="card-body">
+									<a href="javascript:void(0)" onclick="hideDashboardContent('1')">
+										<!-- <a role="button" class="btn btn-primary" href="/user/ehealthcard-download-pdf">Generate PDF</a> -->
+										<div class="font-weight-normal" >Total Registrations</div>
+										 <h4  id="totalRegs"></h4> <i
+										class="mdi mdi-cash-register mdi-36px float-right icon"></i>
+									</a>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-md-3 stretch-card padding_5">
+							<div class="card card-img-holder text-white"
+								style="background: #f15f74; height: 80px;">
+								<div class="card-body">
+									<a href="javascript:void(0);" onclick="hideDashboardContent('2')">
+										<div class="font-weight-normal">Total Tested</div>
+										<h4 id="total_tested"></h4> <i
+										class="mdi mdi-account-card-details mdi-36px float-right icon"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 stretch-card padding_5">
+							<div class="card card-img-holder text-white"
+								style="background: #2ca8c2; height: 80px;">
+								<div class="card-body">
+									<a href="javascript:void(0);" onclick="hideDashboardContent('3')">
+										<div class="font-weight-normal">Total Normal</div>
+										<h4 id="total_normal"></h4> <i
+										class="mdi mdi-doctor mdi-36px float-right icon"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 stretch-card padding_5">
+							<div class="card card-img-holder text-white"
+								style="background: #839098; height: 80px;">
+								<div class="card-body">
+									<a href="javascript:void(0);" onclick="hideDashboardContent('4')">
+										<div class="font-weight-normal">Total Abnormal</div>
+										<h4 id="total_abnrml"></h4> <i
+										class="mdi mdi-human-child mdi-36px float-right icon"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 stretch-card padding_5">
+							<div class="card card-img-holder text-white"
+								style="background: #0b6eaa; height: 80px;">
+								<div class="card-body">
+									<a href="javascript:void(0);" onclick="hideDashboardContent('5')">
+										<div class="font-weight-normal">Total Highrisk</div>
+										<h4 id="total_highrisk"></h4> <i
+										class="mdi mdi-doctor mdi-36px float-right icon"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 stretch-card padding_5">
+							<div class="card card-img-holder text-white"
+								style="background: #f7a63c; height: 80px;">
+								<div class="card-body">
+									<a href="javascript:void(0);" onclick="hideDashboardContent('6')">
+										<div class="font-weight-normal">Todays Registrations</div>
+										<h4 id="todays_regs"></h4> <i
+										class="mdi mdi-cash-register mdi-36px float-right icon"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 stretch-card padding_5">
+							<div class="card card-img-holder text-white"
+								style="background: #01ac90; height: 80px;">
+								<div class="card-body">
+									<a href="javascript:void(0);" onclick="hideDashboardContent('2')">
+										<div class="font-weight-normal">Total Sample Collected</div>
+										<h4 id="total_smpl_clctd"></h4> <i
+										class="mdi mdi-water mdi-36px float-right icon"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 stretch-card padding_5">
+							<div class="card card-img-holder text-white"
+								style="background: #b146cc; height: 80px;">
+								<div class="card-body">
+									<a href="javascript:void(0);" onclick="hideDashboardContent('2')">
+										<div class="font-weight-normal">Total Sample Processed</div>
+										<h4 id="total_smpl_prcsd"></h4> <i
+										class="mdi mdi-water mdi-36px float-right icon"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+
+
+
+							<div class="row">
+								<div class="searchsec">
+									<div class="d-flex">
+										<div class="col-md-3  padding_5">
+											<input type="date" name="" class="form-control text-center"
+												value="2021-06-01">
+										</div>
+										<div class="col-md-3  padding_5">
+											<input type="date" name="" class="form-control text-center"
+												value="2021-06-30">
+										</div>
+										<div class="col-md-2  padding_5">
+											<select class="form-control">
+												<option>All Sundargarh</option>
+
+											</select>
+										</div>
+										<div class="col-md-2  padding_5">
+											<button class="btn btn-primary btn-block">Search</button>
+										</div>
+										<div class="col-md-2  padding_5">
+											<button class="btn btn-success btn-block">Download</button>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+
+							<div class="row">
+								<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<div style="float: right;">
+												<a href="javascript:void(0)" ><i
+													class="fa fa-search-plus" onclick="modalthree();"></i></a>
+											</div>
+											<h4 class="card-title float-left">Normal Abnormal
+												Combine</h4>
+										</div>
+										<div style="width: 100%;">
+											<div id="combineNormalAbNormal"></div>
+										</div>
+									</div>
+								</div>
+
+
+								<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<div style="float: right;">
+												<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal4"><i
+													class="fa fa-search-plus"></i></a>
+											</div>
+											<h4 class="card-title float-left">Total Health Checkup Male/Female</h4>
+										</div>
+										<div style="width: 100%;">
+											<div id="maleFemale"></div>
+										</div>
+									</div>
+								</div>
+
+
+						<!-- 		<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<div style="float: right;">
+												<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal5"><i
+													class="fa fa-search-plus"></i></a>
+											</div>
+											<h4 class="card-title float-left">Normal Abnormal Female</h4>
+										</div>
+										<div style="width: 100%;">
+											<div id="normalabnormalfemale"></div>
+										</div>
+									</div>
+								</div> -->
+						<!-- 		<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<div style="float: right;">
+												<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal6"><i
+													class="fa fa-search-plus"></i></a>
+											</div>
+											<h4 class="card-title float-left">Combine Normal
+												Abnormal High Risk Low Risk</h4>
+										</div>
+										<div style="width: 100%;">
+											<div id="combinehighlowrisk"></div>
+										</div>
+									</div>
+								</div> -->
+
+								<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<div style="float: right;">
+												<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal"><i
+													class="fa fa-search-plus"></i></a>
+											</div>
+											<h4 class="card-title float-left">Total Disease 
+												Area Wise</h4>
+										</div>
+										<div style="width: 100%; clear: left;">
+											<div class="highcharts-figure" id="area"
+												style="height: 300px;"></div>
+										</div>
+
+										<div></div>
+									</div>
+								</div>
+								<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+
+
+										<div class="col-md-12">
+
+											<h4 class="card-title">Total Health Check-up Age Wise</h4>
+										</div>
+										<div style="width: 100%; clear: left;">
+											<div class="highcharts-figure" id="age"
+												style="height: 300px;"></div>
+										</div>
+
+
+									</div>
+								</div>
+
+								<div class="col-md-6 padding_5">
+
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<div style="float: right;">
+												<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal1"><i
+													class="fa fa-search-plus"></i></a>
+											</div>
+											<h4 class="card-title float-left">Total High Risk Area
+												Wise</h4>
+										</div>
+										<div style="width: 100%; clear: left;">
+											<div class="highcharts-figure" id="piecontainer"
+												style="height: 300px;"></div>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<h4 class="card-title float-left">Total Abnormal Area
+												Wise</h4>
+										</div>
+										<div style="width: 100%; clear: both;">
+											<figure class="highcharts-figure">
+												<div id="activity" style="height: 300px;"></div>
+											</figure>
+										</div>
+									</div>
+								</div>
+	<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<h4 class="card-title float-left">Total High Risk
+												Disease Wise</h4>
+										</div>
+										<div style="width: 100%; clear: both;">
+											<figure class="highcharts-figure">
+												<div id="highrisk" style="height: 300px;"></div>
+											</figure>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6 padding_5">
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<h4 class="card-title float-left">Total Abnormal Disease
+												Wise</h4>
+										</div>
+										<div style="width: 100%; clear: both;">
+											<figure class="highcharts-figure">
+												<div id="abnormal" style="height: 300px;"></div>
+											</figure>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-6 padding_5">
+
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<div style="float: right;">
+												<a href="javascript:void(0);" data-toggle="modal" data-target="#myModal2"><i
+													class="fa fa-search-plus"></i></a>
+											</div>
+											<h4 class="card-title float-left">Total Normal Area Wise</h4>
+										</div>
+										<div style="width: 100%; clear: left;">
+											<div class="highcharts-figure" id="normalwise"
+												style="height: 300px;"></div>
+										</div>
+									</div>
+
+								</div>
+								<div class="col-md-6 padding_5">
+
+									<div class="card" style="background: #FFF; color: #333;">
+										<div class="col-md-12">
+											<h4 class="card-title float-left">Disease Wise Age Group
+											</h4>
+										</div>
+										<div style="width: 100%; clear: both; overflow: scroll;">
+											<figure class="highcharts-figure">
+												<div id="agewise" style="height: 300px; width: 1200px;"></div>
+											</figure>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				<footer class="footer">
+					<div class="container-fluid clearfix">
+						<span
+							class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright
+							© Ehealthsystem.in 2021</span>
+					</div>
+				</footer>
+				
+				<div id="myModal" class="modal fade" role="dialog">
+					<div class="modal-dialog madal-lg">
+
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<figure class="highcharts-figure">
+									<div id="area_zoom"></div>
+								</figure>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div id="myModal1" class="modal fade" role="dialog">
+					<div class="modal-dialog madal-lg">
+
+						
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<figure class="highcharts-figure">
+									<div id="piecontainer_zoom"></div>
+								</figure>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+
+				<div id="myModal2" class="modal fade" role="dialog">
+					<div class="modal-dialog madal-lg">
+
+						
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<figure class="highcharts-figure">
+									<div id="normalwise_zoom"></div>
+								</figure>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+
+				<div id="myModal3" class="modal fade" role="dialog">
+					<div class="modal-dialog madal-lg">
+
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<figure class="highcharts-figure">
+									<div id="combine_zoom"></div>
+								</figure>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div id="myModal4" class="modal fade" role="dialog">
+					<div class="modal-dialog madal-lg">
+
+						
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<figure class="highcharts-figure">
+									<div id="maleFemale_zoom"></div>
+								</figure>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+			<!--  	<div id="myModal5" class="modal fade" role="dialog">
+					<div class="modal-dialog madal-lg">
+
+						
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<figure class="highcharts-figure">
+									<div id="normalabnormalfemale_zoom"></div>
+								</figure>
+							</div>
+
+						</div>
+
+					</div>
+				</div> -->
+
+
+				<!-- <div id="myModal6" class="modal fade" role="dialog">
+					<div class="modal-dialog madal-lg">
+
+						
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="modal-body">
+								<figure class="highcharts-figure">
+									<div id="combinehighlowrisk_zoom"></div>
+								</figure>
+							</div>
+
+						</div>
+
+					</div>
+				</div> -->
+
+			</div>
+			<!-- main-panel ends -->
+<script src="../assets/js/extend/grid.js"></script>
+<script src="../assets/js/extend/tree-table.js"></script>
+<script src="../assets/js/extend/new-extend.js"></script>
+<script src="../assets/js/extend/date-format.js"></script>
+<script>
+function getAgGridData(id) {
+	var stateId = "";
+	 stateId=$("#stId").val();
+	 
+	var gridDiv = document.querySelector('#myGrid');
+	new agGrid.Grid(gridDiv, gridOptions);
+
+	gridOptions.api.setRowData();
+	
+	agGrid.simpleHttpRequest({
+		url : "cmdashboard-view-regd?stateId="+ stateId+"&typeId="+id,
+	}).then(function(data) {
+		gridOptions.api.setRowData(data);
+	});
+};
+
+var columnDefs = [ {
+	headerCheckboxSelection : true,
+	headerCheckboxSelectionFilteredOnly : true,
+	checkboxSelection : true,
+	width : 10,
+	sortable : false,
+	filter : false,
+	resizable : true
+}, {
+	headerName : "UserId",
+	field : "ehealthId"
+}, {
+	headerName : "Name",
+	field : "patName",
+	width : 185,
+}, {
+	headerName : "Mobile",
+	field : "patMob",
+	width : 185,
+}, {
+	headerName : "Email id",
+	field : "email",
+	width : 185,
+}, {
+	headerName : "Date",
+	field : "screeningDate",
+	width : 185,
+}, {
+
+
+	headerName : "Report",
+	field : "report",
+	width : 185,
+		cellRenderer: function(params) {
+	    	console.log(params); 
+	        s = "";
+	        s = ' <a href="#"  onclick="pdfGatePass(\''+params.data.ehealthId+'\')"><i class="ti ti-download"></i> Report</a>';
+             return s;
+		}
+		}
+];
+
+var gridOptions = {
+	columnDefs : columnDefs,
+	defaultColDef : {
+		sortable : true,
+		filter : true,
+		resizable : true,
+		width : 251,
+		height : 10
+	},
+	rowSelection : 'multiple',
+	suppressRowClickSelection : true,
+	
+
+};
+function pdfGatePass(id) {	
+	var id = window.btoa(id);
+	window.open("/user/view-patient-test-report-pdf-download?id=" +id , '_blank');
+}
+</script>
+</body>
+</html>

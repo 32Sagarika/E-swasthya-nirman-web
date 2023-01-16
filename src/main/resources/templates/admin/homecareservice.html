@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	//Document Ready For Page load
+
+	$(document).ready(function() {
+		$("#addTestList").hide();
+		$("#add").show();
+		$("#tab11").hide();
+		$("#edit").hide();
+		$("#deletes").show();
+		$("#add").show();
+		
+		
+		
+	});
+
+	$(document).ready(function() {
+		$("#showTab").show();
+		$("#delete").attr('disabled', true);
+		 var gridDiv2 = document.querySelector('#myGrid');
+			new agGrid.Grid(gridDiv2, gridOptions2);
+
+			agGrid.simpleHttpRequest({
+				url : "admin-homeCareServices-view"
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq').find('span').html(len);
+				gridOptions2.api.setRowData(data);
+				console.log(data)
+			});
+	});
+	
+	
+	//---------EDIT-------------
+	function editServiceDetails(id) {
+		$("#addData").show();
+		$("#myGrid").hide();
+		$("#new").hide();
+		$("#delete").hide();
+		$("#searchRowDiv").hide();
+		$("#totalReq").hide();
+		$.ajax({
+			type : "GET",
+			url : "admin-homeCareServices-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					openNav();
+					$("#myGrid").show();
+					$("#serviceId").val(response.body.serviceId);
+					$("#title").val(response.body.title);
+					$("#description").val(response.body.description);
+					
+					$('#frequentlyBooked').val(response.body.frequentlyBooked);
+					var frequentlyBooked = response.body.frequentlyBooked;
+					if (frequentlyBooked === 'No') {
+						$('#frequentlyBooked').prop('checked', false)
+
+					} else {
+						$('#frequentlyBooked').prop('checked', true)
+					}
+					
+					$("#featured").val(response.body.featured);
+					var featured = response.body.featured;
+					if (frequentlyBooked === 'No') {
+
+						$('#featured').prop('checked', false)
+
+					} else {
+						$('#featured').prop('checked', true)
+					}
+					
+					
+					
+				} else
+					("error" + console.message)
+			}
+		});
+
+	}
+	
+	/ ----------------ag grid for myGrid parent table----------- /	
+	
+	var columnDefs2 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	},{
+		headerName : 'Service Id ',
+		field : "serviceId",
+		cellRenderer : function(params) {
+			return '<a id="" onclick=editServiceDetails("'
+					+ params.data.serviceId
+					+ '") href="javascript:void(0)">'
+					+ params.data.serviceId + '</a>';
+		}
+	}, {
+		headerName : "Title",
+		field : "title",
+		width:420,
+	}, {
+		headerName : 'Description',
+		field : "description",
+		width:420
+	} ,
+	, {
+		headerName : 'Status',
+		field : "status",
+		cellStyle : {
+			textAlign : 'center'
+		},
+		cellRenderer : function(params) {
+			if (params.data.status == "1") {
+				return "IN-ACTIVE";
+			} else {
+				return "ACTIVE";
+			}
+		}
+	},{
+		headerName : 'Frequent',
+		field : "frequentlyBooked",
+		cellRenderer : function(params) {
+			
+			if (params.data.frequentlyBooked == "Yes" ) {
+				
+				return '<div class ="fa fa-check-circle"  style="color:green"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer")  > </div>';
+			} else  {
+			return '<div class ="fa fa-times"  style="color:red"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer")  > </div>';
+		}
+		}
+	},{
+		headerName : 'Feature',
+		field : "featured",
+	cellRenderer : function(params) {
+		
+		if (params.data.featured == "Yes" ) {
+			
+			return '<div class ="fa fa-check-circle"  style="color:green"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer")  > </div>';
+		} else  {
+		return '<div class ="fa fa-times"  style="color:red"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer")  > </div>';
+	}
+	}
+	}
+	
+	];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		onSelectionChanged : deleteDetailsfor,
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,
+	};
+
+	function deleteDetailsfor() {
+
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr('disabled', false);
+			$('#new').attr('disabled', true);
+		} else {
+			$('#delete').attr('disabled', true);
+			$('#new').attr('disabled', false);
+		}
+
+	}
+
+
+
+/ ---------------------------function for new button------------------ /
+function add() {
+	$("#serviceId").val('');
+	$("#title").val('');
+	$("#description").val('');
+	$("#frequentlyBooked").val('');
+	$("#featured").val('');
+	$('#new').hide();
+	$('#delete').hide();
+	$('#addData').show();
+	$('#myGrid').hide();
+	$('#searchRowDiv').hide();
+	$('#totalReq').hide();
+
+}
+/ -------------function for cancel button-------------- /
+function Cancel() {
+	$('#totalReq').show();
+	$('#searchRowDiv').show();
+	$('#new').show();
+	$('#delete').show();
+	$('#addData').hide();
+	$('#myGrid').show();
+	$("#serviceId").val('');
+	$("#title").val('');
+	$("#description").val('');
+	$("#frequentlyBooked").val('');
+	$("#featured").val('');
+}
+
+	
+	function saveTest() {
+		
+		var item1 = {};
+		var validation =true;
+				item1.serviceId = $("#serviceId").val();
+				item1.title = $("#title").val();
+				item1.description = $("#description").val();
+				item1.frequentlyBooked = $("#frequentlyBooked:checkbox:checked").val();
+				item1.featured = $("#featured:checkbox:checked").val();
+	           if (item1.frequentlyBooked == undefined) {
+					
+					item1.frequentlyBooked = "No";
+
+				} else {
+					item1.frequentlyBooked = "Yes";
+				}
+				if (item1.featured == undefined) {
+					
+					item1.featured = "No";
+
+				} else {
+					item1.featured = "Yes";
+				}
+				console.log(item1)
+											
+		
+		if(validation){
+		 $.ajax({
+			type : "POST",
+			url : "admin-homeCareServices-addDetails",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(item1),
+			success : function(response) {
+				if (response.message == "Success") {
+					console.log(response)
+					closeNav();
+					$('#new').show();
+					$('#delete').show();
+					agGrid.simpleHttpRequest({
+						url : "admin-homeCareServices-view"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalCandidate').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+				}
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+		}
+	}
+
+	function openNav() {
+		$('#add').attr('disabled', true);
+		$('#title').val("");
+		$('#description').val("");
+		$('#frequentlyBooked').val("");
+		$('#featured').val("");
+		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:18.6px; overflow: hidden; height:auto; top:7px;";
+
+		document.getElementById("main_content").style.width = "75%";
+	}
+
+	function closeNav() {
+		$('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+	
+	
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var id = selectedRows[0].serviceId;
+
+		$.ajax({
+			type : "POST",
+			url : "admin-homeCareServices-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : 'admin-homeCareServices-view',
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					})
+
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+	
+	
+	
+</script>
+
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div id="managetestlist">
+			<div id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="font-design" id="totalReq">
+									Services Listing (<span></span>)
+								</div>
+						</div>
+						<div class="col-md-6">
+							<button id="new" onclick="openNav()" class="btn1">NEW</button>
+							<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+					</div>
+
+					<!-- <div id="myGridassinlist" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div> -->
+
+					<div id="myGrid" style="width: 100%; height: 300px;"
+						class="ag-theme-alpine"></div>
+
+				</div>
+			</div>
+			<input type="hidden" id="serviceId"></input>
+			<div id="mySidenav" class="sidenav">
+				<div class="slidebox">
+					<div class="row" id="addData">
+						<div class="col-md-9">
+							<div class="edit">Add Services</div>
+						</div>
+						<!-- <div class="col-md-3">
+							<div class="arrow">
+								<a href="javascript:void(0)" class="closebtn"
+									onclick="closeNav()"><i class="ti-arrow-right"></i></a>
+							</div>
+						</div> -->
+
+						<div class="chartbtnsec1">
+							<div align="right">
+								<button class="btn4" onclick="closeNav()">CANCEL</button>
+								<button class="btn1" onclick="saveTest()">SAVE</button>
+
+							</div>
+						</div>
+
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Title</label> <input type="text"
+									class="form-control transparenttxtbox" placeholder="Enter Name"
+									id="title"> <input type="hidden" id="title">
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Description</label> <input type="text"
+									class="form-control transparenttxtbox" placeholder="Enter Name"
+									id="description"> <input type="hidden" id="description">
+							</div>
+						</div>
+						<div class="form-group ">
+							<label class="col-lg-6 col-form-label">frequently booked</label>
+							<div class="col-lg-12">
+								<input type="checkbox" id="frequentlyBooked"
+									name="slider[frequently_booked]" value="Yes">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-lg-6 col-form-label">frequently
+								Featured</label>
+							<div class="col-lg-12">
+								<input type="checkbox" id="featured"
+									name="slider[frequently_booked]" value="No">
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+
+
+				<div class="col-md-12 padding_5" id="addTestList">
+					<div class="row" id="showTab">
+						<div class="col-md-5 buttonsec btn-hs"></div>
+						<div class="col-md-7 buttonsec btn-hs">
+							<button id="add" class="btn1" onclick="addTestNameDetails()">SAVE</button>
+							<button id="deletes" class="btn4" onclick="cancelEmp()">CANCEL</button>
+							<input type="hidden" id="pckgId">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

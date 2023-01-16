@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<script type="text/javascript">
+$( document ).ready(function() {
+	$.ajax({
+		type : 'GET',
+		url : 'project-dashboard-priority-pie',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			console.log(response)
+			if (response.body.length != 0) {
+				projectPriorityPie(response.body, [], '');
+	        } else {
+	        	projectPriorityPie("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'project-dashboard-department-graph',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			//console.log("Department")
+			console.log(response)
+			if (response.body.length != 0) {
+				departmentGraph(response.body, [], '');
+	        } else {
+	        	departmentGraph("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	$.ajax({
+		type : 'GET',
+		url : 'project-dashboard-hours-graph',
+		contentType : 'application/json',
+		async:false,
+		success : function(response) {
+			console.log("budget hour")
+			console.log(response)
+			if (response.body.length != 0) {
+				budgetHourGraph(response.body, [], '');
+	        } else {
+	        	budgetHourGraph("", [], '');
+	        }
+		},
+		error:function(err){
+			console.log(err)
+		}
+	});
+	
+
+	
+});
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="maincontentsec">
+					<!--Total count sections -->
+					<!--Total Projects-->
+					<div class="row">
+						<div class="col-md-4">
+							<div class="box_yellow">
+								<div class="inner-box-number" th:text="${totalProjects[0].key}">4,000</div>
+								<div class="inner-box-text">Total Projects</div>
+							</div>
+						</div>
+						<!--Total Internal Projects-->
+
+						<div class="col-md-4">
+							<div class="box_green">
+								<div class="inner-box-number"
+									th:text="${internalProjects[0].key}">4,000</div>
+								<div class="inner-box-text">Intenal Projects</div>
+							</div>
+						</div>
+						<!--Total External Projects-->
+						<div class="col-md-4">
+							<div class="box_pink">
+								<div class="inner-box-number"
+									th:text="${externalProjects[0].key}">4,000</div>
+								<div class="inner-box-text">External Projects</div>
+							</div>
+						</div>
+
+						<!--Total count sections ends-->
+					</div>
+					<!-- Pie chart for project priority starts-->
+					<div class="row">
+						<div class="col-md-6 margin_topbot20">
+							<div class="dashboard_box">
+								<div class="dashboard_subheading">
+									Project Priority
+									<div class="float-right">
+										<a href="javascript:void(0)" id="barChartInv1"><i
+											class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+											id="tableInv1"><i class="ti-layout-grid3"></i></a>
+									</div>
+								</div>
+
+								<div id="invChartDiv1">
+									<div class="highcharts-figure">
+										<div id="priorityPie" style="height: 400px;"></div>
+									</div>
+								</div>
+								<div class="row" id="invTableDiv1">
+									<div class="col-lg-12">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Priority</th>
+													<th>No. of Projects</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${projectPriorityList}">
+													<td th:text="${c.key}"></td>
+													<td th:text="${c.name}"></td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Pie chart for project priority starts-->
+						<!-- Table for project starts-->
+
+						<div class="col-md-6 margin_topbot20">
+							<div class="dashboard_box">
+						<div class="dashboard_subheading">Projects Budget</div>
+							
+								<div class="highcharts-figure" id="invChartDiv1">
+									<div id="projectHours" style="height: 300px;"></div>
+								</div>
+								<div class="dashboard_subheading">Total Report</div>
+								<div class="row" id="invTableDiv1">
+									<div class="col-lg-12">
+										<table class="table table-responsive table-bordered">
+											<thead>
+												<tr>
+													<th>Project Name</th>
+													<th>Owner Name</th>
+													<th>Total Employee</th>
+													<th>Budget Hours</th>
+													<th>Allocated Hours</th>
+													<th>Budget</th>
+
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="c,iter:${projectTable}">
+													<td th:text="${c.projectName}"></td>
+													<td th:text="${c.ownerName}"></td>
+													<td th:text="${c.totalEmployee}"></td>
+													<td th:text="${c.budgetHour}"></td>
+													<td th:text="${c.allocatedHour}"></td>
+													<td th:text="${c.budget}"></td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="dashboard_box graybox">
+											<div class="inner-box-number" th:text="${totalBudget[0].name}">300</div>
+											<div class="inner-box-text">Total Budget</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="dashboard_box graybox">
+											<div class="inner-box-number" th:text="${noResource[0].name}">200</div>
+											<div class="inner-box-text">Total Budget no resource</div>
+										</div>
+									</div>
+									
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Table for project starts-->
+					<div class="col-md-6 margin_topbot20">
+						<div class="dashboard_box">
+							<div class="dashboard_subheading">
+								Department wise project
+								<div class="float-right">
+									<a href="javascript:void(0)" id="pobarChartInv"><i
+										class="ti-bar-chart"></i></a> <a href="javascript:void(0)"
+										id="potableInv"><i class="ti-layout-grid3"></i></a>
+								</div>
+							</div>
+							<div class="highcharts-figure" id="poinvChartDiv">
+								<div id="departmentGraph" style="height: 390px;"></div>
+							</div>
+
+
+							
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+
+</html>

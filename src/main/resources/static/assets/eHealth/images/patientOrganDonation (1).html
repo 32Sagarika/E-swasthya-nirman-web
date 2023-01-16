@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+.form-box{
+background-color:#fff;
+box-shadow:0 1px 6px 0 rgb(32 33 36 / 28%);
+}
+.font-design1{
+background-color:#12b3bb;
+padding:10px;
+color:#fff;}
+.form-inr{
+padding:20px;}
+.formValidation1 {
+	font-size: 13px;
+	font-weight: 100;
+	color: #FF0000;
+	background-color: transparent;
+	position: relative;
+	top: -1px;
+	padding: 3px 0
+}
+.patient-mnbox{
+background-color:#f0f0f0;
+margin-bottom:20px;
+padding:20px 0px;
+}
+    .bx-section{
+      cursor: pointer;
+    }
+    .box{
+      background-color: #fdfdfd;
+      padding: 28px 10px;
+      text-align: center;
+      box-shadow: 0 2px 10px -5px #777;
+      border-radius: 15px;
+      margin: 10px 0px;
+      height: 110px;
+      width: 150px;
+      cursor: pointer;
+    }
+   
+    .btm-txt{
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .box img{
+      height: 55px;
+    }
+    .cnt-head{
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .modal-cnt{
+    font-size:14px;
+    color:#929292;
+    margin-bottom:20px;
+    }
+    .mrg-tp5{
+    margin-top:5%;
+    }
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var dateFormat = localStorage.getItem("dateFormat");
+		$("#dateofBirthId").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+			scriollMonth : false,
+			 onSelect: function (value, ui) {
+                 var today = new Date();
+                 age = today.getFullYear() - ui.selectedYear;
+                 $('#ageId').val(age);
+             },
+             changeMonth: true,
+             changeYear: true
+		})
+		$("#wittness1dateofBirthId").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+			scriollMonth : false
+		})
+		$("#wittness2dateofBirthId").datetimepicker({
+			format : dateFormat,
+			closeOnDateSelect : true,
+			timepicker : false,
+			scriollMonth : false
+		})
+	/* 	$("#dateofBirthId").datepicker({
+   		 onSelect: function(value, ui) {
+       	 var today = new Date(),
+            age = today.getFullYear() - ui.selectedYear;
+        	$('#ageId').val(age);
+  	  	},
+       dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true,yearRange:"c-100:c+0"
+   		}); */
+		var gridDiv1 = document.querySelector('#myGrid1');
+		new agGrid.Grid(gridDiv1, gridOptions1);
+
+		var gridDiv2 = document.querySelector('#myGrid2');
+		new agGrid.Grid(gridDiv2, gridOptions2);
+
+		agGrid.simpleHttpRequest({
+			url : "patient-organ-donation-organ-list"
+		}).then(function(data) {
+			var len = data.length;
+			gridOptions1.api.setRowData(data);
+		});
+		agGrid.simpleHttpRequest({
+			url : "patient-organ-donation-tissue-list"
+		}).then(function(data) {
+			var len = data.length;
+			gridOptions2.api.setRowData(data);
+		});
+		$("#maincontent2").hide();
+	});
+
+	//first grid
+	var columnDefs1 = [ {
+		headerCheckboxSelection : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : "Organ Name",
+		field : "name"
+	} ];
+
+	// let the grid know which columns and what data to use
+	var gridOptions1 = {
+		columnDefs : columnDefs1,
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		onSelectionChanged : rowSelectId1,
+		rowHeight : 40,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 600
+		}
+	};
+	//second grid
+	var columnDefs2 = [ {
+		headerCheckboxSelection : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : "Tissue Name",
+		field : "name"
+	} ];
+
+	//let the grid know which columns and what data to use
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		rowSelection : 'multiple',
+		groupSelectsChildren : true,
+		suppressRowClickSelection : true,
+		suppressAggFuncInHeader : true,
+		onSelectionChanged : rowSelectId2,
+		rowHeight : 40,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 600
+		}
+
+	}
+	var selectedId1 = [];
+	function rowSelectId1() {
+		var selectedRows = gridOptions1.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+		selectedId1 = [];
+		for (var i = 0; i < selectedRows.length; i++) {
+			selectedId1.push(selectedRows[i].key);
+		}
+		console.log(selectedId1)
+	}
+	selectedId2 = [];
+	function rowSelectId2() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+		selectedId2 = [];
+		for (var i = 0; i < selectedRows.length; i++) {
+			selectedId2.push(selectedRows[i].key);
+		}
+		console.log(selectedId2)
+	}
+	function next() {
+		 var validation = true;
+		 var data = {};
+			var data1 = {};
+			var data2 = {};
+			var organs = selectedId1;
+			var tissues = selectedId2;
+			var witnesses = [];
+		 $(".formValidation").remove();
+		 
+		 	data.donorName = $("#donorNameId").val();
+			data.donorType = $("#sonOfId").val();
+			data.typeUserName = $("#donorPersonNameId").val();
+			data.dob = $("#dateofBirthId").val();
+			data.age = $("#ageId").val();
+			data.bldGr = $("#bloodGroupid").val(); 
+			data.mob = $("#mobileNoId").val();
+			data.email = $("#emailId").val();
+			data.address = $("#addressId").val();
+			data.organList = organs;
+			data.tissueList = tissues;
+			data.witnessList = witnesses;
+			
+			 	if (data.donorName == null || data.donorName == "") {
+			        validation = validationUpdated("Donor Name Required", "donorNameId");
+			    }
+			    if (data.donorType == null || data.donorType == "") {
+			        validation = validationUpdated("Donor Type Required", "sonOfId");
+			    }
+			    if (data.typeUserName == null || data.typeUserName == "") {
+			        validation = validationUpdated("Type Username Required", "donorPersonNameId");
+			    }
+			    if (data.dob  == null || data.dob  == "") {
+			        validation = validationUpdated("Date of Birth Required", "dateofBirthId ");
+			    }
+			    if (data.age == null || data.age == "") {
+			        validation = validationUpdated("Age Required", "ageId");
+			    }
+			    if (data.bldGr == null || data.bldGr == "") {
+			        validation = validationUpdated("BloodGroup Required", "bloodGroupid");
+			    }
+			   if (data.mob  == null || data.mob  == "") {
+			        validation = validationUpdated("Mobile No Required", "mobileNoId");
+			    } 
+			    if (data.address  == null || data.address  == "") {
+			        validation = validationUpdated("Address Required", "addressId");
+			    }
+			    if ((data.organList  == null || data.organList  == "") && (data.tissueList  == null || data.tissueList  == "" )
+			    		&& $("#donorNameId").val() !== "" 
+			    		&& $("#sonOfId").val() !== "" && $("#donorPersonNameId").val() !== "" && $("#dateofBirthId").val() !== ""
+			    		&&  $("#ageId").val() !== "" && $("#bloodGroupid").val() !== "" && $("#mobileNoId").val()!== "" && $("#addressId").val() !== "") {
+			    	validation = false;
+			    	swal("Please Select Atleast one Organ or Tissue ");
+			    }
+			    mobVal();
+			    ageVal();
+			if (validation && mobValid && ageValid){
+				$("#maincontent1").hide();
+				$("#maincontent2").show();
+			}
+	}
+	function cancel() {
+		$("#maincontent1").show();
+		$("#maincontent2").hide();
+	}
+	function save() {
+		var validation = true;
+		var data = {};
+		var data1 = {};
+		var data2 = {};
+		var organs = selectedId1;
+		var tissues = selectedId2;
+		var witnesses = [];
+
+		data1.donorName = $("#wittness1NameId").val();
+		data1.donorType = $("#sonOfWittness1Id").val();
+		data1.typeUserName = $("#wittness1PersonId").val();
+		data1.mob = $("#wittness1mobileNoId").val();
+		data1.email = $("#wittness1emailId").val();
+		data1.age = $("#wittness1ageId").val();
+		data1.address = $("#wittness1addressId").val();
+		data1.relation = $("#wittness1relationId").val();
+		
+		if (data1.donorName == null || data1.donorName == "") {
+	        validation = validationUpdated("Donor Name Required", "wittness1NameId");
+	    }
+	    if (data1.donorType == null || data1.donorType == "") {
+	        validation = validationUpdated("Donor Type Required", "sonOfWittness1Id");
+	    }
+	    if (data1.typeUserName == null || data1.typeUserName == "") {
+	        validation = validationUpdated("Type Username Required", "wittness1PersonId");
+	    }
+	    if (data1.mob  == null || data1.mob  == "") {
+	        validation = validationUpdated("Mobile No Required", "wittness1mobileNoId");
+	    }
+	    if (data1.age == null || data1.age == "") {
+	        validation = validationUpdated("Age Required", "wittness1ageId");
+	    }
+  	   if (data1.address  == null || data1.address  == "") {
+	        validation = validationUpdated("Address Required", "wittness1addressId");
+	    }
+  	   if (	data1.relation == null || 	data1.relation == "") {
+	        validation = validationUpdated("Relation Required", "wittness1relationId");
+	    } 
+
+		witnesses.push(data1);
+		
+		if($("#wittness2NameId").val() != null && $("#wittness2NameId").val() != "") {
+			data2.donorName = $("#wittness2NameId").val();
+			data2.donorType = $("#sonOfWittness2Id").val();
+			data2.typeUserName = $("#wittness2PersonId").val();
+			data2.mob = $("#wittness2mobileNoId").val();
+			data2.email = $("#wittness2emailId").val();
+			data2.age = $("#wittness2ageId").val();
+			data2.address = $("#wittness2addressId").val();
+			data2.relation = $("#wittness2relationId").val();
+			
+
+			witnesses.push(data2);
+		}
+
+		
+
+		data.donorName = $("#donorNameId").val();
+		data.donorType = $("#sonOfId").val();
+		data.typeUserName = $("#donorPersonNameId").val();
+		data.dob = $("#dateofBirthId").val();
+		data.age = $("#ageId").val();
+		data.bldGr = $("#bloodGroupid").val(); 
+		data.mob = $("#mobileNoId").val();
+		data.email = $("#emailId").val();
+		data.address = $("#addressId").val();
+		data.organList = organs;
+		data.tissueList = tissues;
+		data.witnessList = witnesses; 
+		console.log(data);
+		 if (validation) {
+			
+			  $.ajax({
+				type : "POST",
+				url : "patient-organ-donation-save-data",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(data),
+				success : function(response) {
+					if (response.message == "Success") {
+						$("#maincontent1").show();
+						$("#maincontent2").hide(); 
+						window.location.reload(true);
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			}) 
+		} 
+	}
+	
+	//Mobile Number validation
+	var mobValid;
+
+	function mobVal() {
+	    var mob = $('#mobileNoId').val(); 
+	    var phoneno = /^\d{10}$/;
+
+	    if (mob != '') {
+	        if (mob.match(phoneno)) {
+	            $("#error3").hide();
+	            mobValid = true;
+	            return true;
+	        } else {
+	            $("#error3").html("please enter  10 digit mobile number  ex:7089451278");
+	            mobValid = false;
+	            return false;
+	        }
+	    } 
+	}
+	//Age validation
+	var ageValid;
+
+	function ageVal() {
+	    var age = $('#ageId').val(); 
+	    var valAge = /^\+?[0-9(),.-]+$/;
+
+	    if (age != '') {
+	        if (age.match(valAge)) {
+	            $("#error2").hide();
+	            ageValid = true;
+	            return true;
+	        } else {
+	            $("#error2").html("Please Enter Only Numbers");
+	            ageValid = false;
+	            return false;
+	        }
+	    } 
+
+	}
+	
+</script>
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div id="maincontent1" >
+		<div class="patient-mnbox">
+		  <div class="row">
+    <div class="col-md-3"  align="center">
+      <div class="bx-section" data-toggle="modal" data-target="#myModal">
+      <div class="box"><img src="../assets/eHealth/images/organ1.jpg" class="img-fluid"></div>
+      <div class="btm-txt">What is Organ Donation ?</div>
+    </div>
+  </div>
+    <div class="col-md-3"  align="center">
+      <div class="bx-section" data-toggle="modal" data-target="#myModal2">
+      <div class="box"><img src="../assets/eHealth/images/organ2.jpg" class="img-fluid"></div>
+      <div class="btm-txt">Who Can Donate ?</div>
+    </div>
+  </div>
+    <div class="col-md-3"  align="center">
+      <div class="bx-section" data-toggle="modal" data-target="#myModal3">
+      <div class="box"><img src="../assets/eHealth/images/organ3.jpg" class="img-fluid"></div>
+      <div class="btm-txt">Which Organs ?</div>
+    </div>
+  </div>
+    <div class="col-md-3"  align="center">
+      <div class="bx-section" data-toggle="modal" data-target="#myModal4">
+      <div class="box"><img src="../assets/eHealth/images/organ4.jpg" class="img-fluid"></div>
+      <div class="btm-txt">How to Donate ?</div>
+    </div>
+    </div>
+  </div>
+  </div>
+			<div class="row">
+				<div class="col-md-6  btn-hs">
+					<div class="font-design" id="totalEmp">Donor Application</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Donor Name</label> <input type="text" name="pets" value=""
+							placeholder="Person Name" class="form-control" id="donorNameId" th:value="${donorDetailsList.donorName}" disabled="disabled">
+					</div>
+				</div>
+				<div class="col-md-2">
+				<label>&nbsp;</label>
+					<div class="select" id="" style="margin-top: -15px;">
+						<select id="sonOfId" class="form-control">
+							<!-- <option value="">Select</option> -->
+							<option value="s">S/O</option>
+							<option value="d">D/O</option>
+							<option value="w">W/O</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+					<label>&nbsp;</label>
+						<input type="text" name="pets" value="" placeholder="Person Name"
+							class="form-control" id="donorPersonNameId">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Date Of Birth</label> <input type="text" name="pets"
+							value="" placeholder="Date Of Birth" class="form-control" th:value="${donorDetailsList.dob}"
+							id="dateofBirthId">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Age</label> <input type="text" name="pets" value=""
+							placeholder="AGE:Years" class="form-control" id="ageId">
+							<span id="error2" class="formValidation1" disabled="disabled"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+				<label>Blood Group</label> 
+					<div class="select" id="witness1BloodGroupId">
+						<select id="bloodGroupid" class="form-control">
+							<option value="">--Select Blood Group --</option>
+							<option th:each="c,iter:${bloodGroupList}" th:value="${c.key}"
+								th:text="${c.name}" th:selected="${donorDetailsList.bldGr==c.key}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Mobile</label> <input type="text" name="pets" value=""
+							placeholder="Mobile Number" class="form-control" id="mobileNoId" th:value="${donorDetailsList.mob}" disabled="disabled">
+							<span id="error3" class="formValidation1"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Email Id</label> <input type="text" name="pets" value=""
+							placeholder="Email ID(Optional)" class="form-control" th:value="${donorDetailsList.email}"
+							id="emailId">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label>Address</label> <input type="text" name="pets" value="" th:value="${fulladdress}"
+							placeholder="Full Address" class="form-control" id="addressId">
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="row">
+				<div class="col-md-6" style="margin-top: 5%;">
+					<div id="myGrid1" style="width: 100%; height: 200px;"
+						class="ag-theme-alpine"></div>
+				</div>
+				<div class="col-md-6" style="margin-top: 5%;">
+					<div id="myGrid2" style="width: 100%; height: 200px;"
+						class="ag-theme-alpine"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 margin_topbot">
+
+					<button class="btn1" id="nextButttonId" onclick="next();">Next</button>
+				</div>
+			</div>
+		</div>
+		<div id="maincontent2">
+			<div class="row">
+				<!-- 		html code for wittness 1 starts -->
+				<div class="col-md-6  btn-hs">
+				<div class="form-box">
+					<div class="font-design1" id="wittness1Id">Witness 1</div>
+					<div class="form-inr">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Witness Name</label> <input type="text" name="pets"
+									value="" placeholder="Person Name" class="form-control"
+									id="wittness1NameId">
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="select" id="">
+								<select id="sonOfWittness1Id" class="form-control">
+									<option value="">Select</option>
+									<option value="s">S/O</option>
+									<option value="d">D/O</option>
+									<option value="w">W/O</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input type="text" name="pets" value=""
+									placeholder="Person Name" class="form-control"
+									id="wittness1PersonId">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="select" id="dropDownHis">
+								<label>Relation</label> <select id="wittness1relationId"
+									class="form-control">
+									<option value="">--Select Relation --</option>
+									<option th:each="c,iter:${relationList}" th:value="${c.key}"
+										th:text="${c.name}"></option>
+								</select>
+							</div>
+						</div>
+
+						<!-- <div class="col-md-6">
+							<div class="form-group">
+								<label>Date Of Birth</label> <input type="text" name="pets"
+									value="" placeholder="Date Of Birth" class="form-control"
+									id="wittness1dateofBirthId">
+							</div>
+						</div> -->
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Age</label> <input type="text" name="pets" value=""
+									placeholder="AGE:Years" class="form-control"
+									id="wittness1ageId">
+							</div>
+						</div>
+						<!-- <div class="col-md-6">
+							<div class="select" id="dropDownHis">
+							<label>BLOOD GROUP</label>
+								<select id="wittness1BloodId" class="form-control">
+									<option value="">--Select Blood Group --</option>
+									<option th:each="c,iter:${bloodGroupList}" th:value="${c.key}"
+										th:text="${c.name}"></option>
+								</select>
+							</div>
+						</div> -->
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Mobile</label> <input type="text" name="pets" value=""
+									placeholder="Mobile Number" class="form-control"
+									id="wittness1mobileNoId">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Email Id</label> <input type="text" name="pets" value=""
+									placeholder="Email ID(Optional)" class="form-control"
+									id="wittness1emailId">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Address</label> <textarea name="pets" value=""
+									placeholder="Full Address" class="form-control"
+									id="wittness1addressId"></textarea>
+							</div>
+						</div>
+				</div>
+				</div>
+				</div>
+				</div>
+				<!-- 		html code for wittness 1 ends -->
+
+				<!-- 		html code for wittness 2 starts -->
+				<div class="col-md-6  btn-hs">
+				<div class="form-box">
+					<div class="font-design1" id="wittness2Id">Witness 2</div>
+					<div class="form-inr">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Witness Name</label> <input type="text" name="pets"
+									value="" placeholder="Person Name" class="form-control"
+									id="wittness2NameId">
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<div class="select" id="">
+								<select id="sonOfWittness2Id" class="form-control">
+									<option value="">Select</option>
+									<option value="s">S/O</option>
+									<option value="d">D/O</option>
+									<option value="w">W/O</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input type="text" name="pets" value=""
+									placeholder="Person Name" class="form-control"
+									id="wittness2PersonId">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="select" id="dropDownHis">
+								<label>Relation</label> <select id="wittness2relationId"
+									class="form-control">
+									<option value="">--Select Relation --</option>
+									<option th:each="c,iter:${relationList}" th:value="${c.key}"
+										th:text="${c.name}"></option>
+								</select>
+							</div>
+						</div>
+						<!-- <div class="col-md-6">
+							<div class="form-group">
+								<label>Date Of Birth</label> <input type="text" name="pets"
+									value="" placeholder="Date Of Birth" class="form-control"
+									id="wittness2dateofBirthId">
+							</div>
+						</div> -->
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Age</label> <input type="text" name="pets" value=""
+									placeholder="AGE:Years" class="form-control"
+									id="wittness2ageId">
+							</div>
+						</div>
+						<!-- <div class="col-md-6">
+							<div class="select" id="dropDownHis">
+							<label>Blood Group</label>
+								<select id="wittness2BloodId" class="form-control">
+									<option value="">--Select Blood Group --</option>
+									<option th:each="c,iter:${bloodGroupList}" th:value="${c.key}"
+										th:text="${c.name}"></option>
+								</select>
+							</div>
+						</div> -->
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Mobile</label> <input type="text" name="pets" value=""
+									placeholder="Mobile Number" class="form-control"
+									id="wittness2mobileNoId">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Email Id</label> <input type="text" name="pets" value=""
+									placeholder="Email ID(Optional)" class="form-control"
+									id="wittness2emailId">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Address</label> <textarea name="pets" value=""
+									placeholder="Full Address" class="form-control"
+									id="wittness2addressId"></textarea>
+							</div>
+						</div>
+					<!-- 		html code for wittness 2 ends -->
+				</div>
+				</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 margin_topbot">
+						<button class="btn1" id="submit" onclick="save();">Submit</button>
+						<button class="btn3" id="cancelId" onclick="cancel()">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg mrg-tp5">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">What is Organ Donation ?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="cnt-head">Organ Donation</div>
+          <div class="modal-cnt">We humbly request all the professionals working in the healthcare sector to come forward and make a contribution by wilfully submitting your consent form for organ donation. Only you can save someone’s life by donating your organs. Even, in case, if you are in need of an organ in your lifetime, you would get preference in getting in an organ if you have pledged yourself to donate an organ using eHealthSystem.</div>
+
+
+          <div class="cnt-head">What is Organ Donation ?</div>
+          <div class="modal-cnt">Organ donation is the act of giving organs (living or dead) to someone who needs an organ to survive. Organ donation remains strictly confidential for both the donor and the recipient.</div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+   <div class="modal" id="myModal2">
+    <div class="modal-dialog modal-lg mrg-tp5">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Who Can Donate ?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="cnt-head">Who Can Donate ?</div>
+          <div class="modal-cnt">A living, brain dead or deceased person can donate organs. If living, any person above 18 years of age is eligible to donate. A brain dead person can donate upto 8 organs. After death, the whole body can be donated.</div>
+
+          
+          <div class="cnt-head">What is a brain-dead condition ?</div>
+          <div class="modal-cnt">The total and irreversible loss of all brain functions. The ability to breath is lost and the person’s body can only be maintained artificially for few hours. Family members of such patients should immediately contact the transplant coordinator for donating the organs. There is no age limit for brain-dead cases and any person male or female can donate the organs.</div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+     <div class="modal" id="myModal3">
+    <div class="modal-dialog modal-lg mrg-tp5">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Which Organs ?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="cnt-head">Which organs can be donated ?</div>
+          <div class="modal-cnt">While alive, you can donate a kidney, some portion of liver, and bone marrow. If in a brain dead state, one can donate Heart, Kidney, Liver, Intestines, Skin, Cornea, Lungs and Pancreas.</div>
+
+          
+          <div class="cnt-head">In how much time the Organ should be donated ?</div>
+          <div class="modal-cnt">After approval from the transplant center, concerned health authorities, and the family members, doctors can begin the necessary procedure.</div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+       <div class="modal" id="myModal4">
+    <div class="modal-dialog modal-lg mrg-tp5">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">How to Donate ?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="cnt-head">What is the procedure of Organ Donation ?</div>
+          <div class="modal-cnt">Any living person can sign up the organ donation form and pledge to be an organ donor. When the person is brain dead, the family members should immediately contact transplant coordinators. After medical evaluation, the necessary organs are retrieved for transplantation. Anyone who has pledged to be an organ donor should always inform the close family members about their wish. After donation there is no difficulty during cremation. All the information of the donor and the receiver is kept confidential.</div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+   
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

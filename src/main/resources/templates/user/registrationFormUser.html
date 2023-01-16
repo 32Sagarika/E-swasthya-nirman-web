@@ -1,0 +1,4535 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+<title>e-HealthSystem</title>
+<!-- <title>GoCool-Online</title> -->
+<!-- Styles -->
+<!-- font css -->
+<link href="../assets/css/lib/font-awesome.min.css" rel="stylesheet">
+<!-- <link href="../assets/css/lib/themify-icons.css" rel="stylesheet"> -->
+<link href="../assets/css/extend/themify-icons.css" rel="stylesheet">
+
+
+<!-- for sidebar css -->
+<link href="../assets/css/lib/menubar/sidebar.css" rel="stylesheet">
+<!-- bootstrap css -->
+<link href="../assets/css/lib/bootstrap.min.css" rel="stylesheet">
+<!--  <link href="../assets/css/lib/helper.css" rel="stylesheet"> -->
+<!-- <link href="../assets/css/style.css" rel="stylesheet"> -->
+<!-- bootstrap Datepicker css -->
+<link rel="stylesheet" href="../assets/css/bootstrap-datepicker.css">
+<link rel="stylesheet"
+	href="../assets/css/jquery.datetimepicker.min.css">
+<!-- bootstrap datatable  -->
+<link href="../datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
+<link href="../assets/css/lightbox.min.css" rel="stylesheet">
+
+<script src="../assets/js/lib/jquery-3.4.1.min.js"></script>
+<script src="../assets/js/lib/bootstrap.min.js"></script>
+
+<script src="../assets/highchart/high.js"></script>
+
+
+<!--  for extend  style css -->
+<link rel="stylesheet" href="../assets/css/extend/style-extend.css">
+
+<!-- Validator css Starts -->
+
+<link rel="stylesheet" href="../assets/css/sweetalert2.min.css">
+<!-- Validator css End -->
+<!-- Validator Js starts -->
+<script src="../assets/js/validate.js"></script>
+<script src="../assets/js/jquery.datetimepicker.js"></script>
+
+<script src="../assets/js/sweetalert2.all.min.js"></script>
+<script src="../assets/js/lightbox.min.js"></script>
+<!-- Validator Js Ends -->
+
+<script src="../assets/highchart/highcharts.js"></script>
+<script src="../assets/highchart/series-label.js"></script>
+<script src="../assets/highchart/exporting.js"></script>
+<script src="../assets/highchart/export-data.js"></script>
+<script src="../assets/highchart/high.js"></script>
+<!-- for ag grid -->
+
+<script src="../assets/js/extend/grid.js"></script>
+<script src="../assets/js/extend/tree-table.js"></script>
+<script src="../assets/js/extend/new-extend.js"></script>
+<script src="../assets/js/extend/date-format.js"></script>
+
+<!-- for Slimselect -->
+<script src="../assets/js/extend/slimselect.min.js"></script>
+<link rel="stylesheet" href="../assets/css/extend/slimselect.min.css">
+<!-- for mandatory fields -->
+<script src="../assets/js/extend/validator.js"></script>
+<script src="../assets/js/extend/multifield.js"></script>
+<link rel="stylesheet" href="../assets/css/extend/fv.css">
+
+<style type="text/css">
+.loader {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	text-align: center;
+	z-index: 999;
+	overflow: auto
+}
+
+.loading-image {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 10;
+}
+.check-text {
+    font-size: 16px;
+    color: #01215e;
+}
+input[type="text"]::placeholder {
+	color: #495057;
+	font-size: 1rem;
+}
+/* some basic styles. nothing to do with flexbox */
+header, footer, nav, article, aside {
+	/* border: 1px solid black; */
+	padding: 0.25em;
+	margin: 0.25em;
+	border-radius: 0.25em;
+}
+
+/*
+        Force full width & height.
+
+        If this block is removed, the layout height/length will be determined by
+        the amount of content in the page. That might result in a page which has
+        a footer only a few inches from the top of the viewport, or one which
+        scrolls beyond the viewport.
+
+        This forces the layout to always be full screen regardless of how much,
+        or how little, content is in place. Neither is "right" or "wrong", there
+        are valid cases for each. I just want to be clear what's controlling the
+        page/viewport height.
+      */
+html, body, .viewport {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+/* encapsulate the various syntax in helper clases */
+/* inspired by http://infrequently.org/2009/08/css-3-progress/ */
+
+/* items flex/expand vertically */
+.vbox {
+	/* previous syntax */
+	display: -webkit-box;
+	display: -moz-box;
+	display: box;
+	-webkit-box-orient: vertical;
+	-moz-box-orient: vertical;
+	-ms-box-orient: vertical;
+	box-orient: vertical;
+	/* current syntax */
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+}
+
+/* items flex/expand horizontally */
+.hbox {
+	/* previous syntax */
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-box;
+	display: box;
+	-webkit-box-orient: horizontal;
+	-moz-box-orient: horizontal;
+	-ms-box-orient: horizontal;
+	box-orient: horizontal;
+	/* current syntax */
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	flex-direction: row;
+}
+
+.space-between {
+	/* previous syntax */
+	-webkit-box-pack: justify;
+	-moz-box-pack: justify;
+	-ms-box-pack: justify;
+	box-pack: justify;
+	/* current syntax */
+	-webkit-justify-content: space-between;
+	-moz-justify-content: space-between;
+	-ms-justify-content: space-between;
+	justify-content: space-between;
+}
+
+/* I went with a fixed height header & footer because it's a common case.
+        This could easily be altered to flex proportionally with the page.
+      */
+header, footer {
+	height: auto;
+}
+
+.main {
+	/* previous syntax */
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-ms-box-flex: 1;
+	box-flex: 1;
+	/* current syntax */
+	-webkit-flex: 3;
+	-moz-flex: 3;
+	-ms-flex: 3;
+	flex: 3;
+}
+
+article {
+	/* previous syntax */
+	-webkit-box-flex: 3;
+	-moz-box-flex: 3;
+	-ms-box-flex: 3;
+	box-flex: 3;
+	/* current syntax */
+	-webkit-flex: 3;
+	-moz-flex: 3;
+	-ms-flex: 3;
+	flex: 3;
+}
+
+aside, nav {
+	/* previous syntax */
+	-webkit-box-flex: 3;
+	-moz-box-flex: 3;
+	-ms-box-flex: 3;
+	box-flex: 3;
+	/* current syntax */
+	-webkit-flex: 3;
+	-moz-flex: 3;
+	-ms-flex: 3;
+	flex: 3;
+}
+
+.box {
+	/* background-color: #f7fdfd;*/
+	padding: 0px 20px;
+	margin: 0px 0px 20px 0px;
+	height: 100px;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+	background: transparent !important;
+}
+
+.design-process-section .text-align-center {
+	line-height: 25px;
+	margin-bottom: 12px;
+}
+
+.design-process-content {
+	/*border: 1px solid #e9e9e9;*/
+	position: relative;
+	/*padding: 16px 0% 30px 30px;*/
+}
+
+.design-process-content .btn-primary a {
+	color: #fff;
+}
+
+.design-process-content .btn-primary a:hover {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+.hvrbox-text span {
+	background: #181d1f;
+	padding: 5px 7px;
+	margin: 6px;
+	border-radius: 15px;
+	cursor: pointer;
+}
+/*.design-process-content img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    max-height: 100%;
+}*/
+.design-process-content h3 {
+	margin-bottom: 16px;
+}
+
+.design-process-content p {
+	line-height: 26px;
+	margin-bottom: 12px;
+}
+
+.process-model {
+	list-style: none;
+	padding: 0;
+	position: relative;
+	/*max-width: 600px;*/
+	/*margin: 20px auto 26px;*/
+	border: none;
+	z-index: 0;
+}
+
+.process-model li::after {
+	background: #e5e5e5 none repeat scroll 0 0;
+	bottom: 0;
+	content: "";
+	display: block;
+	height: 4px;
+	margin: 0 auto;
+	position: absolute;
+	right: 95px;
+	top: 18px;
+	width: 65%;
+	z-index: -1;
+}
+
+.mt-50 {
+	margin: 42px 0px;
+}
+
+/* input[type=checkbox] {
+	margin-top: -6px;
+	
+} */
+/*.process-model li.visited::after {
+    background: #01215e;
+}*/
+.process-model li:last-child::after {
+	width: 0;
+}
+
+.process-model li {
+	display: inline-block;
+	width: 33%;
+	text-align: center;
+	float: none;
+}
+
+.nav-tabs.process-model>li.active>a, .nav-tabs.process-model>li.active>a:hover,
+	.nav-tabs.process-model>li.active>a:focus, .process-model li a:hover,
+	.process-model li a:focus {
+	border: none;
+	background: transparent;
+}
+
+.process-model li a {
+	padding: 0;
+	border: none;
+	color: #606060;
+}
+
+.process-model li.active, .process-model li.visited {
+	color: #D6DA28;
+}
+
+.process-model li.active a, .process-model li.active a:hover,
+	.process-model li.active a:focus, .process-model li.visited a,
+	.process-model li.visited a:hover, .process-model li.visited a:focus {
+	color: #01215e;
+}
+
+.process-model li.active p, .process-model li.visited p {
+	font-weight: 600;
+	color: #01215e;
+}
+
+.process-model li b {
+	display: block;
+	height: 40px;
+	width: 40px;
+	text-align: center;
+	margin: 0 auto;
+	background: #5ac1e0;
+	border: 2px solid #e5e5e5;
+	color: #fff;
+	line-height: 2;
+	font-size: 16px;
+	border-radius: 50%;
+}
+
+.process-model li.active b, .process-model li.visited b {
+	background: #01215e;
+	border-color: #58bdd9;
+}
+
+.process-model li p {
+	font-size: 14px;
+	margin-top: 11px;
+}
+
+.process-model.contact-us-tab li.visited a, .process-model.contact-us-tab li.visited p
+	{
+	color: #606060 !important;
+	font-weight: normal
+}
+
+.process-model.contact-us-tab li::after {
+	display: none;
+}
+
+.process-model.contact-us-tab li.visited b {
+	border-color: #e5e5e5;
+}
+
+@media screen and (max-width: 560px) {
+	.more-icon-preocess.process-model li span {
+		font-size: 16px;
+		height: 50px;
+		line-height: 46px;
+		width: 50px;
+	}
+	.more-icon-preocess.process-model li::after {
+		top: 24px;
+	}
+}
+
+@media screen and (max-width: 380px) {
+	.process-model.more-icon-preocess li {
+		width: 16%;
+	}
+	.more-icon-preocess.process-model li span {
+		font-size: 16px;
+		height: 35px;
+		line-height: 32px;
+		width: 35px;
+	}
+	.more-icon-preocess.process-model li p {
+		font-size: 16px;
+	}
+	.more-icon-preocess.process-model li::after {
+		top: 18px;
+	}
+	.process-model.more-icon-preocess {
+		text-align: center;
+	}
+}
+
+input[type=checkbox]:before {
+	content: "";
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	border: 1px solid #ccc;
+	background-color: #f6f8f8;
+	margin-top: -16px;
+	border: 1px solid #333 !important;
+	position: relative;
+	top: -0px;
+}
+
+.user-img {
+	background-color: #5ac1e0;
+	padding: 5px;
+	text-align: center;
+	color: #fff;
+	font-size: 16px;
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	float: left;
+	margin-right: 10px;
+	box-shadow: 1px 2px #a4a4a4;
+}
+
+.user-text {
+	font-size: 16px;
+	float: left;
+	color: #0d99c4;
+	font-weight: 600;
+	margin: 4px 0px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.mt-10 {
+	margin-top: 10px;
+}
+
+.ml-20 {
+	margin-left: 20px;
+}
+
+.heading {
+	color: #0d99c4;
+	font-weight: 600;
+	font-size: 16px;
+	text-transform: uppercase;
+}
+
+.captcha img {
+	height: 60px;
+	width: 200px
+}
+
+.refresh {
+	font-size: 16px;
+	color: #0d99c4;
+}
+
+.form-check span {
+	font-size: 16px;
+	color: #000;
+}
+
+.user-sec {
+	background-color: #eee;
+	padding: 20px;
+	margin-bottom: 30px;
+}
+
+.user-img2 {
+	height: 80px;
+	width: 80px;
+	background-color: #fff;
+	border-radius: 50%;
+	font-size: 50px;
+	text-align: center;
+	color: #0d99c4;
+	box-shadow: 1px 2px #0d99c4;
+}
+
+.detail {
+	font-size: 16px;
+	color: #929292;
+	margin-bottom: 20px;
+}
+
+.modal-content-md label {
+	color: #006aa7;
+}
+
+.mail {
+	font-size: 16px;
+	color: #0d99c4;
+}
+
+input[type=checkbox], input[type=radio] {
+	box-sizing: border-box;
+	padding: 0;
+	margin-top: 6px;
+	margin-right: 5px;
+}
+
+.modal-content-md {
+	padding: 15px 14px;
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 7px solid rgba(0, 0, 0, .2);
+	border-radius: .3rem;
+	outline: 0;
+	margin-top: 0px;
+}
+
+.plan {
+	font-size: 18px;
+	font-weight: 200;
+	color: #0d99c4;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.tab-clr {
+	background: #eeeeee;
+	padding: 20px 14px 0px 14px;
+}
+
+.basic-sec {
+	border: 1px solid #ccc;
+	padding: 5px;
+}
+
+.tablink {
+	background-color: #eee;
+	color: #000;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 6px 10px;
+	font-size: 16px;
+	width: 25%;
+}
+
+.tablink:hover {
+	background-color: #777;
+}
+
+button:focus {
+	border: none;
+	outline: none;
+}
+
+.tabcontent {
+	color: white;
+	display: none;
+	padding: 10px;
+	height: 100%;
+}
+
+.tabclr {
+	background-color: #eee;
+	padding: 15px 10px;
+	height: 53px;
+	border-radius: 10px 10px 0px 0px;
+}
+
+.tab-border {
+	border: 1px solid #ccc;
+}
+
+.basic-sec label {
+	color: #000;
+}
+
+.data {
+	color: #878787;
+	font-size: 16px;
+}
+
+.wlcm-head {
+	font-size: 16px;
+	color: #01215e;
+	font-weight: 600;
+	margin-bottom: 15px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.wlcm-text {
+	font-size: 16px;
+	color: #01215e;
+}
+
+.pd-10 {
+	padding: 10px;
+}
+
+button:active {
+	border: none;
+}
+
+.top-logo {
+	padding: 20px;
+}
+
+.top-logo img {
+	height: 35px;
+}
+
+.top-btn {
+	list-style: none;
+	padding: 0;
+	position: relative;
+	/* max-width: 600px; */
+	margin: 10px 0px 10px 0px;
+	border: none;
+	z-index: 0;
+}
+
+.btn-align {
+	display: flex;
+	list-style-type: none;
+	padding-left: 0px;
+}
+
+.top-btn li::after {
+	background: #e5e5e5 none repeat scroll 0 0;
+	bottom: 0;
+	content: "";
+	display: block;
+	height: 3px;
+	margin: 0 auto;
+	position: absolute;
+	right: 35px;
+	top: 15px;
+	width: 76%;
+	z-index: -1;
+}
+
+.top-btn li {
+	display: inline-block;
+	width: 35%;
+	text-align: center;
+	float: none;
+}
+
+.top-btn li button {
+	margin: 0 auto;
+}
+
+.login-form-1 {
+	padding: 0% 3% 0%;
+	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0
+		rgba(0, 0, 0, 0.19);
+	height: auto;
+	background-color: #0076ba;
+	align-items: center;
+	justify-content: center;
+}
+
+.signup-txt {
+	font-size: 30px;
+	font-weight: 700;
+	margin-bottom: 10px;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.capcha-sec {
+	background-color: #eee;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.signup-subtxt {
+	font-size: 20px;
+	margin-bottom: 20px;
+	color: #FFF;
+	text-align: center;
+	padding: 0px 20px;
+}
+
+.login-form-1 h3 {
+	text-align: center;
+	color: #333;
+}
+
+label {
+	font-size: 16px;
+	color: #fff;
+}
+
+.login-form-2 {
+	padding: 0px 5%;
+	background: #fff;
+	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0
+		rgba(0, 0, 0, 0.19);
+	align-items: center;
+	justify-content: center;
+}
+
+.form-control {
+	display: block;
+	width: 100%;
+	height: calc(1.5em + .75rem + 2px);
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff !important;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.input-group-text {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: center;
+	align-items: center;
+	padding: .375rem .75rem;
+	margin-bottom: 0;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	text-align: center;
+	white-space: nowrap;
+	background-color: #e9ecef;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+}
+
+select {
+	width: 100%;
+	height: 25px;
+	margin: 0;
+	padding: 0 0 0 0;
+	/* font-family: 'HelveticaNeue'; */
+	color: #0a5db8;
+	/* font-weight: 100; */
+	cursor: pointer;
+	font-weight: 500;
+	line-height: 30px;
+	font-size: 16px;
+	border-bottom: none;
+}
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #bfbfbf;
+	opacity: 1; /* Firefox */
+	font-size: 14px;
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #bfbfbf;
+	font-size: 14px;
+}
+
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+	color: #bfbfbf;
+}
+
+.login-form-2 h3 {
+	text-align: center;
+	color: #fff;
+	font-size: 14px;
+}
+
+.login-container form {
+	padding: 10%;
+}
+
+.right-text {
+	font-size: 26px;
+	color: #0076ba;
+	vertical-align: middle;
+	font-weight: 600;
+	text-align: center;
+	position: relative;
+	top: 35%;
+}
+
+.regpg-btn {
+	background-color: #fff; /* Green */
+	border: 1px solid #0d99c4;
+	color: #0d99c4;
+	font-weight: 600;
+	font-size: 10px;
+	text-transform: uppercase;
+	width: 75px;
+}
+
+.regpg-btn a:hover {
+	text-decoration: none;
+}
+
+.active {
+	background: transparent;
+}
+
+.form-check-label span {
+	margin-left: 8px;
+}
+
+#tab-button {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#tab-button li {
+	display: table-cell;
+	width: 20%;
+}
+
+#tab-button li a {
+	display: block;
+	padding: .5em;
+	background: #eee;
+	border: 1px solid #ddd;
+	text-align: center;
+	color: #000;
+	text-decoration: none;
+}
+
+#tab-button li:not(:first-child) a {
+	border-left: none;
+}
+
+#tab-button li a:hover, #tab-button .is-active a {
+	border-bottom-color: transparent;
+	background: #fff;
+}
+
+.tab-contents {
+	padding: 10px;
+	border: 1px solid #ddd;
+}
+
+.tab-button-outer {
+	display: none;
+}
+
+.tab-contents {
+	margin-top: 20px;
+}
+
+@media screen and (min-width: 768px) {
+	.tab-button-outer {
+		position: relative;
+		z-index: 2;
+		display: block;
+	}
+	.tab-select-outer {
+		display: none;
+	}
+	.tab-contents {
+		position: relative;
+		top: -1px;
+		margin-top: 0;
+	}
+}
+
+.btn5 {
+	border: none;
+	border-radius: 4px;
+	font-size: 10px;
+	background-color: #d8d8d8;
+	color: #fff;
+	margin-left: 5px;
+	margin-bottom: 6px;
+	width: 160px;
+	height: 38px;
+	line-height: 12px;
+	float: right;
+	text-transform: uppercase;
+	cursor: pointer;
+	white-space: normal;
+}
+
+.bg-white1 {
+	background-color: #fff !important;
+	height: auto;
+	margin-top: 20px;
+	padding: 20px;
+}
+
+/* #fileUpload1 {
+	opacity: 0;
+	position: absolute;
+	height: 35px;
+	top: -4px;
+	left: 0px;
+	width: 15%;
+} */
+.uploadicon {
+	border: 1px solid #FFF;
+	display: inline-block;
+	padding: 0px 5px;
+	cursor: pointer;
+	font-family: 'HelveticaNeue';
+	color: #333;
+	font-weight: 100;
+	background-color: #FFF;
+}
+
+/* .formValidation1 {
+	font-size: 14px;
+	font-weight: 100;
+	color: #FFF;
+	background-color: transparent;
+	  border-top: 1px solid #ff9e99; 
+	position: relative;
+	top: -1px;
+	padding: 3px 0px;
+}
+ */
+.reg-img {
+	position: relative;
+	width: 120px;
+}
+
+.reg-img img {
+	height: 100px;
+	border-radius: 50%;
+	margin-bottom: 20px;
+	position: relative;
+}
+
+.hvrbox-layer_top {
+	position: absolute;
+	right: 0;
+	top: 70px;
+}
+
+.m-top5 {
+	margin-top: 6px;
+}
+
+.icon-crl .fa {
+	padding: 14px;
+	font-size: 25px;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	text-decoration: none;
+	background-color: #80bbdd;
+	margin: 5px 2px;
+	border-radius: 50%;
+	color: #fff;
+}
+
+.icon-crl .fa:hover {
+	opacity: 0.7;
+}
+
+.mt-20 {
+	margin-top: 20px;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.upload {
+	position: relative;
+}
+
+.plus-ico {
+	color: #fff;
+	margin-top: 30px;
+}
+
+.upload input[type="file"] {
+	display: block !important;
+	background: #FFF;
+	padding: 3px;
+	width: 100%;
+}
+
+#autocomplete-list1 {
+	margin-left: 0px !important;
+	font-weight: 100;
+	font-size: 14px;
+	color: #333;
+	position: absolute;
+	z-index: 105;
+	background: rgba(255, 255, 255, 1);
+	width: 91%;
+	overflow-y: scroll;
+	height: auto;
+	max-height: 200px;
+	position: absolute;
+	left: 15px;
+	top: 70px;
+}
+
+#autocomplete-list1 li {
+	padding: 4px;
+	font-size: 1rem !important;
+}
+
+#autocomplete-list1 li:hover {
+	background: #767676;
+	color: #FFF;
+}
+
+.mt_15 {
+	margin-top: 15px;
+}
+
+.envheading {
+	font-size: 20px;
+	font-weight: 600;
+	margin: 25px 0px 10px 0px;
+	color: #fff;
+}
+
+.mb-50 {
+	margin-bottom: 50px;
+}
+
+.mr-lft {
+	margin-left: 15px;
+}
+/* .modal-content-md label{
+display:none;} */
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		selectProceed();
+		var con = $("#hidCountryId").val();
+		$("#country").val(con);
+		$("#countryCode").val("+91");
+		var st = $("#hidStateId").val();
+		getStateListEdit(con, st);
+		var dt = $("#hidDistId").val();
+		getDistListEdit(st, dt);
+		var ct = $("#hidCityId").val();
+		getCityListEdit(dt, ct);
+
+		//$("#checkValidity").show();
+		//$("#hideInputSection").hide();
+		$("#nextBtn").hide();
+		$("#inputForPan").hide();
+		$("#inputForAadhaar").hide();
+		$("#abhaProceedBtn").hide();
+		$("#backProcessBtn").hide();
+		$("#inputOTPAadhaar").hide();
+		$("#inputMobileNumber").hide();
+		$("#mobileNumberProceed").hide();
+		$("#inputOtpMobileNumber").hide();
+		$("#proceedWithOTPBtn").hide();
+		$("#mobileOtpProceedBttn").hide();
+		$("#mobileproceedOTP").hide();
+		$("#proceedWithMobileOtpBtn").hide();
+
+		$("#strategy").show();
+		$("#userRegdBtn").hide();
+		$("#profRegdBtn").hide();
+		$("#content").hide();
+		$("#content1").hide();
+		$("#nxtBtn3").hide();
+		disableSubmit();
+		$("#editIcon").hide();
+
+		$(".interestbox").on("change", function() {
+			/* alert("hii"); */
+
+			/* let checkboxValues = $('.interestbox:checked').map(function() {
+			    return $(this).val();
+			}).get(); */
+			/* console.log(checkboxValues); */
+			/*if ($("input[name='interest']:checked").length > 0) {	
+				$("#nxtBtn4").attr("disabled", false);
+			} else {
+				$("#nxtBtn4").attr("disabled", true);
+			}*/
+		})
+
+	});
+
+	/*---------------                function for Login               ------------ */
+	function disableSubmit() {
+		document.getElementById("subBtn").disabled = true;
+		document.getElementById("subBtn1").disabled = true;
+	}
+
+	function activateButton(element) {
+
+		if (element.checked) {
+			document.getElementById("subBtn").disabled = false;
+			document.getElementById("subBtn1").disabled = false;
+		} else {
+			document.getElementById("subBtn").disabled = true;
+			document.getElementById("subBtn1").disabled = true;
+		}
+	}
+
+	/*---------------                function for Select Proceed               ------------ */
+	function selectProceed() {
+		var id = $("#roleId").val();
+
+		if (id != undefined) {
+			getSpecialityList(id);
+			if (id == 1) {
+				$("#checkValidity").show();
+				$("#hideInputSection").hide();
+				$("#strategy").show();
+				$("#content").hide();
+				$("#userRegdNextBtn").show();
+				$("#profRegdNextBtn1").hide();
+				$("#profRegdNextBtn2").hide();
+				$("#userRegdBtn").hide();
+				$("#profRegdBtn").hide();
+				$("#aa2").show();
+				$("#a3").show();
+				$("#a11").show();
+				$("#a12").show();
+				$("#a18").hide();
+				$("#a19").hide();
+				$("#a22").hide();
+				$("#a23").hide();
+				$("#a1").hide();
+				$("#aa1").hide();
+				$("#bb2").hide();
+				$("#bbb2").hide();
+				$("#a4").hide();
+				$("#a5").hide();
+				$("#a6").hide();
+				$("#a9").show();
+				$("#a10").hide();
+				$("#a13").show();
+				$("#a14").show();
+				$("#a15").hide();
+				$("#a21").hide();
+				$("#vle1").hide();
+				$("#vle2").hide();
+				$("#vle4").hide();
+				$("#vle5").hide();
+				$("#vle6").hide();
+			} else if (id == 2 || id == 22) {
+				var roleName = $("#roleName").val();
+				$("#roleIdSpanId").val(id);
+				$("#strategy").show();
+				$("#content").hide();
+				$("#aa2").hide();
+				$("#bbb2").hide();
+				$("#a3").hide();
+				$("#bb6").hide();
+				$("#a4").hide();
+				showDiv1();
+				$("#userRegdBtn").hide();
+				$("#profRegdBtn").hide();
+				$("#checkValidity").hide();
+				$("#hideInputSection").show();
+				$("#vle1").hide();
+				$("#vle2").hide();
+				$("#vle4").hide();
+				$("#vle5").hide();
+				$("#vle6").hide();
+			} else if (id == 11) {
+				$("#checkValidity").hide();
+				$("#hideInputSection").show();
+				$("#strategy").show();
+				$("#content").hide();
+				$("#aa2").hide();
+				$("#bbb2").hide();
+				$("#a3").hide();
+				showDiv1();
+				$("#a6").hide();
+				$("#a4").show();
+				$("#vle1").hide();
+				$("#vle2").hide();
+				$("#vle4").hide();
+				$("#vle5").hide();
+				$("#vle6").hide();
+				var type = $("#typeClinic").val();
+				if (type == 2) {
+					getSpecialityList(type);
+					$("#roleIdSpanId").val(type);
+					$("#bb6").hide();
+					$("#aa6").show();
+					$("#a6").show();
+				} else {
+					getSpecialityList(type);
+					$("#roleIdSpanId").val(type);
+					$("#bb6").hide();
+					$("#aa6").show();
+					$("#a6").show();
+				}
+				$("#userRegdBtn").hide();
+				$("#profRegdBtn").hide();
+			} else if (id == 14 || id == 15 || id == 16 || id == 18) {
+				$("#checkValidity").hide();
+				$("#hideInputSection").show();
+				var roleName = $("#roleName").val();
+				$("#splIdSpan").html(roleName);
+				$("#roleIdSpanId").val(id);
+				$("#splIdSpanId").val(id);
+				$("#strategy").show();
+				$("#content").hide();
+				$("#aa2").hide();
+				$("#bbb2").hide();
+				$("#a3").hide();
+				$("#a4").hide();
+				showDiv1();
+				$("#bb6").hide();
+				$("#aa6").hide();
+				$("#a6").hide();
+				$("#userRegdBtn").hide();
+				$("#profRegdBtn").hide();
+				$("#vle1").hide();
+				$("#vle4").hide();
+				$("#vle5").hide();
+				$("#vle6").hide();
+			} else if (id == 7 || id == 8 || id == 12 || id == 13 || id == 4) {
+				$("#checkValidity").hide();
+				$("#hideInputSection").show();
+				var roleName = $("#roleName").val();
+				$("#splIdSpan").html(roleName);
+				$("#roleIdSpanId").val(id);
+				$("#splIdSpanId").val(id);
+				$("#strategy").show();
+				$("#content").hide();
+
+				$("#aa2").hide();
+				$("#bbb2").hide();
+				$("#a3").hide();
+				$("#a4").hide();
+				showDiv1();
+				$("#userRegdBtn").hide();
+				$("#profRegdBtn").hide();
+				$("#vle1").hide();
+				$("#vle2").hide();
+				$("#vle4").hide();
+				$("#vle5").hide();
+				$("#vle6").hide();
+			}else if(id == 28){
+				$("#roleIdSpanId").val(id);
+				$("#strategy").show();
+				$("#content").hide();
+				$("#a1").hide();
+				$("#aa2").hide();
+				$("#bbb2").hide();
+				$("#a3").hide();
+				$("#bb6").hide();
+				$("#a4").hide();
+				$("#vle1").show();
+				$("#vle2").show();
+				$("#bb2").hide();
+				$("#vle4").show();
+				$("#vle5").show();
+				$("#vle6").show();
+				showDivVle();
+				$("#userRegdBtn").hide();
+				$("#profRegdBtn").hide();
+				$("#checkValidity").hide();
+				$("#hideInputSection").show();
+				//$("#profRegdNextBtn1").show();
+				
+			}
+
+		} else {
+			$("#strategy").hide();
+			$("#content").hide();
+			$("#userRegdBtn").hide();
+			$("#profRegdBtn").hide();
+		}
+	}
+
+	//get speciality list
+	function getSpecialityList(id) {
+
+		var role = id;
+		if (role) {
+			$("#speciality").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select Speciality --");
+			$("#speciality").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'user-getSpecialityList?role=' + role,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						console.log(response);
+						$("#speciality").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("-- Select Speciality --");
+						$("#speciality").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$("#speciality").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#speciality").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select Speciality --");
+			$("#speciality").append(option);
+		}
+	}
+
+	function getChangeList() {
+		var type = $("#typeClinic").val();
+		getSpecialityList(type);
+		$("#roleIdSpanId").val("");
+		if (type == 2) {
+			$("#roleIdSpanId").val(type);
+			$("#bb6").hide();
+			$("#aa6").show();
+			$("#a6").show();
+		} else {
+			$("#roleIdSpanId").val(type);
+			$("#splIdSpanId").val(type);
+			$("#bb6").hide();
+			$("#aa6").show();
+			$("#a6").show();
+		}
+	}
+
+	function userNext() {
+		getCountryCode();
+		var validation = true;
+		$(".formValidation").remove();
+		fileUpload = $('#fileUpload').val();
+		tittle = $('#tittle').val();
+		fName = $("#fName").val();
+		lName = $("#lName").val();
+		gender = $("input:radio[name=gender]:checked").val();
+		country = $('#country').val();
+		state = $('#state').val();
+		dist = $('#dist').val();
+		city = $('#city').val();
+		mob = $("#mob").val();
+		mail = $("#mail").val();
+		textinput = $("#textinput").val();
+		/*  if (tittle == null || tittle == "") {
+		     validation = validationUpdated("Title Required", "tittle");
+		 } */
+		if (fName == null || fName == "") {
+			validation = validationUpdated("First Name Required", "fName");
+		}
+		if (lName == null || lName == "") {
+			validation = validationUpdated("Last Name Required", "lName");
+		}
+		if (gender == null || gender == "") {
+			validation = validationUpdated("Gender Required", "error6");
+		}
+		if (country == null || country == "") {
+			validation = validationUpdated("Country Required", "country");
+		}
+		if (state == null || state == "") {
+			validation = validationUpdated("State Required", "state");
+		}
+		if (dist == null || dist == "") {
+			validation = validationUpdated("District Required", "dist");
+		}
+		if (city == null || city == "") {
+			validation = validationUpdated("City Required", "city");
+		}
+
+		if (validation) {
+			$("#nxtBtn3").hide();
+			$("#strategy").show();
+			$("#content").hide();
+			$("#userRegdNextBtn").hide();
+			$("#userRegdBtn").show();
+			$("#profRegdBtn").hide();
+			$("#aa2").hide();
+			$("#a3").hide();
+			$("#aa").hide();
+			$("#a11").hide();
+			$("#a12").hide();
+			$("#a18").show();
+			$("#a19").show();
+			$("#a22").show();
+			$("#a23").show();
+			$("#a1").hide();
+			$("#aa1").hide();
+			$("#bb2").hide();
+			$("#bbb2").hide();
+			$("#a4").hide();
+			$("#a5").hide();
+			$("#a6").hide();
+			$("#a7").hide();
+			$("#a8").hide();
+			$("#a9").hide();
+			$("#a10").hide();
+			$("#a13").hide();
+			$("#a14").hide();
+			$("#a15").hide();
+			$("#a16").hide();
+			$("#a17").hide();
+			$("#a20").hide();
+			$("#a21").hide();
+		}
+	}
+
+	function interestSection() {
+		$("#hideInputSection").hide();
+		$("#nxtBtn3").show();
+		$("#nxtBtn4").attr("disabled", true);
+		$("#btnSubmit").hide();
+
+		$
+				.ajax({
+					type : 'GET',
+					url : 'register-view-interest',
+					success : function(response) {
+						/* 	console.log(response); */
+						if (response.message == "Success") {
+
+							$("#tbodyid").empty();
+							for (i = 0; i < response.body.length; i++) {
+								var category1 = response.body[i].catagory;
+								var div1 = '<div class="col-md-12">'
+										+ '<div class="envheading" id ="catgoryid_'+i+'" name="catagory" value="'+category1+'">'
+										+ category1 + '</div>' + '</div>'
+								var div2 = ""
+								for (var j = 0; j < response.body[i].subcatagoryList.length; j++) {
+									sublist = response.body[i].subcatagoryList[j];
+									console.log(i, sublist);
+									var div = '<div class="col-md-6">'
+											+ '<input type="checkbox" id ="subcatgoryid_'+i+'" name="interest" class="interestbox" value="'+sublist+'">'
+											+ '<label class="mr-lft" for="'+sublist+'"> '
+											+ sublist + '</label>' + '</div>'
+									div2 = div2 + div
+								}
+								div1 = div1 + div2
+								$("#tbodyid").append(div1);
+							}
+							$(".interestbox").on(
+									"change",
+									function() {
+										var checkboxValues = $(
+												'.interestbox:checked').map(
+												function() {
+													return $(this).val();
+												}).get();
+										if (checkboxValues.length == 0) {
+											$("#nxtBtn4")
+													.attr("disabled", true);
+										} else {
+											$("#nxtBtn4").attr("disabled",
+													false);
+										}
+									})
+						}
+					},
+					error : function(e) {
+						alert("error");
+					}
+				});
+	}
+	function userNextSubmit() {
+		$("input[name='interest']").attr("disabled", true);
+		$("#nxtBtn4").hide();
+		$("#nxtBtn5").hide();
+		$("#btnSubmit").show();
+	}
+	function userSkip() {
+		$("input[name='interest']").removeAttr('checked');
+		$("input[name='interest']").attr("disabled", true);
+		$("#nxtBtn4").hide();
+		$("#nxtBtn5").hide();
+		$("#btnSubmit").show();
+	}
+	function profNext() {
+		getCountryCode();
+		var spid = $("#splIdSpanId").val();
+		var roles = $("#roleId").val();
+		if (spid == "") {
+			if(roles == 28){
+				var validation = true;
+				$(".formValidation").remove();
+				organizationId = $("#shopId").val();
+				tittle = $('#vleTittle').val();
+				name = $("#vleName").val();
+				experience = $("#experience").val();
+				speciality = $("#speciality").val();
+				gender = $("input:radio[name=gender]:checked").val();
+				address = $("#address").val();
+				blockName = $("#blockName").val();
+				villageName = $("#villageName").val();
+				locationName = $("#locationName").val();
+			
+				if (name == null || name == "") {
+					validation = validationUpdated("Owner's Name Required",
+							"vleName");
+				}
+				if (experience == null || experience == "") {
+					validation = validationUpdated("Experience Required",
+							"experience");
+				}
+				if (speciality == null || speciality == "") {
+					validation = validationUpdated("Speciality Required",
+							"speciality");
+				}
+				if (gender == null || gender == "") {
+					validation = validationUpdated("Gender Required", "error6");
+				}
+				if (address == null || address == "") {
+					validation = validationUpdated("Address Required", "address");
+				}
+				if (blockName == null || blockName == "") {
+					validation = validationUpdated("Block Required", "blockName");
+				}
+				if (villageName == null || villageName == "") {
+					validation = validationUpdated("Village Required", "villageName");
+				}
+				if (locationName == null || locationName == "") {
+					validation = validationUpdated("Location Required", "locationName");
+				}
+				//validOrgn();
+
+				if (validation) {
+					$("#strategy").show();
+					$("#content").hide();
+
+					$("#aa2").hide();
+					$("#bbb2").hide();
+					$("#a3").hide();
+					$("#bb6").hide();
+					$("#vle1").hide();
+					$("#vle2").hide();
+					$("#vle4").hide();
+					$("#vle5").hide();
+					$("#vle6").hide();
+					showDiv2();
+					$("#userRegdBtn").hide();
+					$("#profRegdBtn").hide();
+				}
+			}else{
+				var validation = true;
+				$(".formValidation").remove();
+				organizationId = $("#organizationId").val();
+				tittle = $('#profTittle').val();
+				name = $("#name").val();
+				experience = $("#experience").val();
+				speciality = $("#speciality").val();
+				gender = $("input:radio[name=gender]:checked").val();
+				address = $("#address").val();
+				/*  if (tittle == null || tittle == "") {
+				     validation = validationUpdated("Title Required", "profTittle");
+				 } */
+				if (name == null || name == "") {
+					validation = validationUpdated("Professional's Name Required",
+							"name");
+				}
+				if (experience == null || experience == "") {
+					validation = validationUpdated("Experience Required",
+							"experience");
+				}
+				if (speciality == null || speciality == "") {
+					validation = validationUpdated("Speciality Required",
+							"speciality");
+				}
+				if (gender == null || gender == "") {
+					validation = validationUpdated("Gender Required", "error6");
+				}
+				if (address == null || address == "") {
+					validation = validationUpdated("Address Required", "address");
+				}
+				validOrgn();
+
+				if (validation && orgnValid) {
+					$("#strategy").show();
+					$("#content").hide();
+
+					$("#aa2").hide();
+					$("#bbb2").hide();
+					$("#a3").hide();
+					$("#bb6").hide();
+					showDiv2();
+					$("#userRegdBtn").hide();
+					$("#profRegdBtn").hide();
+				}
+			}
+		
+		} else if (spid == 7 || spid == 8 || spid == 12 || spid == 13) {
+			var validation = true;
+			$(".formValidation").remove();
+			organizationId = $("#organizationId").val();
+			tittle = $('#profTittle').val();
+			name = $("#name").val();
+			experience = $("#experience").val();
+			speciality = $("#speciality").val();
+			gender = $("input:radio[name=gender]:checked").val();
+			address = $("#address").val();
+			if (tittle == null || tittle == "") {
+				validation = validationUpdated("Title Required", "profTittle");
+			}
+			if (name == null || name == "") {
+				validation = validationUpdated("Professional's Name Required",
+						"name");
+			}
+			if (experience == null || experience == "") {
+				validation = validationUpdated("Experience Required",
+						"experience");
+			}
+			if (speciality == null || speciality == "") {
+				validation = validationUpdated("Speciality Required",
+						"speciality");
+			}
+			if (gender == null || gender == "") {
+				validation = validationUpdated("Gender Required", "error6");
+			}
+			if (address == null || address == "") {
+				validation = validationUpdated("Address Required", "address");
+			}
+			validOrgn();
+
+			if (validation && orgnValid) {
+				$("#strategy").show();
+				$("#content").hide();
+
+				$("#aa2").hide();
+				$("#bbb2").hide();
+				$("#a3").hide();
+				$("#bb6").hide();
+				showDiv2();
+				$("#userRegdBtn").hide();
+				$("#profRegdBtn").hide();
+			}
+		} 
+		else {
+			var validation = true;
+			$(".formValidation").remove();
+			organizationId = $("#organizationId").val();
+			tittle = $('#profTittle').val();
+			name = $("#name").val();
+			experience = $("#experience").val();
+			//speciality = $("#speciality").val();
+			gender = $("input:radio[name=gender]:checked").val();
+			address = $("#address").val();
+			/*  if (tittle == null || tittle == "") {
+			     validation = validationUpdated("Title Required", "profTittle");
+			 } */
+			if (name == null || name == "") {
+				validation = validationUpdated("Professional's Name Required",
+						"name");
+			}
+			if (experience == null || experience == "") {
+				validation = validationUpdated("Experience Required",
+						"experience");
+			}
+			if (gender == null || gender == "") {
+				validation = validationUpdated("Gender Required", "error6");
+			}
+			if (address == null || address == "") {
+				validation = validationUpdated("Address Required", "address");
+			}
+			validOrgn();
+
+			if (validation && orgnValid) {
+				$("#strategy").show();
+				$("#content").hide();
+
+				$("#aa2").hide();
+				$("#bbb2").hide();
+				$("#a3").hide();
+				$("#bb6").hide();
+				showDiv2();
+				$("#userRegdBtn").hide();
+				$("#profRegdBtn").hide();
+			}
+		}
+	}
+
+	function profNext2() {
+		var validation = true;
+		$(".formValidation").remove();
+		country = $('#country').val();
+		state = $('#state').val();
+		dist = $('#dist').val();
+		city = $('#city').val();
+		pin = $('#pin').val();
+		mob = $("#mob").val();
+		mail = $("#mail").val();
+		uploadFile = $("#uploadFile").val();
+		if (country == null || country == "") {
+			validation = validationUpdated("Country Required", "country");
+		}
+		if (state == null || state == "") {
+			validation = validationUpdated("State Required", "state");
+		}
+		if (dist == null || dist == "") {
+			validation = validationUpdated("District Required", "dist");
+		}
+		if (city == null || city == "") {
+			validation = validationUpdated("City Required", "city");
+		}
+		if (pin == null || pin == "") {
+			validation = validationUpdated("pin code Required", "pin");
+		}
+		if (uploadFile == null || uploadFile == "") {
+			validation = validationUpdated(
+					"Please Upload Your Document Details", "uploadFile");
+		}
+		mobVal();
+		profMailVal();
+		if (validation && profMailValid && mobValid) {
+			$("#strategy").show();
+			$("#content").hide();
+			showDiv3();
+			$("#aa2").hide();
+			$("#bbb2").hide();
+			$("#a3").hide();
+			$("#bb6").hide();
+			$("#userRegdBtn").hide();
+			$("#profRegdBtn").show();
+		}
+	}
+	/*--------------- function for Show Div  ------------ */
+	function showDiv1() {
+		$("#a1").show();
+		$("#aa1").show();
+		$("#aaa2").hide();
+		$("#bbb2").show();
+		$("#bb2").show();
+		$("#a5").show();
+		$("#a6").show();
+		$("#aa6").show();
+		$("#bb6").hide();
+		$("#a7").show();
+		$("#a8").show();
+		$("#a9").show();
+		$("#a10").show();
+
+		$("#a11").hide();
+		$("#a12").hide();
+		$("#a13").hide();
+		$("#a14").hide();
+		$("#a15").hide();
+		$("#a16").hide();
+		$("#a17").hide();
+		$("#a18").hide();
+		$("#a19").hide();
+		$("#a20").hide();
+		$("#a21").hide();
+		$("#a22").hide();
+		$("#a23").hide();
+		$("#userRegdNextBtn").hide();
+		$("#profRegdNextBtn1").show();
+		$("#profRegdNextBtn2").hide();
+	}
+
+	function showDiv2() {
+		$("#aa").hide();
+		$("#a1").hide();
+		$("#aa1").hide();
+		$("#aaa2").hide();
+		$("#bbb2").hide();
+		$("#bb2").hide();
+		$("#a4").hide();
+		$("#a5").hide();
+		$("#a6").hide();
+		$("#bb6").hide();
+		$("#a7").hide();
+		$("#a8").hide();
+		$("#a9").hide();
+		$("#a10").hide();
+
+		$("#a11").show();
+		$("#a12").show();
+		$("#a13").show();
+		$("#a14").show();
+		$("#a15").show();
+		$("#a16").show();
+		$("#a17").show();
+		$("#a18").show();
+		$("#a19").show();
+		$("#a20").show();
+		$("#a21").show();
+		$("#a22").hide();
+		$("#a23").hide();
+		$("#userRegdNextBtn").hide();
+		$("#profRegdNextBtn1").hide();
+		$("#profRegdNextBtn2").show();
+	}
+
+	function showDiv3() {
+		$("#aa").hide();
+		$("#a1").hide();
+		$("#aa1").hide();
+		$("#aaa2").hide();
+		$("#bbb2").hide();
+		$("#bb2").hide();
+		$("#a4").hide();
+		$("#a5").hide();
+		$("#a6").hide();
+		$("#bb6").hide();
+		$("#a7").hide();
+		$("#a8").hide();
+		$("#a9").hide();
+		$("#a10").hide();
+
+		$("#a11").hide();
+		$("#a12").hide();
+		$("#a13").hide();
+		$("#a14").hide();
+		$("#a15").hide();
+		$("#a16").hide();
+		$("#a17").hide();
+		$("#a18").hide();
+		$("#a19").hide();
+		$("#a20").hide();
+		$("#a21").hide();
+		$("#a22").show();
+		$("#a23").show();
+		$("#userRegdNextBtn").hide();
+		$("#profRegdNextBtn1").hide();
+		$("#profRegdNextBtn2").hide();
+	}
+	
+	function showDivVle() {
+		$("#vle1").show();
+		$("#vle2").show();
+		$("#bb2").hide();
+		
+		$("#aa1").show();
+		$("#aaa2").hide();
+		$("#bbb2").show();
+		
+		$("#a5").show();
+		$("#a6").show();
+		$("#aa6").show();
+		$("#bb6").hide();
+		$("#a7").show();
+		$("#a8").show();
+		$("#a9").show();
+		$("#a10").show();
+
+		$("#a11").hide();
+		$("#a12").hide();
+		$("#a13").hide();
+		$("#a14").hide();
+		$("#a15").hide();
+		$("#a16").hide();
+		$("#a17").hide();
+		$("#a18").hide();
+		$("#a19").hide();
+		$("#a20").hide();
+		$("#a21").hide();
+		$("#a22").hide();
+		$("#a23").hide();
+		$("#userRegdNextBtn").hide();
+		$("#profRegdNextBtn1").show();
+		$("#profRegdNextBtn2").hide();
+	}
+	
+	//Function For generate  Random number	
+	function getRandomizer(bottom, top) {
+		return function() {
+			return Math.floor(Math.random() * (1 + top - bottom)) + bottom;
+		}
+	}
+	/*---------------                function for User Submit               ------------ */
+	//For User Registration
+	function userSubmit() {
+		var rollDie = getRandomizer(1, 9);
+		var results = ""
+		for (var i = 0; i < 5; i++) {
+			results += rollDie(); //make a string filled with 9 random numbers in the range 1-9.
+		}
+		var str = $('#fName').val();
+		var res = str.substring(0, 3);
+		var uid = res.toUpperCase();
+		var userId = uid + results;
+		var areaofinterest = [];
+		var catagory = [];
+		var userinterest = [];
+		$('[name="interest"]:checked').each(function(i, e) {
+			obj = {};
+			obj.key = $("#catgoryid_" + i).text();
+			obj.name = $(this).val();
+
+			areaofinterest.push(obj);
+		});
+		var data1 = {};
+		data1.tittle = $('#tittle').val();
+		data1.fName = $("#fName").val();
+		data1.lName = $("#lName").val();
+		data1.gender = $("input:radio[name=gender]:checked").val();
+		data1.country = $('#country').val();
+		data1.countryName = $("#country option:selected").text();
+		data1.countryCode = $("#country option:selected").attr("code");
+		data1.state = $('#state').val();
+		data1.stateName = $("#state option:selected").text();
+		data1.stateCode = $("#state option:selected").attr("code");
+		data1.dist = $('#dist').val();
+		data1.city = $('#city').val();
+		data1.mob = $("#mob").val();
+		data1.mail = $("#mail").val();
+		data1.abhaId = $("#abhaId").val();
+		data1.aadhaarNoAbha = $("#aadhaarNoAbha").val();
+		data1.userId = userId;
+		var fileUploadNew = [];
+		if(base64ForNewImg != ""){
+			fileUploadNew.push(base64ForNewImg);
+		}else{
+			fileUploadNew.push("");
+		}
+		data1.aadhaarPhoto = fileUploadNew;
+
+		if (areaofinterest != "") {
+			data1.userInterest = areaofinterest;
+			data1.isInterest = true;
+		}
+		if ($("#getUpdate").is(":checked")) {
+			data1.getUpdate = true;
+		} else {
+			data1.getUpdate = false;
+		}
+		console.log(data1)
+		mobVal();
+		mailVal();
+		if (mailValid && mobValid) {
+			$.ajax({
+				type : "POST",
+				url : "register-add-user",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(data1),
+				success : function(response) {
+					console.log(response);
+					if (response.message == "Success") {
+						$("#nxtBtn3").hide();
+						$("#strategy").hide();
+						$("#content").show();
+					} else {
+						$("#okModal").modal('show');
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+	}
+
+	/*********************      On change            ************************/
+
+	//get State list on change of Country
+	function getStateList() {
+		var country = $("#country").val();
+
+		if (country) {
+
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'register-getStateList?country=' + country,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#state").empty();
+						var option = $("<option>-- Select State --</option>");
+						$(option).val(null);
+						$(option).html("-- Select State --");
+						$("#state").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#state").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+
+		}
+
+	}
+	//get Country Code  on change of Country
+	function getCountryCode() {
+		var country = $("#country").val();
+		if (country) {
+			var cCode = $("#country option:selected").attr("code");
+			var cc = "+" + cCode;
+			$("#countryCode").val(cc);
+		} else {
+			$("#countryCode").val("");
+		}
+	}
+	//get Dist list on change of State
+	function getDistList() {
+		var state = $("#state").val();
+		if (state) {
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$
+					.ajax({
+						type : 'GET',
+						url : 'register-getDistList?state=' + state,
+						contentType : false,
+						success : function(response) {
+							if (response.message == "success") {
+								$("#dist").empty();
+								var option = $("<option>-- Select District --</option>");
+								$(option).val(null);
+								$(option).html("-- Select District --");
+								$("#dist").append(option);
+								for (var i = 0; i < response.body.length; i++) {
+									var option = $("<option></option>");
+									$(option).val(response.body[i].key);
+									$(option).html(response.body[i].name);
+									$(option).attr("code",
+											response.body[i].code);
+									$("#dist").append(option);
+								}
+							}
+						},
+						error : function(e) {
+							alert("error");
+						}
+					});
+		} else {
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+		}
+	}
+	//get City list on change of Dist
+	function getCityList() {
+		var dist = $("#dist").val();
+
+		if (dist) {
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'register-getCityList?dist=' + dist,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#city").empty();
+						var option = $("<option>--Select city --</option>");
+						$(option).val(null);
+						$(option).html("-- Select City --");
+						$("#city").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#city").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+		}
+	}
+	//get State list on change of OrgCountry
+	function getStateList1() {
+
+		var country = $("#orgCountry").val();
+
+		if (country) {
+
+			$("#orgState").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#orgState").append(option);
+			$("#orgDist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#orgDist").append(option);
+			$("#orgCity").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#orgCity").append(option);
+
+			$.ajax({
+				type : 'GET',
+				url : 'register-getStateList-org?country=' + country,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+
+						$("#orgState").empty();
+						var option = $("<option>--Select--</option>");
+						$(option).val(null);
+						$(option).html("-- Select State --");
+						$("#orgState").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#orgState").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#orgState").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#orgState").append(option);
+			$("#orgDist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#orgDist").append(option);
+			$("#orgCity").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#orgCity").append(option);
+
+		}
+
+	}
+	//get Country Code  on change of OrgCountry
+	function getCountryCode1() {
+
+		var country = $("#orgCountry").val();
+
+		if (country) {
+			//	alert(country)
+			var cCode = $("#orgCountry option:selected").attr("code");
+			var cc = "+" + cCode;
+			$("#countryCode").val(cc);
+		} else {
+
+			$("#countryCode").val("");
+		}
+	}
+	//get Dist list on change of State
+	function getDistList1() {
+		var state = $("#orgState").val();
+		if (state) {
+			$("#orgDist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#orgDist").append(option);
+			$("#orgCity").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#orgCity").append(option);
+			$
+					.ajax({
+						type : 'GET',
+						url : 'register-getDistList-org?state=' + state,
+						contentType : false,
+						success : function(response) {
+							if (response.message == "success") {
+								$("#orgDist").empty();
+								var option = $("<option>-- Select District --</option>");
+								$(option).val(null);
+								$(option).html("-- Select District --");
+								$("#orgDist").append(option);
+								for (var i = 0; i < response.body.length; i++) {
+									var option = $("<option></option>");
+									$(option).val(response.body[i].key);
+									$(option).html(response.body[i].name);
+									$(option).attr("code",
+											response.body[i].code);
+									$("#orgDist").append(option);
+								}
+							}
+						},
+						error : function(e) {
+							alert("error");
+						}
+					});
+		} else {
+			$("#orgDist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#orgDist").append(option);
+			$("#orgCity").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("--Select City --");
+			$("#orgCity").append(option);
+		}
+	}
+	//get City list on change of Dist
+	function getCityList1() {
+		var dist = $("#orgDist").val();
+
+		if (dist) {
+			$("#orgCity").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#orgCity").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'register-getCityList-org?dist=' + dist,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#orgCity").empty();
+						var option = $("<option>-- Select City --</option>");
+						$(option).val(null);
+						$(option).html("-- Select City --");
+						$("#orgCity").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#orgCity").append(option);
+						}
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#orgCity").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#orgCity").append(option);
+		}
+	}
+	/*********************      On change in Edit         ************************/
+
+	//get State list on change of Country
+	function getStateListEdit(con, st) {
+		var country = con;
+
+		if (country) {
+
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'register-getStateList?country=' + country,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#state").empty();
+						var option = $("<option>-- Select State --</option>");
+						$(option).val(null);
+						$(option).html("-- Select State --");
+						$("#state").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#state").append(option);
+						}
+						$("#state").val(st);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#state").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select State --");
+			$("#state").append(option);
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+
+		}
+
+	}
+	//get Dist list on change of State
+	function getDistListEdit(st, dt) {
+		var state = st;
+		if (state) {
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+			$
+					.ajax({
+						type : 'GET',
+						url : 'register-getDistList?state=' + state,
+						contentType : false,
+						success : function(response) {
+							if (response.message == "success") {
+								$("#dist").empty();
+								var option = $("<option>-- Select District --</option>");
+								$(option).val(null);
+								$(option).html("-- Select District --");
+								$("#dist").append(option);
+								for (var i = 0; i < response.body.length; i++) {
+									var option = $("<option></option>");
+									$(option).val(response.body[i].key);
+									$(option).html(response.body[i].name);
+									$(option).attr("code",
+											response.body[i].code);
+									$("#dist").append(option);
+								}
+								$("#dist").val(dt);
+							}
+						},
+						error : function(e) {
+							alert("error");
+						}
+					});
+		} else {
+			$("#dist").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select District --");
+			$("#dist").append(option);
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+		}
+	}
+	//get City list on change of Dist
+	function getCityListEdit(dt, ct) {
+		var dist = dt;
+
+		if (dist) {
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City--");
+			$("#city").append(option);
+			$.ajax({
+				type : 'GET',
+				url : 'register-getCityList?dist=' + dist,
+				contentType : false,
+				success : function(response) {
+					if (response.message == "success") {
+						$("#city").empty();
+						var option = $("<option>-- Select City --</option>");
+						$(option).val(null);
+						$(option).html("-- Select City --");
+						$("#city").append(option);
+						for (var i = 0; i < response.body.length; i++) {
+							var option = $("<option></option>");
+							$(option).val(response.body[i].key);
+							$(option).html(response.body[i].name);
+							$(option).attr("code", response.body[i].code);
+							$("#city").append(option);
+						}
+						$("#city").val(ct);
+					}
+				},
+				error : function(e) {
+					alert("error");
+				}
+			});
+		} else {
+			$("#city").empty();
+			var option = $("<option></option>");
+			$(option).val(null);
+			$(option).html("-- Select City --");
+			$("#city").append(option);
+		}
+	}
+	//function for alphabet validation
+	function checkAlphabet(fieldId) {
+		 var tempVal = $("#" + fieldId).val().replace(/[^a-zA-Z. ]/g,'');
+		    $("#" + fieldId).val(tempVal);
+	}
+
+	function checkNum1(fieldId) {
+		var tempVal = $("#" + fieldId).val().replace(/[^0-9]/g, '');
+		$("#" + fieldId).val(tempVal);
+	}
+
+	//Mobile Number validation
+	var mobValid;
+
+	function mobVal() {
+		var mob = $('#mob').val();
+		var phoneno = /^\d{10}$/;
+
+		if (mob != '') {
+			if (mob.match(phoneno)) {
+				$("#error3").hide();
+				mobValid = true;
+				return true;
+			} else {
+				$("#error3").html(
+						"please enter  10 digit mobile number  ex:7089451278");
+				mobValid = false;
+				return false;
+			}
+		} else {
+			$("#error3").html(" Mobile No is Required");
+			mobValid = false;
+			return false;
+		}
+
+	}
+	//Email validation
+	var mailValid;
+
+	function mailVal() {
+		var mail = $('#mail').val();
+		var mid = /^[A-Za-z0-9\-_\.]+@+[A-Za-z0-9\-\.]+\.+[A-Za-z]{2,10}$/;
+		if (mail != '') {
+			if (mail.match(mid)) {
+				$("#error2").hide();
+				mailValid = true;
+				return true;
+			} else {
+				$("#error2").show();
+				$("#error2").html("Please enter a valid email id.");
+				mailValid = false;
+				return false;
+			}
+
+		} else {
+			$("#error2").hide();
+			mailValid = true;
+			return true;
+		}
+
+	}
+	//Prof Email validation
+	var profMailValid;
+
+	function profMailVal() {
+		var mail = $('#mail').val();
+		var mid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if (mail != '') {
+			if (mail.match(mid)) {
+				$("#error2").hide();
+				profMailValid = true;
+				return true;
+			} else {
+				$("#error2").html("Please enter a valid email id.");
+				profMailValid = false;
+				return false;
+			}
+
+		} else {
+			$("#error2").html("Email Id Required.");
+			profMailValid = false;
+			return false;
+		}
+
+	}
+	//Organization validation
+	var orgnValid;
+
+	function validOrgn() {
+		var id = $("#organizationId").val();
+		if (id != '') {
+			$("#error7").hide();
+			orgnValid = true;
+			return true;
+
+		} else {
+			$("#error7").show();
+			$("#error7").html("* Organization Name Required");
+			orgnValid = false;
+			return false;
+		}
+	}
+
+	//AutoSearch for organization Name
+	function getOrganizationNameList() {
+		var search = $("#organizationName").val();
+		var role = $("#roleIdSpanId").val();
+		if (search == "") {
+			$("#suggesstion-box1_").hide();
+			$("#organizationId").val("");
+
+			validOrgn();
+		}
+		if (search && role) {
+
+			$
+					.ajax({
+						type : "POST",
+						url : "register-autoSearch-organization?role=" + role,
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								if (response.body.length != 0) {
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autocomplete-list1" style="margin-left:0px; font-weight:100; font-size:14px; color:#333;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocomautocompletedatapletedata cp" onClick="selectAutocompleteValue1(\''
+												+ response.body[i].organizationId
+												+ '\',\''
+												+ response.body[i].organizationName
+												+ '\')">'
+												+ response.body[i].organizationName
+												+ '</li>';
+									}
+									content += '</ul>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+
+								} else {
+									$("#search").css("background", "#FFF");
+									var content = '<div id="autocomplete-list1">';
+									content += '<div onClick="selectAutocompleteValue()" align ="center">'
+											+ "No Data Found" + '</div>';
+									content += '</div>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+
+	}
+
+	function selectAutocompleteValue1(organizationId, organizationName) {
+		if (organizationId) {
+			$("#organizationId").val(organizationId);
+			$("#organizationName").val(organizationName);
+			$("#search").val(organizationName);
+			$("#search").attr('data-procat', organizationId);
+			$("#suggesstion-box1_").hide();
+		} else {
+			$("#organizationId").val("");
+			$("#organizationName").val("");
+			$("#search").val("");
+			$("#search").attr('data-procat', "");
+			$("#suggesstion-box1_").hide();
+		}
+	}
+
+	function selectAutocompleteValue() {
+		$("#organizationId").val("");
+		$("#organizationName").val("");
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box1_").hide();
+	}
+	
+	
+	
+	//AutoSearch for Shop Name
+	function getshopNameList() {
+		var search = $("#shopName").val();
+		var role = $("#roleIdSpanId").val();
+		if (search == "") {
+			$("#suggesstion-box2_").hide();
+			$("#shopId").val("");
+
+			validOrgn();
+		}
+		if (search && role) {
+
+			$
+					.ajax({
+						type : "POST",
+						url : "register-autoSearch-organization?role=" + role,
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								if (response.body.length != 0) {
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autocomplete-list1" style="margin-left:0px; font-weight:100; font-size:14px; color:#333;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocomautocompletedatapletedata cp" onClick="selectAutocompleteValue2(\''
+												+ response.body[i].organizationId
+												+ '\',\''
+												+ response.body[i].organizationName
+												+ '\')">'
+												+ response.body[i].organizationName
+												+ '</li>';
+									}
+									content += '</ul>';
+									$("#suggesstion-box2_").show();
+									$("#suggesstion-box2_").html(content);
+
+								} else {
+									$("#search").css("background", "#FFF");
+									var content = '<div id="autocomplete-list1">';
+									content += '<div onClick="selectAutocompleteValue3()" align ="center">'
+											+ "No Data Found" + '</div>';
+									content += '</div>';
+									$("#suggesstion-box2_").show();
+									$("#suggesstion-box2_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+
+	}
+
+	function selectAutocompleteValue2(organizationId, organizationName) {
+		if (organizationId) {
+			$("#shopId").val(organizationId);
+			$("#shopName").val(organizationName);
+			$("#search").val(organizationName);
+			$("#search").attr('data-procat', organizationId);
+			$("#suggesstion-box2_").hide();
+		} else {
+			$("#shopId").val("");
+			$("#shopName").val("");
+			$("#search").val("");
+			$("#search").attr('data-procat', "");
+			$("#suggesstion-box2_").hide();
+		}
+	}
+
+	function selectAutocompleteValue3() {
+		$("#shopId").val("");
+		$("#shopName").val("");
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box2_").hide();
+	}
+	
+
+	/*--------------------------------------------           function for Prof Submit          ------------------------------------- ------------ */
+	//For Save Registration
+	function profSubmit() {
+		var dob = $("#dob").val();
+		var spid = $("#splIdSpanId").val();
+		var gender = $("input:radio[name=gender]:checked").val();
+		var rollDie = getRandomizer(1, 9);
+		var results = ""
+		for (var i = 0; i < 5; i++) {
+			results += rollDie(); //make a string filled with 9 random numbers in the range 1-9.
+		}
+		var str = $('#name').val();
+		var res = str.substring(0, 3);
+		var uid = res.toUpperCase();
+		var userId = uid + results;
+		var rolesId = $("#roleId").val();
+		if (spid == "") {
+			if(rolesId==28){
+				var validation = true;
+				$(".formValidation").remove();
+				var data1 = {};
+				data1.organizationId = $("#shopId").val();
+				//data1.organizationName = $("#organizationName").val();
+				data1.tittle = $('#vleTittle').val();
+				data1.name = $("#vleName").val();
+				data1.experience = $("#experience").val();
+				data1.roleUser = $("#roleIdSpanId").val();
+				data1.speciality = $("#speciality").val();
+				data1.gender = $("input:radio[name=gender]:checked").val();
+				data1.address = $("#address").val();
+				data1.country = $('#country').val();
+				data1.state = $('#state').val();
+				data1.dist = $('#dist').val();
+				data1.city = $('#city').val();
+				data1.pin = $('#pin').val();
+				data1.mob = $("#mob").val();
+				data1.mail = $("#mail").val();
+				data1.uploadFile = $("#uploadFile").val();
+				data1.userId = userId;
+
+				data1.blockName = $("#blockName").val();
+				data1.villageName = $("#villageName").val();
+				data1.locationName = $("#locationName").val();
+
+				if (data1) {
+					console.log(JSON.stringify(data1));
+					$.ajax({
+						type : "POST",
+						url : "register-add-Professional",
+						dataType : "json",
+						contentType : "application/json",
+						data : JSON.stringify(data1),
+						success : function(response) {
+							if (response.message == "Success") {
+								$("#strategy").hide();
+								$("#active").hide();
+								$("#content1").show();
+								$("#userRegdBtn").hide();
+								$("#profRegdBtn").hide();
+							} else {
+								$("#okModal").modal('show');
+							}
+						},
+						error : function(response) {
+							console.log(response);
+						}
+					})
+				}
+			}else{
+				var validation = true;
+				$(".formValidation").remove();
+				var data1 = {};
+				data1.organizationId = $("#organizationId").val();
+				//data1.organizationName = $("#organizationName").val();
+				data1.tittle = $('#profTittle').val();
+				data1.name = $("#name").val();
+				data1.experience = $("#experience").val();
+				data1.roleUser = $("#roleIdSpanId").val();
+				data1.speciality = $("#speciality").val();
+				data1.gender = $("input:radio[name=gender]:checked").val();
+				data1.address = $("#address").val();
+				data1.country = $('#country').val();
+				data1.state = $('#state').val();
+				data1.dist = $('#dist').val();
+				data1.city = $('#city').val();
+				data1.pin = $('#pin').val();
+				data1.mob = $("#mob").val();
+				data1.mail = $("#mail").val();
+				data1.uploadFile = $("#uploadFile").val();
+				data1.userId = userId;
+
+				if (data1) {
+					console.log(JSON.stringify(data1));
+					$.ajax({
+						type : "POST",
+						url : "register-add-Professional",
+						dataType : "json",
+						contentType : "application/json",
+						data : JSON.stringify(data1),
+						success : function(response) {
+							if (response.message == "Success") {
+								$("#strategy").hide();
+								$("#active").hide();
+								$("#content1").show();
+								$("#userRegdBtn").hide();
+								$("#profRegdBtn").hide();
+							} else {
+								$("#okModal").modal('show');
+							}
+						},
+						error : function(response) {
+							console.log(response);
+						}
+					})
+				}
+			}
+			
+		} else {
+
+			var validation = true;
+			$(".formValidation").remove();
+			var data1 = {};
+			data1.organizationId = $("#organizationId").val();
+			//data1.organizationName = $("#organizationName").val();
+			data1.tittle = $('#profTittle').val();
+			data1.name = $("#name").val();
+			data1.experience = $("#experience").val();
+			data1.roleUser = $("#roleIdSpanId").val();
+			data1.speciality = $("#speciality").val();
+			data1.gender = $("input:radio[name=gender]:checked").val();
+			data1.address = $("#address").val();
+			data1.country = $('#country').val();
+			data1.state = $('#state').val();
+			data1.dist = $('#dist').val();
+			data1.city = $('#city').val();
+			data1.pin = $('#pin').val();
+			data1.mob = $("#mob").val();
+			data1.mail = $("#mail").val();
+			data1.uploadFile = $("#uploadFile").val();
+			data1.userId = userId;
+
+			if (data1) {
+				$.ajax({
+					type : "POST",
+					url : "register-add-Professional",
+					dataType : "json",
+					contentType : "application/json",
+					data : JSON.stringify(data1),
+					success : function(response) {
+						if (response.message == "Success") {
+							$("#strategy").hide();
+							$("#active").hide();
+							$("#content1").show();
+							$("#userStatus").hide();
+							$("#profStatus").show();
+							$("#userRegdBtn").hide();
+							$("#profRegdBtn").hide();
+						} else {
+							$("#okModal").modal('show');
+						}
+					},
+					error : function(response) {
+						console.log(response);
+					}
+				})
+			}
+		}
+
+	}
+	//Profile Image Upload & Delete Strats
+	/* 
+	 function checkFileDetails() {
+	 var fileName = $('#fileUpload').val();
+	 alert(fileName);
+	 var fileExtension = fileName.replace(/^.*\./, '');
+	 if (fileExtension == 'png' || fileExtension == 'jpg'
+	 || fileExtension == 'jpeg') {
+	 // readImageFile(fi.files.item(i));
+	 // GET IMAGE INFO USING fileReader().
+	 saveFile();
+	 } else {
+	 swal({
+	 title : "Insert Image With Extensions 'JPG'/'PNG'/'JPEG'",
+	 type : "warning",
+	 //return false;
+	 })
+	 $("#fileUpload").val("");
+	 }
+	 }
+
+	 function saveFile() {
+
+	 var uFile = $('#fileUpload')[0].files[0];
+	 if (uFile != null) {
+	 $("#addIcon").hide();
+	 $("#editIcon").show();
+	 }
+	 var fileName = $('#fileUpload').val();
+
+	 var lastIndex = fileName.lastIndexOf("\\");
+	 if (lastIndex >= 0) {
+	 fileName = fileName.substring(lastIndex + 1);
+	 }
+	 var iURL = URL.createObjectURL(uFile);
+
+	 $('#imgemp').attr('src', '');
+	 $('#imgemp').attr('src', iURL);
+
+	 var fileData = new FormData();
+	 fileData.append('file', uFile);
+	 fileData.append('path', 'none');
+	 $.ajax({
+	 type : "POST",
+	 url : "register-add-details-upload-profileImage",
+	 enctype : "multipart/form-data",
+	 contentType : false,
+	 data : fileData,
+	 processData : false,
+	 cache : false,
+	 success : function(response) {
+
+	 },
+	 error : function(e) {
+
+	 }
+	 });
+	 }
+	 */
+	function deleteFile() {
+
+		$('#imgemp').attr('src', '');
+		$('#imgemp').attr('src', '../assets/eHealth/images/profile_img.png');
+
+		var fileData = new FormData();
+
+		fileData.append('file', 'none');
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "register-add-details-delete-file",
+			enctype : "multipart/form-data",
+			contentType : false,
+			/* data        : fileData, */
+			processData : false,
+			cache : false,
+			success : function(response) {
+				console.log("ABC")
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+
+	/*---------------                function for Login               ------------ */
+	function login() {
+		window.location.href = 'login';
+	}
+
+	function registration() {
+		window.location.href = 'register';
+	}
+	/*---------------function for OkModal------------ */
+	function okModal() {
+		$("#okModal").modal('hide');
+		login();
+	}
+function abhahideModal() {
+	$("#abhaModal").hide();
+}
+	function organisationModal() {
+		$("#myModalOrganisational").show();
+	}
+
+	function cancelModalBtn1() {
+		$("#myModalOrganisational").hide();
+	}
+
+	function saveOrganisation() {
+		var uploadList = [];
+		var obj = {};
+		var datas = [];
+		$("#doctbodyData > tr").each(function(i) {
+			var uFile = $(this).find(".document")[0].files[0];
+			var fileName = $(this).find(".document").val();
+			var data = [];
+			var x = [];
+			if (fileName != '' && fileName != 'undefined' && fileName != null) {
+				var lastIndex = fileName.lastIndexOf("\\");
+				if (lastIndex >= 0) {
+					fileName = fileName.substring(lastIndex + 1);
+				}
+				var reader = new FileReader();
+				reader.readAsDataURL(uFile);
+
+				reader.onload = function() {
+					data = reader.result.split(",");
+					x.push(data[1]);
+				};
+			} else {
+				if ($("#medicationId").val()) {
+					fileName = $(this).find(".uploadHidCls").val();
+				} else {
+					x = [];
+				}
+			}
+
+			uploadData = {};
+			uploadData['documnentName'] = $(this).find('.docNoclss').val();
+			uploadData['documentFile'] = x;
+			uploadData['fileName'] = fileName;
+			uploadData['imageNameEdit'] = $(this).find(".uploadHidCls").val();
+
+			uploadList.push(uploadData);
+		});
+		setTimeout(
+				function() {
+					obj.organizationModalId = $("#organizationModalId").val();
+					obj.orgName = $("#orgName").val();
+					obj.orgAddress = $("#orgAddress").val();
+					obj.orgTypeId = $("#orgType").val();
+					//obj.orgdocName = $("#imgLoc").val();
+					obj.orgAttachment = $("#fileUploads").val();
+					obj.orgRegdNo = $("#orgRegdNo").val();
+					obj.orgGst = $("#orgGst").val();
+					obj.country = $('#orgCountry').val();
+					obj.state = $('#orgState').val();
+					obj.dist = $('#orgDist').val();
+					obj.city = $('#orgCity').val();
+					obj.orgPin = $('#orgPin').val();
+
+					obj.documentList = uploadList;
+					var validation = true;
+
+					if (obj.orgName == null || obj.orgName == "") {
+						validation = validationUpdated(
+								"Organisation Name Required", "orgName");
+					}
+					if (obj.orgAddress == null || obj.orgAddress == "") {
+						validation = validationUpdated(
+								"Organisation Address Required", "orgAddress");
+					}
+					if (obj.orgTypeId == null || obj.orgTypeId == "") {
+						validation = validationUpdated(
+								"Organisation Type Required", "orgType");
+					}
+					if (obj.orgdocName == null || obj.orgdocName == "") {
+						validation = validationUpdated(
+								"Organisation DocName Required", "orgName");
+					}
+					if (obj.country == null || obj.country == "") {
+						validation = validationUpdated("Country Required",
+								"orgCountry");
+					}
+					if (validation) {
+						savedata(obj)
+					}
+				}, 1000);
+
+	}
+	function savedata(obj) {
+		$(".loader").show();
+		$.ajax({
+			type : "POST",
+			url : "register-organisation-add",
+			contentType : "application/json",
+			data : JSON.stringify(obj),
+			success : function(response) {
+				console.log(response);
+				if (response.message == "Success") {
+					console.log(response.message);
+					$("#myModalOrganisational").hide();
+					$(".loader").hide();
+				}
+			},
+			error : function(data) {
+				console.log(data);
+				
+				
+			}
+		})
+	}
+	function cancelModalBtn1() {
+		$("#myModalOrganisational").hide();
+	}
+	/*
+	 file upload function
+	 */
+
+	function saveSingleFile() {
+		var uFile = $('#uploadFile')[0].files[0];
+		var fileName = $('#uploadFile').val();
+		var iURL = URL.createObjectURL(uFile);
+		var LightImg = "<div class='uploadicon position-l' ><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'>Preview</a></div>";
+		$("#uploadedBillDiv_").html(LightImg);
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "register-add-details-upload-file",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+	function saveMultiFile(event) {
+		var AssignItemQty = event.currentTarget.value;
+		var currentFldId = event.currentTarget.getAttribute('id');
+
+		var l = currentFldId.split("_");
+		var counter = l[1];
+		var currentFldId = "#" + currentFldId;
+		console.log(currentFldId)
+		var uFile = $(currentFldId)[0].files[0];
+		var fileName = event.currentTarget.value;
+		console.log("fileName", fileName)
+		var lastIndex = fileName.lastIndexOf("\\");
+		console.log("lastIndex", lastIndex)
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var extension = fileName.split(".");
+
+		var iURL = URL.createObjectURL(uFile);
+		console.log(iURL)
+		$("#uploadedDocDiv_" + counter).html("");
+		if (extension[extension.length - 1] != null
+				&& extension[extension.length - 1] != "") {
+			$("#uploadHiddenDoc_" + counter).val('');
+		}
+		if (extension[extension.length - 1] == "jpg"
+				|| extension[extension.length - 1] == "png"
+				|| extension[extension.length - 1] == "jpeg") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link btn btn-primary' style=\"color:#FFF!important;\"  href='"
+					+ iURL
+					+ "' title='"
+					+ fileName
+					+ "' target='_balnk'><i class='fa fa-picture-o'>VIEW</i></a></span>";
+		} else if (extension[extension.length - 1] == "pdf") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link btn btn-primary' style=\"color:#FFF!important;\"  href='"
+					+ iURL
+					+ "' title='"
+					+ fileName
+					+ "' target='_balnk'><i class='fa fa-file-pdf-o'>VIEW</i> </a></span>";
+		} else if (extension[extension.length - 1] == "xls"
+				|| extension[extension.length - 1] == "xlsx") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link btn btn-primary' style=\"color:#FFF!important;\"  href='"
+					+ iURL
+					+ "' title='"
+					+ fileName
+					+ "' target='_balnk'><i class='fa fa-file-excel-o'>VIEW</i></a></span>";
+		} else if (extension[extension.length - 1] == "doc"
+				|| extension[extension.length - 1] == "dox"
+				|| extension[extension.length - 1] == "docx") {
+			var LightImg = "<span class='uploadicon position-l'><a class='example-image-link btn btn-primary' style=\"color:#FFF!important;\"  href='"
+					+ iURL
+					+ "' title='"
+					+ fileName
+					+ "' target='_balnk'><i class='fa fa-file-word-o'>VIEW</i></a></span>";
+		} else {
+			var LightImg = "<span class='uploadicon position-l '> </div>";
+		}
+		var dltImg = '<i class="ti-close position-l rmv1" onclick="openDeleteConfirm()"></i>';
+		$("#uploadedDocDiv_" + counter).html(LightImg);
+		$("#imageName_" + counter).html(fileName);
+		$("#dltImage_" + counter).html(dltImg);
+		$("#dltImage_" + counter).addClass("custom-file-delete");
+		$("#clickImg_" + counter).removeClass("ti-plus");
+		$("#clickImg_" + counter).addClass("ti-pencil");
+
+	}
+
+	function checkEmpty() {
+		var infofileName = true;
+		$(".formValidation").remove();
+		$('.docNoclss').each(function() {
+			if ($(this).val() == null || $(this).val() == "") {
+				infofileName = false;
+				validationModal("Document Name Required", $(this).attr('id'));
+			}
+		});
+
+		var mulDocInfo = true;
+		if (infofileName) {
+			$('#doctbodyData > tr').each(function() {
+				if ($(this).closest('tr').find('.imageName').text()) {
+					mulDocInfo = true;
+					$("#addAttchmentBtn").removeAttr('href')
+					$("#addAttchmentBtn").removeAttr('data-toggle')
+				} else {
+					$("#addAttchmentBtn").attr('href', "#msgModal")
+					$("#addAttchmentBtn").attr('data-toggle', "modal")
+					$("#messageParagraph").text("Please Choose a File ");
+
+					$("#msgModal").addClass('show');
+					$("#msgModal").modal('show');
+
+					$("#msgOkModal").removeClass("btn3");
+					$("#msgOkModal").addClass("btn1");
+					mulDocInfo = false;
+					return false;
+				}
+
+			});
+		}
+		if (infofileName && mulDocInfo) {
+			addMore()
+		}
+	}
+	function addMore() {
+
+		var lengthOfTableRow = $("#doctbodyData").children('tr').length;
+		var cloneHtml = $("#docTbl tbody tr:first").clone();
+
+		$("#docTbl tbody").append($("#docTbl tbody tr:first").clone());
+		//$("#myTable tbody tr td:last").html("");
+		$("#docTbl tbody tr:last").find(".docNoclss").val("");
+		$("#docTbl tbody tr:last").find(".document").val("");
+		$("#docTbl tbody tr:last").find(".imageName").empty();
+		$("#docTbl tbody tr:last").find(".dltImage").empty();
+		$("#docTbl tbody tr:last").find(".uploadHidCls").empty();
+		$("#docTbl tbody tr:last").find(".uploadedDocCls").empty();
+		$("#docTbl tbody tr:last").find(".uploadicon").empty();
+		$("#docTbl tbody tr:last").find(".uploadicon").empty();
+		var j = 0;
+		$("#docTbl > #doctbodyData > tr").each(function(i) {
+			var textInput = $(this).find('input');//only one input for  document name
+			var divInput = $(this).find('div');
+			var spanInput = $(this).find('span');
+			var iInput = $(this).find('i');//3 i tags
+			var Ilabel = $(this).find('label');//3 i tags
+
+			textInput.eq(0).attr('id', "docname_" + i);//document name  given by user
+			textInput.eq(1).attr('id', "uploadDoc_" + i);//document name uploaded by user
+			iInput.eq(0).attr('id', "clickImg_" + i);
+			divInput.eq(3).attr('id', "uploadedDocDiv_" + i);
+			spanInput.eq(0).attr('id', "imageName_" + i);
+			spanInput.eq(1).attr('id', "dltImage_" + i);
+			Ilabel.eq(0).attr('for', "uploadDoc_" + i);
+			j++;
+		})
+		$("#clickImg_" + (j - 1)).removeClass("ti-pencil");
+		$("#clickImg_" + (j - 1)).addClass("ti-plus");
+	}
+	function savedocument() {
+
+	}
+
+	function regByAadhaarNo() {
+		$("#regByAadhaar").hide();
+		$("#regByPan").hide();
+		$("#inputForPan").hide();
+		$("#inputForAadhaar").show();
+		$("#abhaProceedBtn").show();
+		$("#backProcessBtn").show();
+
+	}
+
+	function regByPanOrDl() {
+		$("#regByAadhaar").hide();
+		$("#regByPan").hide();
+		$("#abhaProceedBtn").show();
+		$("#inputForAadhaar").hide();
+		$("#inputForPan").show();
+		$("#backProcessBtn").show();
+
+	}
+
+	function backProcess() {
+
+		$("#nextBtn").hide();
+		$("#inputForPan").hide();
+		$("#inputForAadhaar").hide();
+		$("#abhaProceedBtn").hide();
+		$("#backProcessBtn").hide();
+		$("#regByAadhaar").show();
+		$("#regByPan").show();
+		$("#aadhaar").val("");
+		$("#panInput").val("");
+
+	}
+
+	/* Generate OTP for aadhaar id
+	 *
+	 */
+	var txnIdForAadhar = "";
+	var aadhaarAbha = "";
+	function proccedWithIdNo() {
+		validation = true;
+		var aadhharNo = $("#aadhaar").val();
+		aadhaarAbha = aadhharNo;
+		 $('.loader').show();
+			$("body").addClass("overlay");
+
+		if (aadhharNo != "" && aadhharNo != null) {
+			$.ajax({
+				type : "GET",
+				url : "get-generate-otp-aadhaar?aadhaar=" + aadhharNo,
+				contentType : false,
+				success : function(response) {
+					console.log(response);
+					if (response.message == "Success") {
+						$(".loader").hide();
+						 $("body").removeClass("overlay");
+						
+						txnIdForAadhar = JSON.parse(response.body).txnId
+								.toString();
+						$("#inputForAadhaar").hide();
+						$("#inputOTPAadhaar").show();
+						$("#proceedWithOTPBtn").show();
+						$("#abhaProceedBtn").hide();
+					} else {
+						
+							$(".loader").hide();
+							$("body").removeClass("overlay");
+							$("#abhaModal").show();
+							
+							for (var i = 0; i < response.body.length; i++) {
+								$("#adharaCheck").empty();
+								var adharacode=	
+									'<div class ="check-text">'
+									+'you have already registered in EhealthSystem with this Aadhaar number "'+response.body[i].name+'" and your Abhaid is "'+response.body[i].code+'" and your UHID No is "'+response.body[i].key+'".'
+									+'<br>'+'Please login with your UHID /Mobile No'
+									+'</div>'	
+											
+									+'</div>'
+								+'</div>'
+									
+								$("#adharaCheck").append(adharacode);	
+									
+								
+								validation = validationUpdated(
+										"Please enter a valid aadhaar number",
+										"aadhaar");
+								
+							}
+							
+							validation = validationUpdated(
+									"Please enter a valid aadhaar number",
+									"aadhaar");
+						
+						
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+
+		} else {
+			validation = validationUpdated("Aadhaar number required", "aadhaar");
+		}
+	}
+	/* 
+	Verification for aadhaar is valid or not
+	 *
+	 */
+	function proccedWithOTP() {
+		var aadhaarOTP = $("#aadhaarOTP").val();
+		validation = true;
+		$(".loader").show();
+		if (aadhaarOTP != "" && aadhaarOTP != null) {
+			$.ajax({
+				type : "GET",
+				url : "get-txnid-for-otp-verification?aadhaarOTP=" + aadhaarOTP
+						+ "&txnIdForAadhar=" + txnIdForAadhar,
+				contentType : false,
+				success : function(response) {
+					console.log(response);
+					if (response.message == "Success") {
+						$(".loader").hide();
+						$("#inputOTPAadhaar").hide();
+						$("#proceedWithOTPBtn").hide();
+						$("#inputMobileNumber").show();
+						$("#mobileNumberProceed").show();
+						$("#proceedWithMobileOtpBtn").show();
+					} else {
+						alert("Unsuccess");
+						validation = validationUpdated("Please enter otp",
+								"inputOTPAadhaar");
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		} else {
+			validation = validationUpdated("Please enter a valid OTP",
+					"inputOTPAadhaar");
+
+		}
+
+	}
+	/* 
+	Verification for valid mobile number
+	 *
+	 */
+	function proccedWithMobileNo() {
+		var inputMobileNumber = $("#mobileNumberId").val();
+		validation = true;
+		$(".loader").show();
+		$("body").addClass("overlay");
+		if (inputMobileNumber != "" && inputMobileNumber != null) {
+			$.ajax({
+				type : "GET",
+				url : "get-txnid-for-mobile-verification?inputMobileNumber="
+						+ inputMobileNumber + "&txnIdForAadhar="
+						+ txnIdForAadhar,
+				contentType : false,
+				success : function(response) {
+					console.log(response);
+					if (response.message == "Success") {
+						$(".loader").hide();
+						$("body").removeClass("overlay");
+						$("#mobileNumberId").hide();
+						$("#mobileNumberProceed").hide();
+						$("#inputOtpMobileNumber").show();
+						$("#mobileproceedOTP").show();
+						$("#proceedWithMobileOtpBtn").hide();
+					} else {
+						alert("Unsuccess");
+						validation = validationUpdated(
+								"Please enter your mobile number",
+								"inputMobileNumber");
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+	}
+
+	/* 
+	Verification of OTP for valid mobile number
+	 *
+	 */
+	var base64ForNewImg = "";
+	function proccedWithMobileOTP() {
+		var inputOtpMobileNumberId = $("#inputOtpMobileNumber").val();
+		$(".loader").show();
+		if (inputOtpMobileNumberId != "" && inputOtpMobileNumberId != null) {
+			$
+					.ajax({
+						type : "GET",
+						url : "get-txnid-for-mobile-verification-otp?inputOtpMobileNumberId="
+								+ inputOtpMobileNumberId
+								+ "&txnIdForAadhar="
+								+ txnIdForAadhar,
+						contentType : false,
+						success : function(response) {
+							console.log("Response");
+							console.log(response);
+							if (response.message == "Success") {
+								$(".loader").hide();
+								$("#inputOtpMobileNumberId").hide();
+								$("#mobileproceedOTP").hide();
+								$("#inputOtpMobileNumber").show();
+								$("#inputOtpProceedBttn").show();
+								$("#hideInputSection").show();
+								$("#nextBtn").show();
+								const resp = JSON.parse(response.body);
+								console.log(resp);
+								$("#fName").val(resp.firstName);
+								$("#mName").val(resp.middleName);
+								$("#lName").val(resp.lastName);
+								$("#mob").val(resp.mobile);
+								$("#mail").val(resp.email);
+								$("#aadhaarNoAbha").val(aadhaarAbha);
+								base64ForNewImg = resp.profilePhoto;
+								imgemp.setAttribute('src',
+										"data:image/jpg;base64,"
+												+ base64ForNewImg);
+								$("#abhaId").val(resp.healthIdNumber);
+								if (resp.gender == "M") {
+									$("#Male").prop("checked", true);
+								} else if (resp.gender == "F") {
+									$("#Female").prop("checked", true);
+								} else {
+									$("#Other").prop("checked", true);
+								}
+
+							} else {
+								$("#mobileproceedOTP").show();
+								validation = validationUpdated(
+										"Please enter valid OTP",
+										"inputOtpMobileNumberId");
+							}
+						},
+						error : function(response) {
+							console.log(response);
+						}
+					})
+		}
+
+	}
+</script>
+
+</head>
+<body class="vbox viewport">
+
+	<section class="main hbox">
+		<article class="col-md-6 login-form-1">
+
+			<div class="row justify-content-sm-center">
+				<div class="col-md-12">
+					<div class="signup-txt">Sign Up</div>
+					<div class="signup-subtxt">To keep connected with us please
+						Sign Up with your personal info</div>
+				</div>
+
+				<div class="col-md-12">
+					<!-- design process steps-->
+					<!-- Nav tabs -->
+					<div class="loader">
+
+						<div
+							style="position: absolute; height: 100vh; display: flex; background: rgba(0, 0, 0, 0.9); z-index: 99999; align-items: center; justify-content: center; width: 100%;">
+							<img class="loading-image" src="../assets/images/loading.gif"
+								alt="loader" />
+						</div>
+
+					</div>
+					<div class="tab-content">
+
+						<div role="tabpanel" class="tab-pane" id="strategy">
+							<div class="design-process-content">
+								<!-- <h3 class="heading">Fill Personal Information</h3> -->
+								<div class="row" id="aa">
+									<input type="hidden" th:value="${roleId}" id="roleId" /> <input
+										type="hidden" th:value="${roleName}" id="roleName" /> <input
+										type="hidden" th:value="${countryId}" id="hidCountryId" /> <input
+										type="hidden" th:value="${stateId}" id="hidStateId" /> <input
+										type="hidden" th:value="${distId}" id="hidDistId" /> <input
+										type="hidden" th:value="${cityId}" id="hidCityId" /> <input
+										type="hidden" id="roleIdSpanId">
+									<div class="col-md-12" align="center">
+										<div class="reg-img">
+
+											<img src="../assets/eHealth/images/profile_img.png"
+												class="img-fluid" id="imgemp" alt="Location">
+											<div class="hvrbox-layer_top">
+												<div class="hvrbox-text">
+													<!-- <input type="file" id="fileUpload"
+														onchange="checkFileDetails();" /> <span><label
+														for="fileUpload"><i class="ti-files" id="addIcon"
+															style="cursor: pointer;"></i> <i class="fa fa-edit"
+															id="editIcon" style="cursor: pointer;"></i></label></span> -->
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row" id="checkValidity">
+									<div class="row" id="regByAadhaar">
+										<div class="col-md-12" align="right">
+											<button class="btn btn-primary" id="regByAadhaarBtn"
+												onclick="regByAadhaarNo();" style="cursor: pointer;">Register
+												By Aadhaar No</button>
+										</div>
+									</div>
+
+									<div class="row" id="regByPan">
+										<div class="col-md-12" align="right">
+											<button class="btn btn-primary" id="regByPanBtn"
+												onclick="regByPanOrDl();" style="cursor: pointer;">Register
+												PAN No or DL</button>
+										</div>
+									</div>
+
+									<div class="col-md-6" id="inputForAadhaar">
+										<label for="aadhaar"></label>
+										<div class="form-group">
+											<input type="text" class="form-control" id="aadhaar"
+												onkeyup="checkNum('aadhaar')" autocomplete="off"
+												placeholder="Enter Your aadhaar number ....">
+										</div>
+									</div>
+									<div class="col-md-6 mt-30" align="right" id="abhaProceedBtn">
+										<button class="btn btn-danger" id="proceedBtnForAadhaar"
+											onclick="proccedWithIdNo()" onchange="activateButton1(this)"
+											style="cursor: pointer;">Proceed</button>
+										<button class="btn btn-danger" id="backProcessBtn"
+											onclick="backProcess()" onchange="activateButton2(this)"
+											style="cursor: pointer;">Back</button>
+									</div>
+
+									<div class="col-md-6" id="inputOTPAadhaar">
+										<label for="otp"></label>
+										<div class="form-group">
+											<input type="text" class="form-control" id="aadhaarOTP"
+												onkeyup="checkNum('aadhaarOTP')" autocomplete="off"
+												placeholder="Enter Your OTP here ....">
+										</div>
+									</div>
+									<div class="col-md-6 mt-30" align="right"
+										id="proceedWithOTPBtn">
+										<button class="btn btn-danger" id="proceedWithOTPBtn"
+											onclick="proccedWithOTP()" onchange="activateButton2(this)"
+											style="cursor: pointer;">Proceed OTP</button>
+									</div>
+									<div class="col-md-6" id="inputForPan">
+										<label for="Pan"></label>
+										<div class="form-group">
+											<input type="text" class="form-control" id="panInput"
+												onkeyup="checkNum('panInput')" autocomplete="off"
+												placeholder="Enter Your PAN or DL no number ....">
+										</div>
+									</div>
+									<div class="col-md-6" id="inputMobileNumber">
+										<label for="Pan"></label>
+										<div class="form-group">
+											<input type="text" class="form-control" id="mobileNumberId"
+												onkeyup="checkNum('mobileNumberId')" autocomplete="off"
+												placeholder="Enter Your Mobile Number ....">
+										</div>
+									</div>
+									<div class="col-md-6 mt-30" align="right"
+										id="proceedWithMobileOtpBtnId">
+										<button class="btn btn-danger" id="proceedWithMobileOtpBtn"
+											onclick="proccedWithMobileNo()"
+											onchange="activateButton4(this)" style="cursor: pointer;">Proceed
+											Mobile No</button>
+									</div>
+									<div class="col-md-6" id="inputOtpMobileNumberId">
+										<label for="Pan"></label>
+										<div class="form-group">
+											<input type="text" class="form-control"
+												id="inputOtpMobileNumber"
+												onkeyup="checkNum('inputOtpMobileNumber')"
+												autocomplete="off" placeholder="Enter Otp ....">
+										</div>
+									</div>
+									<div class="col-md-6 mt-30" align="right"
+										id="mobileproceedOTPId">
+										<button class="btn btn-danger" id="mobileproceedOTP"
+											onclick="proccedWithMobileOTP()"
+											onchange="activateButton7(this)" style="cursor: pointer;">Proceed
+											Mobile OTP</button>
+									</div>
+
+
+								</div>
+
+								<div class="row" id="hideInputSection">
+									<div class="col-md-6" id="a1">
+									
+										<!-- <label for="email">Organization:</label>  -->
+										<label for="email"></label>
+										<div class="d-flex">
+											<input type="hidden" id="organizationId"> <input
+												type="text" id="organizationName" class="form-control"
+												onkeyup='getOrganizationNameList()'
+												placeholder="Enter Organization" autocomplete="off">
+											<button class="btn btn-outline-default bg-wt btn-sm"
+												onclick="organisationModal();" style="cursor: pointer;">
+												<i class="ti ti-plus"></i>
+											</button>
+
+											<div id="suggesstion-box1_" class="sugg-cls"></div>
+										</div>
+										<div id="error7" class="formValidation1"></div>
+									</div>
+									
+									<div class="col-md-6" id="vle1">
+									
+										<!-- <label for="email">Organization:</label>  -->
+										<label for="email"></label>
+										<div class="d-flex">
+											<input type="hidden" id="shopId"> <input
+												type="text" id="shopName" class="form-control"
+												onkeyup='getshopNameList()'
+												placeholder="Enter Shop Name" autocomplete="off">
+											<button class="btn btn-outline-default bg-wt btn-sm"
+												onclick="organisationModal();" style="cursor: pointer;">
+												<i class="ti ti-plus"></i>
+											</button>
+
+											<div id="suggesstion-box2_" class="sugg-cls"></div>
+										</div>
+										<div id="error7" class="formValidation1"></div>
+									</div>
+
+									<div class="col-md-6" id="aa2">
+										<label></label>
+										<div class="row">
+											<div class="col-md-5" style="padding-right: 0px;">
+												<div class="form-group">
+													<div class="select">
+														<select id="tittle" class="form-control">
+															<option value="">Select</option>
+															<option th:each="c,iter:${tittleList}"
+																th:value="${c.key}" th:text="${c.name}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-7" style="padding-left: 5px;">
+												<div class="form-group">
+													<input type="hidden" id="abhaId">
+													<input type ="hidden" id ="aadhaarNoAbha"> <input
+														type="text" class="form-control" id="fName"
+														style="line-height: 34px;"
+														onkeyup="checkAlphabet('fName')" autocomplete="off"
+														placeholder="Enter First Name....">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6" id="bb2">
+										<label></label>
+										<div class="row">
+											<div class="col-md-5" style="padding-right: 0px;">
+												<div class="form-group">
+													<div class="select">
+														<select id="profTittle" class="form-control">
+															<option value="">Select</option>
+															<option th:each="c,iter:${tittleList}"
+																th:value="${c.key}" th:text="${c.name}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-7" style="padding-left: 5px;">
+												<div class="form-group">
+
+													<input type="text" class="form-control" id="name"
+														style="line-height: 34px;" onkeyup="checkAlphabet('name')"
+														autocomplete="off" placeholder="Professional's  Name....">
+												</div>
+											</div>
+											
+											
+											
+											
+										</div>
+									</div>
+									
+									
+									<div class="col-md-6" id="vle2">
+										<label></label>
+										<div class="row">
+											<div class="col-md-5" style="padding-right: 0px;">
+												<div class="form-group">
+													<div class="select">
+														<select id="vleTittle" class="form-control">
+															<option value="">Select</option>
+															<option th:each="c,iter:${tittleList}"
+																th:value="${c.key}" th:text="${c.name}"></option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-7" style="padding-left: 5px;">
+												<div class="form-group">
+
+													<input type="text" class="form-control" id="vleName"
+														style="line-height: 34px;" onkeyup="checkAlphabet('vleName')"
+														autocomplete="off" placeholder="Owner's  Name....">
+												</div>
+											</div>
+											
+											
+											
+											
+										</div>
+									</div>
+
+									<div class="col-md-6" id="a3">
+										<label for="email"></label>
+										<div class="form-group">
+											<input type="text" class="form-control" id="lName"
+												onkeyup="checkAlphabet('lName')" autocomplete="off"
+												placeholder="Enter Last Name....">
+										</div>
+									</div>
+									<div class="col-md-6" id="a4">
+										<label for="email"></label>
+										<div class="form-group">
+											<div class="select">
+												<select id="typeClinic" onchange="getChangeList()"
+													class="form-control">
+
+													<option value="2">Doctor</option>
+													<option value="5">Receptionist</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6" id="a6">
+										<!-- <label for="email">Speciality:</label> -->
+										<label for="email"></label>
+										<div class="form-group" id="aa6">
+											<div class="select">
+												<select id="speciality" class="form-control">
+													<option value="">Select Speciality</option>
+													<option th:each="c,iter:${specialityList}"
+														th:value="${c.key}" th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group" id="bb6">
+											<input type="hidden" id="splIdSpanId"> <span
+												type="hidden" id="splIdSpan" style="color: #929292;"></span>
+										</div>
+									</div>
+									<div class="col-md-6" id="a5">
+										<!-- <label for="email">Experience(Years):</label> -->
+										<label for="email"></label>
+										<div class="form-group">
+											<input type="text" class="form-control" id="experience"
+												autocomplete="off" maxLength="2"
+												onkeyup="checkNum1('experience')"
+												placeholder="Enter Experience(Years)....">
+										</div>
+									</div>
+									<div class="col-md-6" id="a10">
+										<!-- <label for="email">Address :</label> -->
+										<label for="email"></label>
+										<div class="form-group">
+											<input type="text" id="address" autocomplete="off"
+												class="form-control" placeholder="Enter address...">
+										</div>
+									</div>
+
+									<div class="col-md-6" id="vle4">
+										<!-- <label for="email">Address :</label> -->
+										<label for="email"></label>
+										<div class="form-group">
+											<input type="text" id="villageName" autocomplete="off"
+												class="form-control" placeholder="Village Name...">
+										</div>
+									</div>
+
+
+									<div class="col-md-6" id="vle5">
+										<!-- <label for="email">Address :</label> -->
+										<label for="email"></label>
+										<div class="form-group">
+											<input type="text" id="blockName" autocomplete="off"
+												class="form-control" placeholder="Block Name...">
+										</div>
+									</div>
+
+									<div class="col-md-6" id="vle6">
+										<!-- <label for="email">Address :</label> -->
+										<label for="email"></label>
+										<div class="form-group">
+											<input type="text" id="locationName" autocomplete="off"
+												class="form-control" placeholder="Location Name...">
+										</div>
+									</div>
+
+
+									<div class="col-md-6" id="a15">
+										<label for="email"></label>
+										<div class="form-group">
+											<input id="pin" autocomplete="off" onkeyup="checkNum1('pin')"
+												maxLength="6" class="form-control"
+												placeholder="Enter Pin Code...">
+										</div>
+									</div>
+									<div class="col-md-6" id="a11">
+										<label for="email"></label>
+										<div class="form-group">
+											<div class="select">
+												<select id="country"
+													onchange="getStateList();getCountryCode();"
+													class="form-control">
+													<option value="">-- Select Country --</option>
+													<option th:each="c,iter:${countryList}" th:value="${c.key}"
+														th:text="${c.name}" th:attr="code=${c.code}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6" id="a12">
+										<label for="email"></label>
+										<div class="form-group">
+											<div class="select">
+												<select id="state" onchange="getDistList();"
+													class="form-control">
+													<option value="">-- Select State --</option>
+													<option th:each="c,iter:${stateList}" th:value="${c.key}"
+														th:text="${c.name}" th:attr="code=${c.code}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6" id="a13">
+										<label for="email"></label>
+										<div class="form-group">
+											<div class="select">
+												<select id="dist" onchange="getCityList();"
+													class="form-control">
+													<option value="">-- Select District --</option>
+													<option th:each="c,iter:${distList}" th:value="${c.key}"
+														th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6" id="a14">
+										<label for="email"></label>
+										<div class="form-group">
+											<div class="select">
+												<select id="city" class="form-control">
+													<option value="">-- Select City --</option>
+													<option th:each="c,iter:${cityList}" th:value="${c.key}"
+														th:text="${c.name}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6" id="a9">
+										<div>
+
+											<div class="d-flex" style="margin-top: 30px;">
+												<label for="email">Gender:</label>&nbsp; &nbsp; <input
+													type="radio" name="gender" th:value="${genderList[0].key}"
+													id="Male"> <span style="color: #FFFFFF;">Male</span>
+												&nbsp; <input type="radio" name="gender"
+													th:value="${genderList[1].key}" id="Female"> <span
+													style="color: #FFFFFF;">Female</span>&nbsp; <input
+													type="radio" name="gender" th:value="${genderList[2].key}"
+													id="Others"> <span style="color: #FFFFFF;">Other</span>
+											</div>
+										</div>
+										<span id="error6" class="formValidation1"></span>
+									</div>
+									<div class="col-md-6" id="a18">
+										<label></label>
+										<div class="form-group input-group">
+											<div class="input-group-prepend">
+												<input id="countryCode" class="form-control" readonly
+													style="width: 35px; margin-right: 5px;">
+											</div>
+											<input type="text" id="mob" class="form-control"
+												onkeyup="checkNum1('mob')" placeholder="Enter Mobile No..."
+												maxLength="10" autocomplete="off">
+										</div>
+										<span id="error3" class="formValidation1" style="top: -18px;"></span>
+									</div>
+									<div class="col-md-6" id="a19">
+										<label for="email"></label>
+										<div class="form-group">
+											<input type="text" class="form-control" id="mail"
+												placeholder="Enter Mail Id..." autocomplete="off"><span
+												id="error2" class="formValidation1"></span>
+										</div>
+									</div>
+									<div class="col-md-6" id="a21">
+										<label></label>
+
+
+
+										<div class="form-group upload">
+											<input type="file" id="uploadFile" name="myfile"
+												onchange="saveSingleFile()" class="">
+
+
+										</div>
+
+									</div>
+									<div class="col-md-12" id="a22">
+										<div class="capcha-sec">
+											<div class="row">
+												<div class="col-md-9">
+													<div class="form-group form-check mt-50">
+														<label class="form-check-label"> <input
+															class="form-check-input" type="checkbox"><span>I
+																am Not a robot</span>
+														</label>
+													</div>
+												</div>
+												<div class="col-md-3" align="center">
+													<img src="../assets/images/captcha.png" class="img-fluid">
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-8" id="a23">
+										<div class="form-group form-check mt_15">
+											<label class="form-check-label"> <input
+												class="form-check-input" type="checkbox"
+												onchange="activateButton(this)"> I agree
+											</label> <a href="../assets/pdf/eHealthSystem-cnd.xhtml"
+												style="color: #FFF; text-decoration: underline;">Term
+												and Condition</a>
+											<!-- <span></span> -->
+										</div>
+									</div>
+
+									<div class="col-md-4 mt-10" align="right" id="userRegdBtn">
+										<button class="btn btn-danger" id="subBtn"
+											onclick="interestSection()" onchange="activateButton(this)"
+											style="cursor: pointer;">Next</button>
+									</div>
+
+
+
+									<div class="col-md-4  mt-10" align="right" id="profRegdBtn">
+										<button id="subBtn1" onclick="profSubmit();"
+											onchange="activateButton(this);" class="btn btn-light"
+											style="cursor: pointer;">Submit</button>
+									</div>
+
+								</div>
+								<div class="row" id="userRegdNextBtn">
+									<div class="col-md-12" align="right">
+										<button class="btn btn-danger" id="nextBtn"
+											onclick="userNext();" style="cursor: pointer;">Next</button>
+									</div>
+								</div>
+
+								<div class="row" id="profRegdNextBtn1">
+									<div class="col-md-12" align="right">
+										<button class="btn btn-danger" id="nextBtn1"
+											onclick="profNext();" style="cursor: pointer;">Next</button>
+									</div>
+								</div>
+								<div class="row" id="profRegdNextBtn2">
+									<div class="col-md-12" align="right">
+										<button class="btn btn-danger" id="nextBtn1"
+											onclick="profNext2();" style="cursor: pointer;">Next</button>
+									</div>
+								</div>
+								<!-- <div class="row">
+												<div class="col-md-12 mt-20" align="center">
+													<div class="icon-crl">
+														<a href="#" class="fa fa-facebook"></a> <a href="#"
+															class="fa fa-google"></a>
+													</div>
+												</div>
+											</div> -->
+							</div>
+						</div>
+
+						<div class="container" id="nxtBtn3">
+							<div class="col-md-12" align="center">
+								<div class="envheading" style="font-size: 25px;">Your
+									Interest</div>
+							</div>
+							<div class="row mb-50" id="tbodyid"></div>
+
+							<div class="row mb-50">
+								<div class="col-md-12">
+									<input type="checkbox" id="getUpdate" name="getUpdate">
+									<label class="mr-lft" for="getUpdate"> Want to get
+										email/notification/updates</label>
+								</div>
+							</div>
+							<div class="row" align="right">
+								<div class="col-md-12">
+									<button class="btn btn-primary" id="nxtBtn5"
+										onclick="userSkip()">Skip</button>
+									<button class="btn btn-danger" id="nxtBtn4"
+										onclick="userNextSubmit()">Next</button>
+									<button class="btn btn-primary" id="btnSubmit"
+										onclick="userSubmit()">Submit</button>
+								</div>
+							</div>
+						</div>
+						<!-- 	Congratulation & Login Section Start -->
+						<div role="tabpanel" class="tab-pane" id="content">
+							<div class="design-process-content">
+								<div class="tab-border bg-white pd-10">
+									<div class="wlcm-head">Welcome To eHealthSystem</div>
+									<div class="wlcm-text">Congratulations! You have
+										successfully registered to eHealthSystem </div>
+									<div class="wlcm-text">as well as Ayushman Bharat Digital Mission.</div>
+									<div class="wlcm-text">Login information and your health
+										Id Number sent to your given Mobile Number.</div>
+									<div align="right" class="mb-10">
+										<button class="btn btn-primary" id="login"
+											style="cursor: pointer;" onclick="login()">Login</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 	Congratulation & Login Section End -->
+						<!-- Professional	Congratulation & Login Section Start -->
+						<div role="tabpanel" class="tab-pane" id="content1"
+							style="display: none;">
+							<div class="design-process-content">
+								<div class="tab-border bg-white pd-10">
+									<div class="wlcm-head">Welcome To eHealthSystem</div>
+									<div class="wlcm-text">Your document verification process
+										started now.</div>
+									<div class="wlcm-text">Verification will be completed
+										within 24 hours and confirmation mail will be send to your
+										registered email id.</div>
+									<div align="right" class="mb-10">
+										<button class="btn btn-primary" id="login"
+											style="cursor: pointer;" onclick="login()">Home</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--         Professional Congratulation & Login Section End -->
+						<!-- alert modal start -->
+						<div id="okModal" class="modal fade show" aria-modal="true"
+							style="display: none;">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header flex-column"></div>
+									<div class="modal-body">
+										<p>Try Again...</p>
+									</div>
+									<div class="modal-footer justify-content-center"
+										style="margin-top: -30px;">
+
+										<button type="button" class="btn1" onclick="okModal()"
+											style="cursor: pointer;">OK</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+					<!-- end design process steps-->
+					<!-- Tab panes -->
+
+				</div>
+			</div>
+			<div id="abhaModal" class="modal fade show" aria-modal="true">
+			<div class="modal-dialog modal-confirm">
+					<div class="modal-content">
+						<div class="modal-header flex-column">
+							
+						</div>
+						<div class="modal-body">
+							<div class="row">
+							<!-- <div class="col-md-12">
+								<div class="d-flex">
+									<div class="user-dtlhd">Your UHID No:</div>
+										<input type="text" class="form-control_auto border_none" readonly
+											id="uhid">
+								</div>
+							</div>
+
+							<div class="col-md-12">
+								<div class="d-flex">
+									<div class="user-dtlhd">Your Abha Id No:</div>
+										<input type="text" class="form-control_auto border_none" readonly
+											id="abhaHId">
+
+								</div>
+							</div>-->
+							
+						
+								
+									<div class="col-md-12" id ="adharaCheck"></div>
+								
+							
+							
+							
+
+							</div>
+						</div>
+						<div class="modal-footer justify-content-center"
+							style="margin-top: -8px;">
+							<button type="button" class="btn3" id="abhaHide"
+								onclick="abhahideModal()">Ok</button>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+
+
+			<div id="myModalOrganisational" class="modal fade show"
+				aria-modal="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content-md">
+						<div class="modal-header flex-column"></div>
+						<div class="modal-footer"
+							style="margin-top: -30px; padding: 15px 0px;">
+							<div class="row">
+								<div class="col-md-12" align="right">
+									<div class="chartbtnsec">
+										<button class="btn btn-danger bg-wt btn-sm"
+											id="cancelModalBtn" onclick="cancelModalBtn1()"
+											style="width: 80px;">CANCEL</button>
+										<button class="btn btn-primary bg-wt btn-sm"
+											id="saveOrganisation" onclick="saveOrganisation()"
+											style="width: 80px;">SAVE</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="row">
+
+							<div class="loader">
+								
+							<div style="position:absolute; height:100vh; display:flex; background:rgba(0,0,0,0.9); z-index:99999; align-items:center; justify-content:center; width:100%;"><img class="loading-image" src="../assets/images/loading.gif"
+										alt="loader"/></div>		
+								
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="hidden" id="organizationModalId"> <input
+										type="text" name="orgName" value=""
+										placeholder="Enter Organisation Name"
+										class="form-control zipclss" id="orgName" autocomplete="off">
+								</div>
+							</div>
+
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="text" name="orgRegdNo" value=""
+										placeholder="Enter License Number"
+										class="form-control   zipclss" id="orgRegdNo"
+										autocomplete="off" onkeyup="checkNum1('orgRegdNo')">
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="text" name="orgAddress" value=""
+										placeholder="Enter Address" class="form-control   zipclss"
+										id="orgAddress" autocomplete="off">
+
+								</div>
+							</div>
+
+							<div class="col-md-6" id="a11">
+
+								<div class="form-group">
+									<div class="select">
+										<select id="orgCountry"
+											onchange="getStateList1();getCountryCode1()"
+											class="form-control">
+											<option value="">-- Select Country --</option>
+											<option th:each="c,iter:${countryList}" th:value="${c.key}"
+												th:text="${c.name}" th:attr="code=${c.code}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6" id="a12">
+
+								<div class="form-group">
+									<div class="select">
+										<select id="orgState" onchange="getDistList1();"
+											class="form-control">
+											<option value="">-- Select State --</option>
+											<option th:each="c,iter:${stateList}" th:value="${c.key}"
+												th:text="${c.name}" th:attr="code=${c.code}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6" id="a13">
+
+								<div class="form-group">
+									<div class="select">
+										<select id="orgDist" onchange="getCityList1();"
+											class="form-control">
+											<option value="">-- Select District --</option>
+											<option th:each="c,iter:${distList}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6" id="a14">
+
+								<div class="form-group">
+									<div class="select">
+										<select id="orgCity" class="form-control">
+											<option value="">-- Select City --</option>
+											<option th:each="c,iter:${cityList}" th:value="${c.key}"
+												th:text="${c.name}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="text" name="orgPin" value=""
+										placeholder="Enter Pin" class="form-control   zipclss"
+										id="orgPin" autocomplete="off" onkeyup="checkNum1('orgPin')">
+
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="text" name="orgGst" value=""
+										placeholder="Enter GST/VAT" class="form-control   zipclss"
+										id="orgGst" autocomplete="off">
+
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="form-group">
+									<div class="select">
+										<select class="form-control stateclss" id="orgType">
+											<option value="">Select Type</option>
+											<option th:each="c,iter:${organisationTypeList}"
+												th:value="${c.key}" th:text="${c.name}"></option>
+										</select>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<table id="docTbl">
+									<thead>
+										<tr class="tr_clone">
+											<th></th>
+											<th style="padding-left: 20px;"></th>
+										</tr>
+									</thead>
+									<tbody id="doctbodyData">
+										<tr>
+											<td>
+												<div class="form-group">
+													<input type="text" value=""
+														placeholder="Enter Document Name"
+														class="form-control docNoclss" id="docname_"
+														autocomplete="off">
+												</div>
+											</td>
+											<td>
+												<div class="control-group position-r">
+													<label class="custom-file-upload" for="uploadDoc_0"
+														id="uploadFor_0"> <a
+														style="color: #FFF !important;" class="btn btn-primary"><i
+															class="ti-plus" id="clickImg_0"></i>Add</a>
+													</label>
+													<div class="controls">
+														<input type="file" class="document" id="uploadDoc_0"
+															name="userImage" onchange="saveMultiFile(event)" />
+													</div>
+												</div>
+											</td>
+
+											<td><SPAN id="imageName_0" class="imageName"></SPAN> <SPAN
+												id="dltImage_0" class="dltImage "></SPAN></td>
+
+											<td><input type="hidden" id="uploadHiddenDoc_0"
+												class="uploadHidCls">
+												<div id="uploadedDocDiv_0" align="center"
+													class="uploadedDocCls"></div></td>
+											<td>
+												<button class="btn1" id="addAttchmentBtn"
+													onclick="checkEmpty();">New</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- modal for document upload -->
+			<div id="msgModal" class="modal fade show" aria-modal="true">
+				<div class="modal-dialog modal-confirm">
+					<div class="modal-content">
+						<div class="modal-header flex-column">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">
+								<i class="ti-close modal-close"></i>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p id="messageParagraph"></p>
+						</div>
+						<div class="modal-footer justify-content-center"
+							style="margin-top: -8px;">
+							<button type="button" class="btn3" id="msgOkModal"
+								onclick="hideMsgModal()">Ok</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</article>
+		<aside class="col-md-6 login-form-2">
+
+			<div class="row">
+				<div class="col-md-12" align="center">
+					<div class="top-logo">
+						<img src="../assets/images/ehsmainlogo.png">
+					</div>
+				</div>
+			</div>
+			<div class="right-text">
+				Accelerate your journey Towards a value based population health
+				management system, driven by intelligent insights.<br>
+				<button class="btn btn-primary"
+					style="position: relative; top: 50px; cursor: pointer;" id="login"
+					onclick="login()">Sign In</button>
+			</div>
+
+
+		</aside>
+	</section>
+
+
+	<!-- <div layout:fragment="content" class="maincontent"> -->
+	<div class="container-fluid">
+		<div class="row justify-content-sm-center">
+			<div class="col-sm-12 col-md-12"></div>
+		</div>
+		<!-- </div> -->
+		<script src="../assets/js/lib/jquery.nanoscroller.min.js"></script>
+		<!-- nano scroller -->
+		<script src="../assets/js/lib/menubar/sidebar.js"></script>
+		<!--  <script src="../assets/js/lib/preloader/pace.min.js"></script> -->
+		<!-- sidebar -->
+
+		<script src="../assets/js/scripts.js"></script>
+		<!--Bootstrap Datepicker-->
+		<script src="../assets/js/bootstrap-datepicker.js"></script>
+		<!-- DataTables -->
+		<script src="../datatables/jquery.dataTables.min.js"></script>
+		<script src="../datatables/dataTables.bootstrap4.min.js"></script>
+
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="sidebar">
+<head>
+<script type="text/javascript">
+function callfun(activity){
+	window.location.href = activity ;
+}
+/* function modOnclickDefault(funId){
+	 var moduleId = $("#moduleId").val();
+	 
+	    var defaultUrl = $("#"+funId).attr("value"); 
+	    
+	    document.getElementById("side_bar_menu").innerHTML = "";
+	    if (funId) {
+	        $.ajax({
+	            type: "GET",
+	            url: "/index-get-activity-list?funId=" + funId + "&moduleId=" + moduleId,
+	            dataType: 'json',
+	            contentType: 'application/json',
+	            success: function(response) {
+	            	
+	                if (response.body.length > 0) {
+	                    for (var i = 0; i < response.body.length; i++) {
+	                    	var mydiv = document.getElementById("side_bar_menu");
+							var aTag = document.createElement('a');
+							aTag.setAttribute('href',response.body[i].activity);
+							aTag.innerText = response.body[i].name;
+							if(i<1){
+								aTag.className = "active";
+							}
+							mydiv.appendChild(aTag);
+
+	                    }
+	                   
+	                } 
+	               
+	            },
+	            error: function(data) {
+	                console.log(data)
+
+	            }
+	        });
+	    } else {
+
+	    }	
+} */
+
+/* function modOnclick(funId) {
+ 
+    var moduleId = $("#moduleId").val();
+ 
+    var defaultUrl = $("#"+funId).attr("value"); 
+    
+    document.getElementById("side_bar_menu").innerHTML = "";
+    localStorage.setItem('module', moduleId);
+    localStorage.setItem('function', funId);
+    localStorage.setItem('activity', defaultUrl);
+    
+    if (funId) {
+        $.ajax({
+            type: "GET",
+            url: "/index-get-activity-list?funId=" + funId + "&moduleId=" + moduleId,
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function(response) {
+            	
+                if (response.body.length > 0) {
+                    for (var i = 0; i < response.body.length; i++) {
+                    	var mydiv = document.getElementById("side_bar_menu");
+						var aTag = document.createElement('a');
+						aTag.setAttribute('href',response.body[i].activity);
+						aTag.innerText = response.body[i].name; 
+						if(i<1){
+							aTag.className = "active";
+						}
+						mydiv.appendChild(aTag);
+
+                    }
+                    
+                    window.location.href=
+                   
+                } 
+               
+            },
+            error: function(data) {
+                console.log(data)
+
+            }
+        });
+    } else {
+
+    }
+} */
+
+</script>
+</head>
+<div class="vertical-menu" id="side_bar_menu">
+	<!-- <a href="summary.html" class="active">Summary</a>
+      <a href="requisition.html">Requisition</a>
+      <a href="candidates.html">Candidates</a>
+      <a href="review.html">Review</a>  -->
+</div>
+<!-- /# sidebar -->
+</html>

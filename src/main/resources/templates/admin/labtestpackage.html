@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	//Document Ready For Page load
+
+	$(document).ready(function() {
+		$("#addTestList").hide();
+		$("#add").show();
+		$("#tab11").hide();
+		$("#edit").hide();
+		$("#deletes").show();
+		$("#add").show();
+	});
+
+	$(document).ready(function() {
+		$("#showTab").show();
+		 var gridDiv2 = document.querySelector('#myGrid');
+			new agGrid.Grid(gridDiv2, gridOptions2);
+
+			agGrid.simpleHttpRequest({
+				url : "lab-labtestpackage-view"
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalCandidate').find('span').html(len);
+				gridOptions2.api.setRowData(data);
+			});
+	});
+	
+	//---------EDIT-------------
+	function editLabDetails(id) {
+		$("#addData").show();
+		$("#myGrid").hide();
+		$("#new").hide();
+		$("#delete").hide();
+		$("#searchRowDiv").hide();
+		$("#totalReq").hide();
+		$.ajax({
+			type : "GET",
+			url : "lab-labtestpackage-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					openNav();
+					$("#myGrid").show();
+					$("#labId").val(response.body.labId);
+					$("#name").val(response.body.name);
+					$("#labtestName").val(response.body.labtestName);
+					$("#imgCategory").val(response.body.imgCategory);
+					$("#description").val(response.body.description);
+					$("#price").val(response.body.price);
+					$("#discountprice").val(response.body.discountprice);
+					$("#status").val(response.body.status);
+					
+				} else
+					("error" + console.message)
+			}
+		});
+
+	}
+		
+	var columnDefs2 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : 'Slot Id ',
+		field : "labId",
+		cellRenderer : function(params) {
+			return '<a id="" onclick=editLabDetails("'
+					+ params.data.labId
+					+ '") href="javascript:void(0)">'
+					+ params.data.labId + '</a>';
+		}
+	},{
+		headerName : "Package",
+		field : "name",
+		width:300,
+	}, {
+		headerName : 'Title',
+		field : "labtestName",
+		width:300
+	} ,
+	,{
+		headerName : 'Image',
+		field : "imgCategory",
+
+		cellRenderer : function(params) {
+			var dataimg = params.data.imgCategory;
+			var div = "";
+			div = div
+					+ " "
+					+ '<div class ="fa fa-image"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer" onclick=editView("'
+					+ dataimg + '")  > </div>';
+			return div;
+		}
+	}, {
+		headerName : 'Description',
+		field : "description",
+		width:300
+	}, {
+		headerName : 'Price',
+		field : "price",
+		width:300
+	}, {
+		headerName : 'Discountprice',
+		field : "discountprice",
+		width:300
+	}, {
+		headerName : 'Status',
+		field : "status",
+		width:300
+	}];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,
+		//onSelectionChanged : saveTestManage1
+
+	};
+
+function editTestname(testId){
+
+	
+}
+
+function cancelEmp(){
+	$("#managetestlist").show();
+	$("#addTestList").hide();
+}
+
+
+/ ---------------------------function for new button------------------ /
+function add() {
+	$("#labId").val('');
+	$("#name").val('');
+	$("#labtestName").val('');
+	$("#imgCategory").val('');
+	$("#description").val('');
+	$("#price").val('');
+	$("#discountprice").val('');
+	$("#status").val('');
+	$('#new').hide();
+	$('#delete').hide();
+	$('#addData').show();
+	$('#myGrid').hide();
+	$('#searchRowDiv').hide();
+	$('#totalReq').hide();
+
+}
+/ -------------function for cancel button-------------- /
+function Cancel() {
+	$('#totalReq').show();
+	$('#searchRowDiv').show();
+	$('#new').show();
+	$('#delete').show();
+	$('#addData').hide();
+	$('#myGrid').show();
+	$("#labId").val('');
+	$("#name").val('');
+	$("#labtestName").val('');
+	$("#imgCategory").val('');
+	$("#description").val('');
+	$("#price").val('');
+	$("#discountprice").val('');
+	$("#status").val('');
+}
+
+	
+	function saveTest() {
+		var item1 = {};
+		var validation =true;
+				item1.labId = $("#labId").val();
+				item1.name = $("#name").val();
+				item1.labtestName = $("#labtestName").val();
+				item1.imgCategory = $("#imgCategory").val();
+				item1.description = $("#description").val();
+				item1.price = $("#price").val();
+				item1.discountprice = $("#discountprice").val();
+				console.log(item1)
+				
+		/* if (item1.groupName == null || item1.groupName == "") {
+			validation = validationUpdated("Group Name  Required", "groupName");
+		}
+		if (item1.testName == null || item1.testName == "") {
+			validation = validationUpdated("Test Name  Required", "testName");
+		}
+		if (item1.groupPrice == null || item1.groupPrice == "") {
+			validation = validationUpdated("Group Price  Required", "groupPrice");
+		}
+		if (item1.type == null || item1.type == "") {
+			validation = validationUpdated("Type   Required", "type");
+		} */
+		if(validation){
+		$.ajax({
+			type : "POST",
+			url : "lab-labtestpackage-add",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(item1),
+			success : function(response) {
+				if (response.message == "Success") {
+					//onsole.log(response)
+					closeNav();
+					$('#new').show();
+					$('#delete').show();
+					agGrid.simpleHttpRequest({
+						url : "lab-labtestpackage-view"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalCandidate').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+				}
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+		}
+	}
+	
+	
+	function openNav() {
+		  $('#add').attr('disabled', true);
+		  $('#name').val("");
+		  $('#labtestName').val("");
+		  $('#imgCategory').val("");
+		  $('#description').val("");
+		  $('#price').val("");
+		  $('#discountprice').val("");
+		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:-5.4px; overflow: hidden; height:auto; top:7px;";
+
+		document.getElementById("main_content").style.width = "75%";
+	}
+
+	function closeNav() {
+		
+		 $('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+	
+	
+	
+	function saveFile() {
+
+		var uFile = $('#fileUpload')[0].files[0];
+		var fileName = $('#fileUpload').val();
+		var iURL = URL.createObjectURL(uFile);
+		var LightImg = "<div class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class=''></i></a></div>";
+		$("#uploadedBillDocDiv_").html(LightImg);
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var iURL = URL.createObjectURL(uFile);
+
+		$('#imgCategory').attr('src', '');
+		$('#imgCategory').attr('src', iURL);
+
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "lab-labtestpackage-image-upload-file",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+
+
+	
+	
+
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var id = selectedRows[0].labId;
+
+		$.ajax({
+			type : "POST",
+			url : "lab-labtestpackage-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : 'lab-labtestpackage-view',
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					})
+
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+	
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		               <div id="managetestlist">
+						<div id ="main_content">		
+					<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="font-design" id="totalReq">
+								Lab Test Package
+							</div>
+						</div>
+						<div class="col-md-6">
+							<button id="add" onclick="openNav()" class="btn1">NEW</button>
+							<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+					</div>
+
+					<!-- <div id="myGridassinlist" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div> -->
+									
+						<div id="myGrid" style="width: 100%; height: 300px;"
+					     class="ag-theme-alpine"></div>			
+								
+							</div>
+							</div>
+		    <input type="hidden" id="labId"></input>
+			<div id="mySidenav" class="sidenav">
+				<div class="slidebox">
+					<div class="row">
+						<div class="col-md-9">
+							<div class="edit">Add Lab Test Package</div>
+						</div>
+						<div class="col-md-3">
+							<div class="arrow">
+								<a href="javascript:void(0)" class="closebtn"
+									onclick="closeNav()"><i class="ti-arrow-right"></i></a>
+							</div>
+						</div>
+
+						<div class="chartbtnsec1">
+							<div align="right">
+								<button class="btn4" onclick="closeNav()">CANCEL</button>
+								<button class="btn1" onclick="saveTest()">SAVE</button>
+
+							</div>
+						</div>
+
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Name</label> <input type="text"
+									class="form-control transparenttxtbox" placeholder="Enter Name"
+									id="name">
+									<input type ="hidden" id ="testId">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Lab Test Name</label> <input type="text"
+									class="form-control transparenttxtbox" id="labtestName">
+							</div>
+						</div>
+						
+						<div class="col-md-12">
+				<div class="user-dtlhd ">Image Upload</div>
+				<table id="docTbl">
+					<tbody id="doctbodyData">
+						<td><div class="form-group">
+								<img th:src="${profile}" id="imgCategory"
+									style="height: 50px; weight: 50px"></img>
+							</div></td>
+
+						<td>
+							<div class="control-group position-r">
+								<label class="custom-file-upload" for="fileUpload"
+									id="uploadFor_0"> <a class="btn btn-primary"
+									style="color: #FFF !important;"> <i id="clickImg_0"
+										class="ti ti-plus"></i> Add
+								</a>
+									<div id="uploadedBillDiv" align="center"
+										class="uploadedBillCls">
+										<div class=""></div>
+									</div>
+								</label>
+								<div class="controls">
+
+									<input type="file" id="fileUpload" name="userImage"
+										accept="image/*" onchange="saveFile()"
+										onblur="removeValid(event)">
+
+								</div>
+							</div> <input type="hidden" id="uploadHidden_0" class="uploadHidCls">
+							<div id="uploadedBillDiv_0" align="center"
+								class="uploadedBillCls"></div>
+							<div id="imageName_0" class="imageName"></div>
+							<div id="dltImage_0"></div>
+						</td>
+
+					</tbody>
+				</table>
+			</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Description</label> <input type="text"
+									class="form-control transparenttxtbox" id="description">
+							</div>
+						</div>
+
+                         <div class="col-md-12">
+							<div class="form-group">
+								<label>Price</label> <input type="text"
+									class="form-control transparenttxtbox" id="price">
+							</div>
+						</div>
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Discount Price</label> <input type="text"
+									class="form-control transparenttxtbox" id="discountprice">
+							</div>
+						</div>
+							
+						</div>
+
+				</div>
+			</div>
+			
+						
+							
+		<div class="col-md-12 padding_5" id="addTestList">
+			<div class="row" id="showTab">
+				<div class="col-md-5 buttonsec btn-hs"></div>
+				<div class="col-md-7 buttonsec btn-hs">
+					<button id="add" class="btn1" onclick="addTestNameDetails()">SAVE</button>
+					<button id="deletes" class="btn4" onclick="cancelEmp()">CANCEL</button>
+					<input type="hidden" id="pckgId">
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>
+</body>
+</html>

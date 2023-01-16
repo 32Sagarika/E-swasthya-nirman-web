@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="includejs">
+	
+	<script src="../assets/js/lib/jquery.nanoscroller.min.js"></script>
+	<!-- nano scroller -->
+	<script src="../assets/js/lib/menubar/sidebar.js"></script>
+	<!--  <script src="../assets/js/lib/preloader/pace.min.js"></script> -->
+	<!-- sidebar -->
+	
+	<script src="../assets/js/scripts.js"></script>
+	<!--Bootstrap Datepicker-->
+	<script src="../assets/js/bootstrap-datepicker.js"></script>
+	<!-- DataTables -->
+	<script src="../datatables/jquery.dataTables.min.js"></script>
+	<script src="../datatables/dataTables.bootstrap4.min.js"></script>
+	
+	<script src="../datatables/jquery.mCustomScrollbar.concat.min.js"></script>
+	
+	<!--sidebar slideout-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".vertical-menu").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('.vertical-menu, .maincontent').toggleClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+    
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+	<!--sidebar slideout-->
+	 <!--sidebar slideout-->
+	
+   
+   <!--sidebar slideout-->
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>NERP</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/css/lib/font-awesome.min.css">
+<link rel="stylesheet" href="../assets/css/extend/themify-icons.css">
+<link rel="stylesheet" href="../assets/css/extend/login.css">
+
+</head>
+<body>
+	<!-- <h2>Weekly Coding Challenge #1: Sign in/up Form</h2> -->
+	<div class="container" id="container">
+
+		<div class="form-container sign-in-container">
+			<form th:action="@{/login}" method="post">
+				<div>
+					<img src="assets/images/login_img/logo.png" class="logo">
+				</div>
+				<div class="heading">Sign in</div>
+
+				<div class="input-box">
+					<i class="ti-email"></i><input type="text"
+								name="username" id="username" class="form-control"
+								placeholder="Mobile No">
+				</div>
+				<div class="input-box">
+					<i class="ti-more"></i><input type="password"
+								name="password" id="password" class="form-control"
+								placeholder="Passsword">
+				</div>
+				<a href="#">Forgot your password?</a>
+				<button>Sign In</button>
+			</form>
+		</div>
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-right">
+					<div class="textcontent">
+					Comprehensive open-source<br> platform which provides an <br>end-to-end
+					solution for a wide <br>range of business applications.
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

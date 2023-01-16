@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style type="text/css">	
+.edit {
+    font-size: 22px;
+    color: #210909;
+    margin-bottom: 18px;
+    font-weight: 100;
+}	
+</style>
+<script>
+	$(document).ready(function() {
+
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		agGrid.simpleHttpRequest({
+			url : 'lab-labs-viewDetails',
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		})
+		$('#myGrid').show();
+		$('#new').show();
+		$('#addData').hide();
+		//$('#delete').hide();
+	});
+
+	/ -------------------search bar for mygrid------------------------ /
+
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+	//---------EDIT-------------
+	function editLabDetails(id) {
+		$("#addData").show();
+		$("#myGrid").hide();
+		$("#new").hide();
+		$("#delete").hide();
+		$("#searchRowDiv").hide();
+		$("#totalReq").hide();
+		$.ajax({
+			type : "GET",
+			url : "lab-labs-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#labId").val(response.body.labId);
+					$("#name").val(response.body.name);
+					$("#location").val(response.body.location);
+					$("#phoneNumber").val(response.body.phoneNumber);
+					$("#bankAccName").val(response.body.bankAccName);
+					$("#bankAccNumber").val(response.body.bankAccNumber);
+					$("#bankIfscCode").val(response.body.bankIfscCode);
+					$("#email").val(response.body.email);
+					$("#password").val(response.body.password);
+					
+				} else
+					("error" + console.message)
+			}
+		});
+
+	}
+	/ ----------------ag grid for myGrid parent table----------- /
+
+	const columnDefs1 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			 {
+				headerName : 'lab Id ',
+				field : "labId",
+				cellRenderer : function(params) {
+					return '<a id="" onclick=editLabDetails("'
+							+ params.data.labId
+							+ '") href="javascript:void(0)">'
+							+ params.data.labId + '</a>';
+				}
+			}, 
+			{
+
+				headerName : 'LabName',
+				field : "name",
+				width : 300,
+				
+			},
+			{
+
+				headerName : 'Location',
+				field : "location",
+				width : 300,
+				
+				
+
+			},
+			{
+
+				headerName : 'PhoneNumber',
+				field : "phoneNumber",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'BankAccName',
+				field : "bankAccName",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'BankAccNumber',
+				field : "bankAccNumber",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'BankIfscCode',
+				field : "bankIfscCode",
+				width : 300,
+				
+				
+
+			}];
+
+	const gridOptions = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			rowHeight : 40,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 295,
+			height : 10
+		},
+		rowSelection : 'single',
+		getRowNodeId : function(data) {
+			return data.labId;
+		},
+	};
+
+	/ ---------------------------function for new button------------------ /
+	function add() {
+		$("#labId").val('');
+		$("#name").val('');
+		$("#location").val('');
+		$("#phoneNumber").val('');
+		$("#bankAccName").val('');
+		$("#bankAccNumber").val('');
+		$("#bankIfscCode").val('');
+		$('#new').hide();
+		$('#delete').hide();
+		$('#addData').show();
+		$('#myGrid').hide();
+		$('#searchRowDiv').hide();
+		$('#totalReq').hide();
+
+	}
+	/ -------------function for cancel button-------------- /
+	function Cancel() {
+		$('#totalReq').show();
+		$('#searchRowDiv').show();
+		$('#new').show();
+		$('#delete').show();
+		$('#addData').hide();
+		$('#myGrid').show();
+		$("#labId").val('');
+		$("#name").val('');
+		$("#location").val('');
+		$("#phoneNumber").val('');
+		$("#bankAccName").val('');
+		$("#bankAccNumber").val('');
+		$("#bankIfscCode").val('');
+	}
+
+	/*************************************Save Data***********************************************/
+
+	function save() {
+		var obj = {};
+		var validation = true;
+		obj.labId = $("#labId").val();
+		obj.name = $("#name").val();
+		obj.email = $("#email").val();
+		obj.password = $("#password").val();
+		
+		obj.location = $("#location").val();
+		obj.phoneNumber = $("#phoneNumber").val();
+		obj.bankAccName = $('#bankAccName').val();
+		obj.bankAccNumber = $("#bankAccNumber").val();
+		obj.bankIfscCode = $('#bankIfscCode').val();
+		/* if (data.imgCategory == null || data.imgCategory == "") {
+			validation = validationUpdated("Imgage Category  Required",
+					"imgCategory");
+		} */
+
+		console.log(obj)
+		if (validation) {
+
+			$.ajax({
+				type : "POST",
+				url : "lab-labs-addDetails",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+				success : function(response) {
+					if (response.message == "Success") {
+						$('#totalReq').show();
+						$('#searchRowDiv').show();
+						$('#new').show();
+						$('#delete').show();
+						agGrid.simpleHttpRequest({
+							url : 'lab-labs-viewDetails',
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions.api.setRowData(data);
+						})
+						Cancel();
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+
+	}
+
+	function editView(id) {
+
+		window.open("/document/images/" + id, '_blank');
+	}
+
+
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		var id = selectedRows[0].labId;
+
+		$.ajax({
+			type : "POST",
+			url : "lab-labs-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : 'lab-labs-viewDetails',
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions.api.setRowData(data);
+					})
+
+					Cancel();
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+	
+	
+</script>
+</head>
+<!-- /*************************************Body Part***********************************************/	 -->
+<body>
+	<div layout:fragment="content" class="maincontent">
+	
+		<div class="panel-body">
+			<div class="" id="main_content">
+				
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="font-design" id="totalReq">
+								Labs (<span></span>)
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row margin_topbot" id="searchRowDiv">
+								<div class="input-style row">
+									<input type="text" placeholder="Search.." name="search"
+										class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()" id="quickFilter">
+									<div class="searchicon">
+										<a href="javascript:void(0)"><span
+											style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+											id="closeKey"
+											onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i"><i class="ti-close srchicon"></i></span></a><a
+											href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<button id="new" onclick="add()" class="btn1">Add New Lab</button>
+								<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+						
+					</div>
+				</div>
+				<div id="myGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+			</div>
+		</div>
+		
+			<div class="row" id="addData"> 
+			<div class="col-md-4">
+				<div class="col-md-10 edit">Add New Lab</div>
+			</div>
+			<div class="col-md-12" id="btnDiv">
+				<button id="save" onclick="save()" class="btn1">Save</button>
+				<button class="btn4" id="Cancel" onclick="Cancel()">Cancel</button>
+			   </div>
+			   
+			   <input type="hidden" id="slNo"> <input type="hidden"
+				id="labId">
+			
+                                              <div class="col-md-6">
+								    	       <div class="form-group row">
+                                                   <label class="col-lg-3 col-form-label">Name</label>
+                                                   <div class="col-lg-9">
+                                                       <input type="text" name="slider[name]" id="name" class="form-control"  autocomplete="off">
+                                                   </div>
+                                               </div>
+                                               </div>
+                                               
+                                               <div class="col-md-6">
+								    	       <div class="form-group row">
+                                                   <label class="col-lg-3 col-form-label">Email</label>
+                                                   <div class="col-lg-9">
+                                                       <input type="text" name="slider[name]" id="email" class="form-control"  autocomplete="off">
+                                                   </div>
+                                               </div>
+                                               </div>
+                                                  
+                                                     <div class="col-md-6">
+								    	       <div class="form-group row">
+                                                   <label class="col-lg-3 col-form-label">PassWord</label>
+                                                   <div class="col-lg-9">
+                                                       <input type="text" name="slider[name]" id="password" class="form-control"  autocomplete="off">
+                                                   </div>
+                                               </div>
+                                               </div> 
+                                                  <div class="col-md-6">
+								    	          <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">Location </label>
+                                                    <div class="col-lg-9">
+                                                    <input type="text" name="slider[location]" id="location" class="form-control"  autocomplete="off">
+                                                    </div>
+                                                   </div>
+                                                   </div>
+
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">Phone Number</label>
+                                                    <div class="col-lg-9">
+                                                    <input type="text" name="slider[phone_number]" id="phoneNumber" class="form-control"  autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">Bank Account Name </label>
+                                                    <div class="col-lg-9">
+                                                        <input name="slider[bank_ac_name]" type="text" id="bankAccName" class="form-control" value="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">Bank Account Number </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ac_number]" id="bankAccNumber" class="form-control" autocomplete="off" required="" maxlength="50">
+                                                    </div>
+                                                </div>
+                                            </div>
+											
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">Bank IFSC Code </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ifsc_code]" id="bankIfscCode" value="" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+        					
+								        </div>
+								        </div>
+</body>
+</html>

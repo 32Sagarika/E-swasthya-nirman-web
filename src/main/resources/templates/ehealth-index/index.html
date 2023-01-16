@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/ehslayout"
+	layout:decorate="~{ehslayout/ehs-master}">
+
+<body>
+<div layout:fragment="content">
+  
+	<!-- ======= Hero Section ======= -->
+	<div id="carouselExampleDark" class="carousel carousel-dark slide"
+		data-bs-ride="carousel">
+		<div class="carousel-indicators">
+			<button type="button" data-bs-target="#carouselExampleDark"
+				data-bs-slide-to="0" class="active" aria-current="true"
+				aria-label="Slide 1"></button>
+			<button type="button" data-bs-target="#carouselExampleDark"
+				data-bs-slide-to="1" aria-label="Slide 2"></button>
+			<button type="button" data-bs-target="#carouselExampleDark"
+				data-bs-slide-to="2" aria-label="Slide 3"></button>
+		</div>
+		<div class="carousel-inner">
+			<div class="carousel-item active" data-bs-interval="10000">
+				<video autoplay="" class="H_j_5008e l_e_f7b69"
+					data-automation="VideoPlayer_video_video" loop="" muted=""
+					playsinline="" poster="#"
+					style="transform: rotate(0deg); width: 100%; height: 100%;">
+					<source src="../index-assets/img/videobg.webm" type="video/webm">
+				</video>
+				<div class="carousel-caption d-md-block">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-6 col-7">
+								 <h3>We Create One single <br>platform 
+								            or Government, <br>Citizens and Healthcare<br> Service
+								            Providers</h3>
+
+							</div>
+							<div class="col-lg-6 col-5 mt-24 d-flex align-items-center">
+
+								<img src="../index-assets/img/banner1.png" class="img-fluid">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="carousel-item" data-bs-interval="2000">
+				<video autoplay="" class="H_j_5008e l_e_f7b69"
+					data-automation="VideoPlayer_video_video" loop="" muted=""
+					playsinline="" poster="#"
+					style="transform: rotate(0deg); width: 100%; height: 100%;">
+					<source src="../index-assets/img/videobg2.webm" type="video/webm">
+				</video>
+				<div class="carousel-caption d-md-block">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-6 col-7">
+								 <h3>Helps in Improving<br> health condition
+                                     and <br>achieve reliability<br> accountability<br> security</h3>
+								<!--<img src="../index-assets/img/banner2.png" class="img-fluid">-->
+							</div>
+							<div class="col-lg-6  col-5  d-flex align-items-center"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--   <div class="carousel-item">
+      <img src="..." class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Third slide label</h5>
+        <p>Some representative placeholder content for the third slide.</p>
+      </div>
+    </div> -->
+		</div>
+		<button class="carousel-control-prev" type="button"
+			data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span> <span
+				class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button"
+			data-bs-target="#carouselExampleDark" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span> <span
+				class="visually-hidden">Next</span>
+		</button>
+	</div>
+
+	<!-- End Hero -->
+
+	<main id="main">
+
+		<!-- ======= Why Us Section ======= -->
+		<section id="why-us" class="why-us">
+			<div class="container">
+
+				<div class="row">
+					<div class="col-lg-4 d-flex align-items-stretch">
+						<div class="content">
+							<h3>Why Choose eHealthsystem?</h3>
+							<p>eHealthSystem is a modern healthcare software that allows
+								managing entire operational challenges and activities performed
+								in Medical departments. eHealthSystem smartly automates clinical
+								workflow, providing e-prescriptions, collecting patient
+								information, medical reports, discharge summary, invoice &
+								billing, etc.</p>
+							<!-- <div class="text-center">
+                <a href="#" class="more-btn">View More <i class="bx bx-chevron-right"></i></a>
+              </div> -->
+						</div>
+					</div>
+					<div class="col-lg-8 d-flex align-items-stretch">
+						<div class="icon-boxes d-flex flex-column justify-content-center">
+							<div class="row">
+								<div class="col-xl-4 d-flex align-items-stretch">
+									<div class="icon-box mt-4 mt-xl-0">
+										<i class="bx bx-target-lock"></i>
+										<h4>Vision & Mission</h4>
+										<p>We create digital bridge between Government, Healthcare
+											Service Providers and Citizens.</p>
+									</div>
+								</div>
+								<div class="col-xl-4 d-flex align-items-stretch">
+									<div class="icon-box mt-4 mt-xl-0">
+										<i class="bx bx-user-circle"></i>
+										<h4>Leadership</h4>
+										<p>eHealthSystem is an Internationally Patented technology
+											which interconnects all health care .</p>
+									</div>
+								</div>
+								<div class="col-xl-4 d-flex align-items-stretch">
+									<div class="icon-box mt-4 mt-xl-0">
+										<i class="bx bx-images"></i>
+										<h4>What We Offer</h4>
+										<p>Helps in Improving health conditions and achieve
+											reliability, accountability healthcare.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End .content-->
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<!-- End Why Us Section -->
+
+		<!-- ======= About Section ======= -->
+		<section id="about" class="about">
+			<div class="container-fluid">
+
+				<div class="row">
+					<div
+						class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-stretch position-relative">
+						<div class="text-center">
+							<img src="../index-assets/img/welcome.jpg" / class="img-fluid">
+						</div>
+					</div>
+
+					<div
+						class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center px-lg-5">
+						<h3>Health Information Exchange</h3>
+						<ul class="exchangelist">
+                        <li><i class="bx bx-chevron-right-circle"></i> Unified Connected Interoperable Healthcare Delivery System</li>
+                        <li><i class="bx bx-chevron-right-circle"></i> Digital Healthcare Dashboard</li>
+                        <li><i class="bx bx-chevron-right-circle"></i> e-Video Clinic </li>
+                        <li><i class="bx bx-chevron-right-circle"></i> Integrating existing Government &amp; Private Insurances</li>
+                        <li><i class="bx bx-chevron-right-circle"></i> Door-to-door Preventive Health Check-up</li>
+                        <li><i class="bx bx-chevron-right-circle"></i> Genetic Mapping &amp; Metabolic Mapping</li>
+                     </ul>
+
+
+						<!-- <div class="icon-box">
+							<div class="icon">
+								<i class="bx bx-atom"></i>
+							</div>
+							<h4 class="title">
+								<a href="">Benefits to the State</a>
+							</h4>
+							<p class="description">Mapping of all diseases across
+								thestate.Persons with Disability Database and Chronic & Rare
+								Disease Identification</p>
+						</div>
+
+
+						<div class="icon-box">
+							<div class="icon">
+								<i class="bx bx-user"></i>
+							</div>
+							<h4 class="title">
+								<a href="">Benefits to Citizens</a>
+							</h4>
+							<p class="description">Ability to access their medical
+								records anytime, anywhere at global level. Instant availability
+								of medical records during emergency situations</p>
+						</div> -->
+
+
+
+
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<!-- End About Section -->
+
+		<!-- ======= Counts Section ======= -->
+<!-- 		<section id="counts" class="counts">
+			<div class="container">
+
+				<div class="row">
+
+					<div class="col-lg-3 col-md-6">
+						<div class="count-box">
+							<i class="fas fa-user-md"></i> <span data-purecounter-start="0"
+								data-purecounter-end="85" data-purecounter-duration="1"
+								class="purecounter"></span>
+							<p>Doctors</p>
+						</div>
+					</div>
+
+					<div class="col-lg-3 col-md-6 mt-5 mt-md-0">
+						<div class="count-box">
+							<i class="far fa-hospital"></i> <span data-purecounter-start="0"
+								data-purecounter-end="18" data-purecounter-duration="1"
+								class="purecounter"></span>
+							<p>Departments</p>
+						</div>
+					</div>
+
+					<div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+						<div class="count-box">
+							<i class="fas fa-flask"></i> <span data-purecounter-start="0"
+								data-purecounter-end="12" data-purecounter-duration="1"
+								class="purecounter"></span>
+							<p>Research Labs</p>
+						</div>
+					</div>
+
+					<div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+						<div class="count-box">
+							<i class="fas fa-award"></i> <span data-purecounter-start="0"
+								data-purecounter-end="150" data-purecounter-duration="1"
+								class="purecounter"></span>
+							<p>Awards</p>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</section> -->
+		<!-- End Counts Section -->
+
+		<!-- ======= What We Offer Section ======= -->
+		<section id="services" class="services">
+			<div class="container">
+
+				<div class="section-title">
+					<h2>What We Offer</h2>
+					<p>The eHealthSystem supports WHO eHealth Strategy (WHA 58:28)
+						eHealth stressing that eHealth is the cost-effective and secure
+						use of information and communications technologies in support of
+						health and health-related services.</p>
+				</div>
+
+				<div class="row">
+
+					<div
+						class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
+						<a href="/offering-healthInformation">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon3.png" />
+								</div>
+								<h4>
+									<a href="">One Health Portal Health Information Exchange
+										Platform</a>
+								</h4>
+
+							</div>
+						</a>
+					</div>
+
+					<div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+						<a href="/offering-preventive-healthCheckup">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon1.png" />
+								</div>
+								<h4>
+									<a href="">Preventive Health Check-up of Resident with
+										Analytics</a>
+								</h4>
+
+							</div>
+						</a>
+					</div>
+
+					<div
+						class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+						<a href="/offering-mother-childTracking">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon2.png" />
+								</div>
+								<h4>
+									<a href="">Mother & Child Tracking System connected to Cord
+										Blood-Bank</a>
+								</h4>
+
+							</div>
+						</a>
+					</div>
+
+					<div class="col-lg-4 col-md-6  align-items-stretch mt-4">
+						<a href="/offering-covid19">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon7.png" />
+								</div>
+								<h4>
+									<a href="">COVID-19 Vaccination/Quarantine Tracker with
+										Realtime Analytics </a>
+								</h4>
+
+							</div>
+						</a>
+					</div>
+
+					<div class="col-lg-4 col-md-6  align-items-stretch mt-4">
+						<a href="/offering-vaccineTracker">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon8.png" />
+								</div>
+								<h4>
+									<a href="">Vaccine/Immunization Tracker </a>
+								</h4>
+
+							</div>
+						</a>
+					</div>
+
+					<div class="col-lg-4 col-md-6  align-items-stretch mt-4">
+						<a href="/offering-advanceStemCell">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon4.png" />
+								</div>
+								<h4>
+									<a href="">Advanced Stem Cell R&D Center</a>
+								</h4>
+
+							</div>
+						</a>
+					</div>
+
+					<div class="col-lg-4 col-md-6  align-items-stretch mt-4">
+						<a href="/offering-singleIdentity-digitalSmartCard">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon9.png" />
+								</div>
+								<h4>
+									<a href="">Single Identity Digital Smart Card for Residents</a>
+								</h4>
+							</div>
+						</a>
+					</div>
+					<div class="col-lg-4 col-md-6  align-items-stretch mt-4">
+						<a href="/offering-hivc">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon5.png" />
+								</div>
+								<h4>
+									<a href="">Health In formatics Network Value Chain</a>
+								</h4>
+
+							</div>
+						</a>
+					</div>
+
+					<div class="col-lg-4 col-md-6  align-items-stretch mt-4">
+						<a href="/offering-hdms">
+							<div class="icon-box">
+								<div class="icon">
+									<img src="../index-assets/img/offer-icon6.png" />
+								</div>
+								<h4>
+									<a href="">Health Data Management Solutions</a>
+								</h4>
+
+							</div>
+						</a>
+					</div>
+				</div>
+
+
+			</div>
+		</section>
+		<!-- End Services Section -->
+
+		<!-- ======= Departments Section ======= -->
+		<section id="departments" class="departments">
+			<div class="container">
+
+				<div class="section-title">
+					<h2>eHealthSystem at a Glance</h2>
+					<p>We are working in the direction of establishing “Health
+						Informatics Network Value Chain” interconnecting Human Health,
+						Plant Health, Animal Health, Water Health and Soil Health
+						components, leading to One Health/Eco-Health System, to facilitate
+						quarantining people rather than going for lockdowns in future, by
+						taking full advantage of digital networks of the Country.</p>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-4">
+						<ul class="nav nav-tabs flex-column">
+							<li class="nav-item"><a class="nav-link active show"
+								data-bs-toggle="tab" href="#tab-1"><span class="dept"><i
+										class="bx bx-donate-heart"></i></span> Preventive Health Check-up
+									with MOBILE LAB UNITS</a></li>
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" href="#tab-2"><span class="dept"><i
+										class="bx bx-receipt dept"></i></span> Data Security Approach and
+									Practices</a></li>
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" href="#tab-3"><span class="dept"><i
+										class="bx bx-street-view dept"></i></span> Preparing for Third Wave</a></li>
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" href="#tab-4"><span class="dept"><i
+										class="bx bx-video dept"></i></span> e-Video Clinic</a></li>
+							<!-- <li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" href="#tab-5"><span class="dept"><i
+										class="bx bx-location-plus dept"></i></span> Benefits to the State</a></li> -->
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" href="#tab-6"><span class="dept"><i
+										class="bx bx-map-pin dept"></i></span> Mother & Child Tracking System</a>
+							</li>
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" href="#tab-7"><span class="dept"><i
+										class="bx bx-window-alt dept"></i></span>Integrate Existing Schemes
+									under One Portal</a></li>
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" href="#tab-8"><span class="dept"><i
+										class="bx bx-calendar-check dept"></i></span> COVID-19 Vaccination</a></li>
+						</ul>
+					</div>
+					<div class="col-lg-8 mt-4 mt-lg-0">
+						<div class="tab-content">
+							<div class="tab-pane active show" id="tab-1">
+								<div class="row">
+									<div class="col-lg-8 details order-2 order-lg-1">
+										<h3>A Healthier Nation is A Happier Nation</h3>
+										<ul class="tablist">
+											<li><i class="bx bx-chevron-right-circle"></i>
+											 “Door to door health checkup system” scheme makes as a Leader to perform Health
+												Check-upofresidents</li>
+											<li><i class="bx bx-chevron-right-circle"></i>
+												Prevention is better than Cure:Preventive</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Health
+												Check-up with upto 50+ Parameters</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Health
+												Checkup Data Digitization and AI based Analytics and
+												solutions</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Dashboard
+												Analytics to draw a health index to manage State Health
+												Policy and considerably reduce State Healthcare Expenditure</li>
+											<!-- <li><i class="bx bx-chevron-right-circle"></i> Skill Set
+												Mapping for Skill Development, etc. can be obtained every
+												year.</li> -->
+										</ul>
+
+
+									</div>
+									<div class="col-lg-4 text-center order-1 order-lg-2">
+										<img src="../index-assets/img/departments-1.jpg" alt=""
+											class="img-fluid">
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-2">
+								<div class="row">
+									<div class="col-lg-8 details order-2 order-lg-1">
+										<h3>Data Security Approach and Practices</h3>
+
+										<ul class="tablist">
+											<li><i class="bx bx-chevron-right-circle"></i> HIPAA
+												Guidelines</li>
+											<li><i class="bx bx-chevron-right-circle"></i> PCI DSS
+												Guidelines</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Standard
+												Data Security Practices</li>
+											<li><i class="bx bx-chevron-right-circle"></i>
+												Encryption of Data with logs and audit trails</li>
+											<li><i class="bx bx-chevron-right-circle"></i> 24x7
+												Monitoring by a team of seasoned security professionals</li>
+											<li><i class="bx bx-chevron-right-circle"></i>
+												Provisioning Service Product Components with a cluster of
+												Data Center grade Firewalls, IDSes and IPSes</li>
+										</ul>
+									</div>
+									<div class="col-lg-4 text-center order-1 order-lg-2">
+										<img src="../index-assets/img/tab-pic1.png" alt=""
+											class="img-fluid">
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-3">
+								<div class="row">
+									<div class="col-lg-8 details order-2 order-lg-1">
+										<h3>Preparing for Third Wave</h3>
+
+										<ul class="tablist">
+											<li><i class="bx bx-chevron-right-circle"></i> We
+												provide Frontline Defense for existing Healthcare
+												Infrastructure</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Keeps
+												citizens from overwhelming the Hospitals and reduce chances
+												of spreading infection through the following</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Doctors
+												available through e-Video Clinic</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Conduct
+												Health Tests including Digital X-rays (When suggested by
+												Doctors)</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Doctor
+												counselling and guidance for the mild and medium infectious
+												patients</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Can
+												perform door-to-door COVID-19 RT-PCR testsand Vaccine Shots
+												(These are super spreader events)</li>
+										</ul>
+									</div>
+									<div class="col-lg-4 text-center order-1 order-lg-2">
+										<img src="../index-assets/img/tab-pic4.png" alt=""
+											class="img-fluid">
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-4">
+								<div class="row">
+									<div class="col-lg-8 details order-2 order-lg-1">
+										<h3>e-Video Clinic</h3>
+
+										<ul class="tablist">
+											<li><i class="bx bx-chevron-right-circle"></i> Remote/
+												Rural clinics in every village.
+											<li>
+											<li><i class="bx bx-chevron-right-circle"></i> Conduct
+												Virtual Doctor Appointments</li>
+											<li><i class="bx bx-chevron-right-circle"></i>
+												Facilitate Health Tests including Digital X-rays (If
+												suggested by Doctor)</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Seamless
+												import of EMR to cloud from diagnostic device(s)</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Seamless
+												export of E-Prescription</li>
+											<li><i class="bx bx-chevron-right-circle"></i>
+												Facilitate ordering and delivery of Medicines</li>
+										</ul>
+									</div>
+									<div class="col-lg-4 text-center order-1 order-lg-2">
+										<img src="../index-assets/img/tab-pic3.png" alt=""
+											class="img-fluid">
+									</div>
+								</div>
+							</div>
+							<!-- <div class="tab-pane" id="tab-5">
+								<div class="row">
+									<div class="col-lg-8 details order-2 order-lg-1">
+										<h3>Benefits to the State</h3>
+
+										<ul class="tablist">
+											<li><i class="bx bx-chevron-right-circle"></i> Mapping
+												of all diseases across the state</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Persons
+												with Disability Database</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Blood
+												Sample Database</li>
+											<li><i class="bx bx-chevron-right-circle"></i> 24x7
+												Counselling Service for the citizens</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Chronic &
+												Rare Disease Identification</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Issuing
+												of Driving License</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Alternate
+												medicine practices</li>
+											<li><i class="bx bx-chevron-right-circle"></i>
+												Un-ethical practice/ Superstition/ Non-registered Medical
+												Practitioner Database</li>
+										</ul>
+									</div>
+									<div class="col-lg-4 text-center order-1 order-lg-2">
+										<img src="../index-assets/img/tab-pic2.png" alt=""
+											class="img-fluid">
+									</div>
+								</div>
+							</div> -->
+							<div class="tab-pane" id="tab-6">
+								<div class="row">
+									<div class="col-md-6">
+										<h2>Mother & Child Tracking System</h2>
+										<h6 class="contxt">Connected to Cord Blood-Bank</h6>
+										<ul class="tablist">
+
+											<li><i class="bx bx-chevron-right-circle"></i> Smart
+												Card for every Mother</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Smart
+												Wrist Band for every Child</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Create
+												Health Profiling of new- born Children every year</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Collect
+												Expectant Mothers Cord Blood and placenta in the Stem Cell
+												R&D Center to provide innovative healthcare support for
+												future diseases for a period of 20 years</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Genetic
+												Mapping to reduce Genetic Disorders and Issues</li>
+										</ul>
+
+									</div>
+									<div class="col-md-6">
+										<img src="../index-assets/img/mother.png" alt=""
+											class="img-fluid">
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-7">
+								<div class="row">
+
+									<div class="col-md-6">
+										<img src="../index-assets/img/health.png" alt=""
+											class="img-fluid">
+									</div>
+
+									<div class="col-md-6">
+										<h2>Integrate Existing Schemes under One Portal</h2>
+
+										<ul class="tablist">
+											<li><i class="bx bx-chevron-right-circle"></i> National
+												Leprosy Eradication Program (Free Treatment Tracking)</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Revised
+												National TB Control Program</li>
+											<li><i class="bx bx-chevron-right-circle"></i>
+												Adolescent Health/ Rashtriya Kishor Swasthya Karyakram
+												(RKSK)</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Rashtriya
+												Bal Suraksha Karyakram</li>
+											<li><i class="bx bx-chevron-right-circle"></i> National
+												Vector Borne Disease Control Program</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Non
+												Communicable Disease Control Programs</li>
+											<li><i class="bx bx-chevron-right-circle"></i> Unique
+												State Initiative Mediclaim Scheme</li>
+											<li><i class="bx bx-chevron-right-circle"></i> EMRI 108
+												Ambulance services</li>
+											<li><i class="bx bx-chevron-right-circle"></i> MAMTA
+												scheme for girl child HIPAA Guidelines</li>
+										</ul>
+
+									</div>
+
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-8">
+								<div class="section-title">
+									<h2>Vaccination/ Quarantine Tracker with Real time
+										Analytics</h2>
+
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<img src="../index-assets/img/app.jpg" class="img-fluid"
+											alt="">
+									</div>
+									<div class="col-md-6 faqsec">
+										<div class="icon-box" style="margin-bottom: 40px;">
+											<div class="icon">
+												<img src="../index-assets/img/app-icon1.png">
+											</div>
+											<h4 class="title">
+												<a href="">Register / Login with Existing App</a>
+											</h4>
+											<p class="description">New Resident can register and
+												already registered Residents can login</p>
+										</div>
+
+										<div class="icon-box">
+											<div class="icon">
+												<img src="../index-assets/img/app-icon2.png">
+											</div>
+											<h4 class="title">
+												<a href="">Enrol for Appointment</a>
+											</h4>
+											<p class="description">Vaccine dosage and appointment
+												details shared with Government Officials</p>
+										</div>
+
+										<div class="icon-box" style="margin-bottom: 40px;">
+											<div class="icon">
+												<img src="../index-assets/img/app-icon3.png">
+											</div>
+											<h4 class="title">
+												<a href="">Auto Confirmation and Reminder</a>
+											</h4>
+											<p class="description">Reminder for 1st and 2nd Vaccine</p>
+										</div>
+
+										<div class="icon-box">
+											<div class="icon">
+												<img src="../index-assets/img/app-icon4.png">
+											</div>
+											<h4 class="title">
+												<a href="">Centre Visit as per Appointment</a>
+											</h4>
+											<p class="description">Locate nearby Vaccine Empanelled
+												Hospitals for Vaccination and be present at the designated
+												Centre</p>
+										</div>
+
+										<div class="icon-box" style="margin-bottom: 40px;">
+											<div class="icon">
+												<img src="../index-assets/img/app-icon5.png">
+											</div>
+											<h4 class="title">
+												<a href="">ON Call Support from Government Dept.</a>
+											</h4>
+											<p class="description">Support Center Call through App</p>
+										</div>
+
+										<div class="icon-box">
+											<div class="icon">
+												<img src="../index-assets/img/app-icon6.png">
+											</div>
+											<h4 class="title">
+												<a href="">Vaccination Certificate</a>
+											</h4>
+											<p class="description">Digital Vaccination Certificate
+												will be updated automatically in the System.</p>
+										</div>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<!-- End Departments Section -->
+	</main>
+	<!-- End #main -->
+</div>
+</body>
+
+</html>

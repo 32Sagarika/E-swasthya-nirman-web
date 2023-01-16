@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+	//Document Ready For Page load
+
+	$(document).ready(function() {
+		
+		$.ajax({
+			//url : "create-order-web",
+			  url: 'create-order-webview?orderId=' + orderId+ "&amounts=" + amounts ,
+			
+			type : "GET",
+			//data : JSON.stringify(obj),
+			 contentType: false,
+			//dataType : "json",
+			success : function(response) {
+				console.log("dsfh")
+				if (response.status == "created") {
+					
+					var obj = {
+						"key" : response.key_id,
+						"amount" : response.amount,
+						"currency" : response.currency,
+						"name" : response.username,
+						"description" : "Doctor Booking",
+						"image" : null,
+						"order_id" : response.id,
+						handler : function(response) {
+							//console.log(response);
+							//alert("Payment Successfull");
+							datas = {}
+							// save to database
+							datas.ordrid = orderId;
+							datas.paymentid = response.razorpay_payment_id;
+							datas.status = "success";
+							savePaymentStatus(datas)
+						},
+						prefill : {
+							name : response.username,
+							email : response.useremail,
+							contact : response.usermob
+						},
+						notes : {
+							address : "Razorpay Corporate Office"
+						},
+						theme : {
+							color : "#3399cc"
+						}
+					};
+
+
+					var rzp1 = new Razorpay(obj);
+					rzp1.on('payment.failed', function(response) {
+						/* console.log(response.error.code);
+						console.log(response.error.description);
+						console.log(response.error.source);
+						console.log(response.error.step);
+						console.log(response.error.reason);
+						console.log(response.error.metadata.order_id);
+						console.log(response.error.metadata.payment_id); */
+						//alert("Oopss !!! Transaction Failed !!!")
+						datas.key = response.razorpay_order_id;
+						datas.code = response.razorpay_payment_id;
+						datas.name = "failed";
+						savePaymentStatus(datas)
+					});
+
+					rzp1.open();
+				}
+			},
+			error : function(response) {
+				//alert("Something went wrong !!!")
+				console.log(response)
+			}
+		})
+		$("#addTestList").hide();
+		$("#add").show();
+		$("#tab11").hide();
+		$("#edit").hide();
+		$("#deletes").show();
+		$("#add").show();
+	
+	});
+
+	$(document).ready(function() {
+		$("#showTab").show();
+		var gridDiv2 = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv2, gridOptions2);
+
+		agGrid.simpleHttpRequest({
+			url : "view-order-patient"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions2.api.setRowData(data);
+		});
+		
+		var selectedRows1 = gridOptions2.api.getSelectedRows();
+		
+		 var amt="";
+		 var orderids="";
+		 for (var i = 0; i < selectedRows1.length; i++) {
+			
+			 amt = amt + '' +selectedRows1[i].amount;
+			 orderids = orderids + '' +selectedRows1[i].orderId;
+		 }
+		// alert(amt)
+		//  alert(orderids)
+		  obj = {};
+		 var amount = parseFloat(amt);
+			var orderId = orderids;
+		  obj.orderid = orderId;
+		obj.amnt = amount;
+		console.log(obj.orderid)
+	//	obj.type = "online"
+	$.ajax({
+			url : "create-order-web",
+			type : "POST",
+			data : JSON.stringify(obj),
+			contentType : "application/json",
+			dataType : "json",
+			success : function(response) {
+				if (response.status == "created") {
+					
+					var obj = {
+						"key" : response.key_id,
+						"amount" : response.amount,
+						"currency" : response.currency,
+						"name" : response.username,
+						"description" : "Doctor Booking",
+						"image" : null,
+						"order_id" : response.id,
+						handler : function(response) {
+							//console.log(response);
+							//alert("Payment Successfull");
+							datas = {}
+							// save to database
+							datas.ordrid = orderId;
+							datas.paymentid = response.razorpay_payment_id;
+							datas.status = "success";
+							savePaymentStatus(datas)
+						},
+						prefill : {
+							name : response.username,
+							email : response.useremail,
+							contact : response.usermob
+						},
+						notes : {
+							address : "Razorpay Corporate Office"
+						},
+						theme : {
+							color : "#3399cc"
+						}
+					};
+
+
+					var rzp1 = new Razorpay(obj);
+					rzp1.on('payment.failed', function(response) {
+						/* console.log(response.error.code);
+						console.log(response.error.description);
+						console.log(response.error.source);
+						console.log(response.error.step);
+						console.log(response.error.reason);
+						console.log(response.error.metadata.order_id);
+						console.log(response.error.metadata.payment_id); */
+						//alert("Oopss !!! Transaction Failed !!!")
+						datas.key = response.razorpay_order_id;
+						datas.code = response.razorpay_payment_id;
+						datas.name = "failed";
+						savePaymentStatus(datas)
+					});
+
+					rzp1.open();
+				}
+			},
+			error : function(response) {
+				//alert("Something went wrong !!!")
+				console.log(response)
+			}
+		})
+	});
+
+	var columnDefs2 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+
+			},
+		    {
+				headerName : 'Patient Name',
+				field : "userName",
+				width : 480
+			}, {
+				headerName : 'Appointment Id',
+				field : "appointId",
+				width : 480
+			},{
+				headerName : 'Order Id',
+				field : "orderId",
+				width : 480
+			},{
+				headerName : 'Amount',
+				field : "amount",
+				width : 480
+			}];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		onSelectionChanged : deleteDetailsfor,
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,
+
+	};
+	
+	
+	function deleteDetailsfor() {
+
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr('disabled', false);
+			$('#add').attr('disabled', true);
+		} else {
+			$('#delete').attr('disabled', true);
+			$('#add').attr('disabled', false);
+		}
+
+	}
+
+
+
+	
+	
+	//delete coupon
+	function deleteDetails() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var id = selectedRows[0].couponId;
+
+		$.ajax({
+			type : "POST",
+			url : "admin-coupon-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : "admin-coupon-viewDetails"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+
+					Cancel();
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+	function deleteDetailsfor() {
+
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+		} else {
+			$('#delete').attr('disabled', true);
+		}
+
+	}
+	function openNav() {
+		//	$("#openRequestModal").modal('show');
+			
+			 var selectedRows1 = gridOptions2.api.getSelectedRows();
+				
+			 var amt="";
+			 var orderids="";
+			 for (var i = 0; i < selectedRows1.length; i++) {
+				
+				 amt = amt + '' +selectedRows1[i].amount;
+				 orderids = orderids + '' +selectedRows1[i].orderId;
+			 }
+			 alert(amt)
+			  alert(orderids)
+			  obj = {};
+			 var amount = parseFloat(amt);
+				var orderId = orderids;
+			  obj.orderid = orderId;
+			obj.amnt = amount;
+			console.log(obj.orderid)
+			obj.type = "online"
+		$.ajax({
+				url : "create-order-web",
+				type : "POST",
+				data : JSON.stringify(obj),
+				contentType : "application/json",
+				dataType : "json",
+				success : function(response) {
+					if (response.status == "created") {
+						
+						var obj = {
+							"key" : response.key_id,
+							"amount" : response.amount,
+							"currency" : response.currency,
+							"name" : response.username,
+							"description" : "Doctor Booking",
+							"image" : null,
+							"order_id" : response.id,
+							handler : function(response) {
+								//console.log(response);
+								//alert("Payment Successfull");
+								datas = {}
+								// save to database
+								datas.ordrid = orderId;
+								datas.paymentid = response.razorpay_payment_id;
+								datas.status = "success";
+								savePaymentStatus(datas)
+							},
+							prefill : {
+								name : response.username,
+								email : response.useremail,
+								contact : response.usermob
+							},
+							notes : {
+								address : "Razorpay Corporate Office"
+							},
+							theme : {
+								color : "#3399cc"
+							}
+						};
+
+
+						var rzp1 = new Razorpay(obj);
+						rzp1.on('payment.failed', function(response) {
+							/* console.log(response.error.code);
+							console.log(response.error.description);
+							console.log(response.error.source);
+							console.log(response.error.step);
+							console.log(response.error.reason);
+							console.log(response.error.metadata.order_id);
+							console.log(response.error.metadata.payment_id); */
+							//alert("Oopss !!! Transaction Failed !!!")
+							datas.key = response.razorpay_order_id;
+							datas.code = response.razorpay_payment_id;
+							datas.name = "failed";
+							savePaymentStatus(datas)
+						});
+
+						rzp1.open();
+					}
+				},
+				error : function(response) {
+					//alert("Something went wrong !!!")
+					console.log(response)
+				}
+			})
+		}
+
+	function savePaymentStatus(datas) {
+		$.ajax({
+			method : 'POST',
+			data : JSON.stringify(datas),
+			url : "save-payment-status-web",
+			contentType : "application/json",
+			dataType : "json",
+			success : function(response) {
+				//console.log(response)
+				if (response.body[0] == "success") {
+					window.location.reload();
+				} /* else {
+					$("#payHere").attr('disabled', 'false');
+				} */
+				
+			},
+			error : function(response) {
+				console.log(response)
+			}
+		})
+	}
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div id="managetestlist">
+			<div id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="font-design" id="totalReq">
+								Patient Details (<span></span>)
+							</div>
+						</div>
+						<div class="col-md-6">
+							<button id="delete" onclick="openNav()" class="btn1"> Payment </button>
+						</div>
+					</div>
+
+
+					<div id="myGrid" style="width: 100%; height: 300px;"
+						class="ag-theme-alpine"></div>
+
+				</div>
+				
+				<div class="modal fade" id="openRequestModal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalCenterTitle"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<span aria-hidden="true">Total Price :</span>&nbsp  <div id = "totalprice"></div>
+					</div>
+					<div class="modal-footer">
+						<div class="col-md-12 buttonsec btn-hs">
+							<div id="codbtn">
+								<button class="btn1" id="cod">Cash On Delivery</button>
+							</div>
+							<div id="payBtn">
+								<button class="btn1" id="payHere">Pay</button>
+							</div>
+						</div>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+			</div>
+
+
+		</div>
+	</div>
+</body>
+</html>

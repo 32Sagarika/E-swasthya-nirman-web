@@ -1,0 +1,432 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>NERP</title>
+<script type="text/javascript">
+
+
+	$(document)
+			.ready(
+					function() {
+						
+						if($(document).width() < 992) {
+							$(".exo-menu").addClass("display");
+						}
+						
+						var mob = $("#mobileNo").val();
+						$
+								.ajax({
+									type : "GET",
+									url : "/get-profile-swap?id=" + mob,
+									dataType : 'json',
+									contentType : 'application/json',
+									success : function(response) {
+										for (i = 0; i <= response.body.length; i++) {
+											div = '<a class="dropdown-item" href = "/login-swap?id='
+													+ window.btoa(response.body[i].key)
+													+ '"><img src="../assets/images/user.jpg" alt="" class="img-fluid"'+
+	 										'style="padding-right:0px;" />'
+													+ response.body[i].name
+													+ '</a>'
+											$("#profiles").append(div);
+										}
+
+									},
+									error : function(e) {
+
+									}
+								});
+					});
+	$(document).ready(
+			function() {
+				$("ul.tabs li:first").addClass("active").show(); //Activate first tab
+				$(".tab_content:first").show(); //Show first tab content
+				$("#moduleName").text(sessionStorage.getItem("moduleName"));
+
+				var roleList = $("#rolesList").val().replace("[", "").replace(
+						"]", "").split(',');
+				var dataset = [];
+				for (var i = 0; i < roleList.length; i++) {
+					obj = {};
+					obj.key = sessionStorage.getItem('activity');
+					obj.name = roleList[i];
+
+					dataset.push(obj)
+				}
+
+				/* if (dataset.length > 0) {
+				    $.ajax({
+				        type: "POST",
+				        url: "/index-get-avl-function-list",
+				        dataType: "json",
+				        contentType: "application/json",
+				        data: JSON.stringify(dataset),
+				        success: function(response) {
+				            if (response.message == "Success") {
+				                for (var i = 0; i < response.body.length; i++) {
+				                    if (response.body[i].avlFuncValue == "0") {
+				                        $("#" + response.body[i].avlFuncAttr).remove();
+				                        $("." + response.body[i].avlFuncAttr).remove();
+				                    }
+				                }
+				            }
+				        },
+				        error: function(data) {
+				            console.log(data)
+				        }
+				    });
+				} */
+
+				//var dateFormat = $("#dateFormat").val();
+				//localStorage.setItem("dateFormat", 'd-m-Y');
+			});
+
+	function modOnclick(funId) {
+
+		var moduleId = $("#moduleId").val();
+
+		var activityUrl = $("#" + funId).attr("value");
+		var activityId = $("#Act_" + funId).val();
+		document.getElementById("side_bar_menu").innerHTML = "";
+		sessionStorage.setItem('module', moduleId);
+		sessionStorage.setItem('function', funId);
+		sessionStorage.setItem('activity', activityId);
+		//localStorage.setItem('moduleName', $("#moduleId").text());
+
+		window.location.href = activityUrl;
+	}
+
+	$(window).click(function() {
+		$("#" + sessionStorage.getItem('function')).addClass("active");
+	});
+
+	$(document)
+			.ready(
+					function() {
+						var module = sessionStorage.getItem('module');
+						var fun = sessionStorage.getItem('function');
+						var activity = sessionStorage.getItem('activity');
+						var defaultFun = "";
+						if (module && fun && activity) {
+							$
+									.ajax({
+										type : "GET",
+										url : "/index-get-function-list-resp?moduleId="
+												+ module,
+										dataType : 'json',
+										contentType : 'application/json',
+										success : function(response) {
+											if (response.body.length > 0) {
+												var lidiv = "";
+												for (var i = 0; i < response.body.length; i++) {
+													defaultFun = response.body[0].functionId;
+													if (response.body[i].functionId == fun) {
+														lidiv = lidiv
+																+ '<li class="menuhighlight" id="'
+																+ response.body[i].functionId
+																+ '" value="'
+																+ response.body[i].defaultUrl
+																+ '" onclick="modOnclick(this.id)"><input type="hidden" id="Act_' + response.body[i].functionId + '" value="' + response.body[i].defaultUrlId + '"><span class="actlist">'
+																+ response.body[i].name
+																+ '</span>';
+													} else {
+														if (response.body[i].defaultUrl != "/doctor/view-doctor-patient-details") {
+
+															lidiv = lidiv
+																	+ '<li class="" id="'
+																	+ response.body[i].functionId
+																	+ '" value="'
+																	+ response.body[i].defaultUrl
+																	+ '" onclick="modOnclick(this.id)"><input type="hidden" id="Act_' + response.body[i].functionId + '" value="' + response.body[i].defaultUrlId + '"><span class="actlist">'
+																	+ response.body[i].name
+																	+ '</span>';
+														}
+													}
+												}
+												$(
+														"#configuration_sidebar_content")
+														.html(lidiv);
+
+											}
+
+										},
+										error : function(data) {
+											console.log(data)
+
+										}
+									});
+						}
+
+						if (fun) {
+							fun = fun;
+						} else {
+							fun = defaultFun;
+						}
+						if (module && fun && activity) {
+							$
+									.ajax({
+										type : "GET",
+										url : "/index-get-activity-list?funId="
+												+ fun + "&moduleId=" + module,
+										dataType : 'json',
+										contentType : 'application/json',
+										success : function(response) {
+											if (response.body.length > 0) {
+												var act = "";
+												for (var i = 0; i < response.body.length; i++) {
+													var funval = "callActivity('"
+															+ response.body[i].activityId
+															+ "','"
+															+ response.body[i].activity
+															+ "')";
+													if (activity == response.body[i].activityId) {
+														act = act
+																+ '<a href="javascript:void(0)" class="active" id="'
+																+ response.body[i].activityId
+																+ '" value="'
+																+ response.body[i].activity
+																+ '" onclick="'
+																+ funval
+																+ '">'
+																+ response.body[i].name
+																+ '</a>';
+													} else {
+														act = act
+																+ '<a href="javascript:void(0)" id="'
+																+ response.body[i].activityId
+																+ '" value="'
+																+ response.body[i].activity
+																+ '" onclick="'
+																+ funval
+																+ '">'
+																+ response.body[i].name
+																+ '</a>';
+													}
+
+												}
+												$("#side_bar_menu").html(act);
+											}
+
+										},
+										error : function(data) {
+											console.log(data)
+
+										}
+									});
+						}
+
+					});
+
+	function callActivity(id, url) {
+		sessionStorage.setItem('activity', id);
+		window.location.href = url;
+	}
+	localStorage.setItem("dateFormat", 'd-m-Y');
+	function setModule(moduleId) {
+		sessionStorage.setItem('module', moduleId);
+		sessionStorage.setItem('function', $("#fun_" + moduleId).val());
+		sessionStorage.setItem('activity', $("#act_" + moduleId).val());
+		sessionStorage.setItem('moduleName', $("#" + moduleId).text());
+
+		window.location.href = "/index-get-function-list/" + moduleId;
+
+	}
+</script>
+<style>
+.dropdown-item img {
+	height: 30px;
+	margin-right: 10px;
+}
+
+.headicon img {
+	height: 30px;
+}
+
+.headerright {
+	position: relative !important;
+	/* left: 70px; */
+}
+.module_name {
+    float: left;
+    margin-top: 18px;
+    width: 0%;
+    font-weight: 300;
+    text-transform: uppercase;
+    font-size: 14px;
+    color: #6dccb9;
+}
+.goog-te-banner-frame.skiptranslate {
+    display: none !important;
+    } 
+body {
+    top: 0px !important; 
+    }
+</style>
+</head>
+
+<div class="header">
+	<div class="row">
+		
+			<div class="col-lg-2 col-xs-4 col-4 topleft">
+				<div class="logo">
+					<a href="javascript:void(0)"> <img
+						src="../assets/images/ehsmainlogo.png" alt="" class="img-fluid logodekstop" />
+					</a>
+					<a href="javascript:void(0)"> <img
+						src="../assets/images/logo_mobile.png" alt="" class="img-fluid logomobile" />
+					</a>
+				</div>
+
+				<div class="float-left">
+					<div class="dropdown">
+						<!-- <div class="hamburger sidebar-toggle" id="dropdownMenuLink"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="line"></span> <span class="line"></span> <span
+								class="line"></span> <input type="hidden" id="menuId"
+								th:value="${session.MENU}" /> <input type="hidden"
+								id="rolesList" th:value="${session.USER_ROLES}">
+						</div> -->
+						<div class="hamburger sidebar-toggle" type="button"
+							id="sidebarCollapse">
+
+							<!-- <span class="line"></span> <span class="line"></span> <span
+								class="line"></span> -->
+								<i class="ti ti-arrow-right"></i>
+
+						</div>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" th:each="module,abm : ${session.MENU}"
+								href="javascript:void(0)" onClick="setModule(this.id)"
+								th:id="${module.moduleId}"><i
+								th:class="${module.moduleLogoName}"></i> <span
+								th:text="${module.name}"></span> <input type="hidden"
+								th:id="'act_'+${module.moduleId}"
+								th:value="${module.activityId}"> <input type="hidden"
+								th:id="'fun_'+${module.moduleId}"
+								th:value="${module.functionId}"> </a>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			      
+               
+                <div class="col-lg-8 col-xs-4 col-3 topright">
+                <div class="" id="myNavbar" aria-expanded="true">
+                <input type="hidden" id="dateFormat"
+							th:value="${session.DATEFORMAT_JS}" /> <input type="hidden"
+							id="moduleId" th:value="${session.moduleId}" />
+						<ul class="exo-menu" id="configuration_sidebar_content">
+						
+						</ul>
+						
+				</div>
+				
+				<a href="#" class="toggle-menu d-lg-none"><i class="ti ti-menu"></i></a>
+				</div>		
+				
+
+                  
+
+				<!-- </div>
+			</div> -->
+			
+			<div class="col-lg-2 col-xs-4 col-5 topright">
+				<div class="headerright">
+				<div class="dropdown">
+						<div id="moduleName" class="module_name"></div>
+
+
+						<i class="fa fa-language"
+							style="font-size: 28px; width: 40px; float: left; margin-top: 8px; cursor: pointer;"
+							onclick="openLang()"></i>
+						<div class="headicon sidebar-toggle" id="dropdownMenuLink3"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+							<i class="ti-settings"
+								style="font-size: 28px; padding-right: 0px;"></i>
+							<div
+								style="position: absolute; z-index: 3; background: #e5e5e5; color: #0a5db8; padding: 0px 5px; border-radius: 15px; top: 0px; right: -7px; font-size: 10px;"></div>
+
+						</div>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink3">
+							<a class="dropdown-item" href="#"><i class="ti-lock"></i>
+								Lock Screen</a> <a class="dropdown-item" href="#"><i
+								class="ti-user"></i> Profile</a> <a class="dropdown-item"
+								href="/notification"><i class="ti-info"></i> Notification</a> <a
+								class="dropdown-item" href="/logout"><i class="ti-power-off"></i>
+								Log Out</a>
+
+						</div>
+
+					</div>
+					<div class="dropdown">
+						<div class="headicon sidebar-toggle" id="dropdownMenuLink4"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+							style="margin-top: 5px;">
+							<img src="../assets/images/user.jpg" alt="" class="img-fluid"
+								style="padding-right: 0px;" />
+							<!-- <i class="ti-menu-alt" style="font-size: 28px; padding-right:0px;"></i> -->
+							<div
+								style="position: absolute; z-index: 3; background: #e5e5e5; color: #0a5db8; padding: 0px 5px; border-radius: 15px; top: 0px; right: -7px; font-size: 10px;"></div>
+							<input type="hidden" id="mobileNo"
+								th:value="${session.USER_MOBILE}">
+						</div>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink4"
+							id="profiles"></div>
+					</div>
+					
+
+				</div>
+			</div>
+		</div>
+	</div>
+ 
+
+<!-- For Language -->
+<div id="LangSidenav" class="sidenav">
+	<a href="javascript:void(0)" class="closebtn" onclick="closeLang()"
+		style="font-size: 20px;">&times;</a>
+	<div id="google_translate_element"
+		style="padding-left: 8px; padding-right: 8px;"></div>
+</div>
+
+<!-- <h2>Animated Sidenav Example</h2>
+<p>Click on the element below to open the side navigation menu.</p>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+ -->
+<script>
+	function openLang() {
+		document.getElementById("LangSidenav").style.width = "190px";
+	}
+
+	function closeLang() {
+		document.getElementById("LangSidenav").style.width = "0";
+	}
+</script>
+
+
+<script type="text/javascript">
+	function googleTranslateElementInit() {
+		new google.translate.TranslateElement({
+			pageLanguage : 'en'
+		}, 'google_translate_element');
+
+	}
+	
+
+</script>
+<style type="text/css">
+.goog-logo-link {
+	display: none !important;
+}
+
+.goog-te-gadget {
+	color: transparent !important;
+}
+</style>
+
+<!-- For Language -->
+</html>

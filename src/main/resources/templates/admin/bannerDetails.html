@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style type="text/css">
+.edit {
+	font-size: 22px;
+	color: #210909;
+	margin-bottom: 18px;
+	font-weight: 100;
+}
+</style>
+
+<script>
+	$(document).ready(function() {
+
+		//var id = $("#patientId").val();
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		agGrid.simpleHttpRequest({
+			url : 'admin-banner-viewDetails',
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		})
+		$('#myGrid').show();
+		$('#new').show();
+		$('#addData').hide();
+		$('#delete').attr('disabled', true);
+
+		$('#bannertypee').hide();
+	});
+
+	/ -------------------search bar for mygrid------------------------ /
+
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+
+	//---------EDIT-------------
+	function editBannerDetails(id) {
+		$("#addData").show();
+		$("#myGrid").hide();
+		$("#new").hide();
+		$("#delete").hide();
+		$("#searchRowDiv").hide();
+		$("#totalReq").hide();
+		$.ajax({
+			type : "GET",
+			url : "admin-banner-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+
+					$("#status").val(response.body.status);
+
+					$("#bannerId").val(response.body.bannerId);
+					//$("#bannerTitle").val(response.body.bannerTitle);
+					//$("#bannerType").val(response.body.bannerType);
+					$("#bannerLink").val(response.body.bannerLink);
+					$("#bannerCaption").val(response.body.bannerCaption);
+					if(response.body.bannerType=='patientTypeBanner'){
+						$("#patientType").prop('checked', true);
+						$("#bannertypee").show();
+						$("#bannerTitle").val(response.body.bannerTitle);
+					}else if (response.body.bannerType=='doctorTypeBanner'){
+						$("#doctorType").prop('checked', true);
+						$("#bannertypee").hide();
+					}
+					else{
+						$("#webType").prop('checked', true);
+						$("#bannertypee").hide();
+					}
+					$('#imgLoc').attr('src', '');
+					if (response.body.imgLoc != null
+							&& response.body.imgLoc != "") {
+						$('#imgLoc').attr('src', response.body.imgLoc);
+					} else {
+						$('#imgLoc').attr('src', response.body.imgLoc);
+					}
+				} else
+					("error" + console.message)
+			}
+		});
+
+	}
+
+	/ ----------------ag grid for myGrid parent table----------- /
+
+	const columnDefs1 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			{
+				headerName : 'Banner Id ',
+				field : "bannerId",
+				cellRenderer : function(params) {
+					return '<a id="" onclick=editBannerDetails("'
+							+ params.data.bannerId
+							+ '") href="javascript:void(0)">'
+							+ params.data.bannerId + '</a>';
+				}
+			},
+			{
+
+				headerName : 'Title',
+				field : "bannerTitle"
+			},
+			{
+
+				headerName : 'Banner Type',
+				field : "bannerType",
+
+				cellStyle : {
+					textAlign : 'center'
+				},
+				cellRenderer : function(params) {
+					if (params.data.status == "0") {
+						return "DOCTOR";
+					} else if (params.data.status == "1") {
+						return "PATIENT";
+					} else {
+						return "WEB";
+					}
+				}
+
+			},
+			{
+
+				headerName : 'Status',
+				field : "status",
+				cellStyle : {
+					textAlign : 'center'
+				},
+				cellRenderer : function(params) {
+					if (params.data.status == "1") {
+						return "IN-ACTIVE";
+					} else {
+						return "ACTIVE";
+					}
+				}
+			},
+			{
+
+				headerName : 'Image',
+				field : "imgLoc",
+				cellRenderer : function(params) {
+					var dataimg = params.data.imgLoc;
+					var div = "";
+					div = div
+							+ " "
+							+ '<div class ="fa fa-image"   style="cursor:pointer" class="btn btn-secondary" data-toggle="tooltip" data-placement="top"  style="cursor:pointer" onclick=editView("'
+							+ dataimg + '")  > </div>';
+					return div;
+				}
+			} ];
+
+	const gridOptions = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			rowHeight : 40,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 295,
+			height : 10
+		},
+		onSelectionChanged : deleteDetailsfor,
+		rowSelection : 'single',
+		getRowNodeId : function(data) {
+			return data.bannerId;
+		},
+	};
+	function deleteDetailsfor() {
+
+		var selectedRows = gridOptions.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr('disabled', false);
+			$('#new').attr('disabled', true);
+		} else {
+			$('#delete').attr('disabled', true);
+			$('#new').attr('disabled', false);
+		}
+
+	}
+	/ ---------------------------function for new button------------------ /
+	function add() {
+		$("#bannerId").val('');
+		$("#bannerTitle").val('');
+		$("#bannerType").val('');
+		$("#status").val('');
+		$("#bannerLink").val('');
+		$("#bannerCaption").val('');
+		$("#imgLoc").val('');
+		$('#new').hide();
+		$('#delete').hide();
+		$('#addData').show();
+		$('#myGrid').hide();
+		$('#searchRowDiv').hide();
+		$('#totalReq').hide();
+	}
+	/ -------------function for cancel button-------------- /
+	function Cancel() {
+		$('#totalReq').show();
+		$('#searchRowDiv').show();
+		$('#new').show();
+		$('#delete').show();
+		$('#addData').hide();
+		$('#myGrid').show();
+		$("#bannerId").val('');
+		$("#bannerTitle").val('');
+		$("#bannerType").val('');
+		$("#status").val('');
+		$("#bannerLink").val('');
+		$("#bannerCaption").val('');
+		$("#imgLoc").val('');
+	}
+
+	/*************************************Save Data***********************************************/
+
+	function save() {
+		var obj = {};
+		var type = $("#bannerType").val();
+		var validation = true;
+		obj.bannerId = $("#bannerId").val();
+		obj.bannerTitle = $("#bannerTitle").val();
+		obj.bannerType = $("input[type='radio'][name='bannerType']:checked").val();
+/* 		obj.bannerType = $("#bannerType").val();
+ */		alert(obj.bannerType)
+		alert(obj.bannerTitle)
+		obj.status = $("#status").val();
+		obj.bannerLink = $("#bannerLink").val();
+		obj.bannerCaption = $("#bannerCaption").val();
+		obj.imgLoc = $('#fileUpload').val();
+
+		/* if (data.bannerTitle == null || data.bannerTitle == "") {
+			validation = validationUpdated("Banner Title Name  Required",
+					"bannerTitle");
+		} */
+
+		console.log(obj)
+		if (validation) {
+
+			$.ajax({
+				type : "POST",
+				url : "admin-banner-addDetails",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+				success : function(response) {
+					if (response.message == "Success") {
+
+						$('#totalReq').show();
+						$('#searchRowDiv').show();
+						$('#delete').attr('disabled', true);
+						$('#new').attr('disabled', false);
+
+						agGrid.simpleHttpRequest({
+							url : 'admin-banner-viewDetails',
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions.api.setRowData(data);
+						})
+						Cancel();
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+
+	}
+	function bannerTitleDetails1() {
+		$('#bannertypee').show();
+	}
+	function bannerTitleDetails() {
+		$('#bannertypee').hide();
+	}
+	function bannerTitleDetails2() {
+		$('#bannertypee').hide();
+	}
+	function editView(id) {
+
+		window.open("/document/images/" + id, '_blank');
+	}
+
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		var id = selectedRows[0].bannerId;
+
+		$.ajax({
+			type : "POST",
+			url : "admin-banner-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : 'admin-banner-viewDetails',
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions.api.setRowData(data);
+					})
+
+					Cancel();
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+
+	function saveFile() {
+
+		var uFile = $('#fileUpload')[0].files[0];
+		var fileName = $('#fileUpload').val();
+		var iURL = URL.createObjectURL(uFile);
+		var LightImg = "<div class='uploadicon position-l'><a class='example-image-link' href='" + iURL + "' title='" + fileName + "' target='_balnk'><i class=''></i></a></div>";
+		$("#uploadedBillDocDiv_").html(LightImg);
+		var lastIndex = fileName.lastIndexOf("\\");
+		if (lastIndex >= 0) {
+			fileName = fileName.substring(lastIndex + 1);
+		}
+		var iURL = URL.createObjectURL(uFile);
+
+		$('#imgLoc').attr('src', '');
+		$('#imgLoc').attr('src', iURL);
+
+		var fileData = new FormData();
+		fileData.append('file', uFile);
+		fileData.append('path', 'none');
+
+		$.ajax({
+			type : "POST",
+			url : "admin-banner-image-upload-file",
+			enctype : "multipart/form-data",
+			contentType : false,
+			data : fileData,
+			processData : false,
+			cache : false,
+			success : function(response) {
+
+			},
+			error : function(e) {
+
+			}
+		});
+	}
+</script>
+</head>
+<!-- /*************************************Body Part***********************************************/	 -->
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div class="panel-body">
+			<div class="row" id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="font-design" id="totalReq">
+								BANNER DETAILS (<span></span>)
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row margin_topbot" id="searchRowDiv">
+								<div class="input-style row">
+									<input type="text" placeholder="Search.." name="search"
+										class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()" id="quickFilter">
+									<div class="searchicon">
+										<a href="javascript:void(0)"><span
+											style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+											id="closeKey"
+											onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i"><i class="ti-close srchicon"></i></span></a><a
+											href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<button id="new" onclick="add()" class="btn1">ADD BANNER</button>
+							<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+
+					</div>
+				</div>
+				<div id="myGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+			</div>
+		</div>
+		<div class="row" id="addData">
+
+			<div class="col-md-12" id="btnDiv">
+				<button id="save" onclick="save()" class="btn1">Save</button>
+				<button class="btn4" id="Cancel" onclick="Cancel()">Cancel</button>
+			</div>
+			<input type="hidden" id="slNo"> <input type="hidden"
+				id="bannerId">
+
+			<div class="col-md-4">
+				<div class="col-md-10 edit">Add Banner Details</div>
+			</div>
+			<!-- 
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>Banner Type</label>
+					<div class="select">
+						<select id="bannerType">
+							<option value="">--Select--</option>
+							<option value="0">Doctor</option>
+							<option value="1">Patient</option>
+							<option value="2">Web</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			 -->
+			<div class="col-md-12">
+				<div class="form-group">
+					<label>Banner Type</label> <br> <label for="Doctor"> <input
+						type="radio" id="doctorType" value="doctorTypeBanner"
+						onclick="bannerTitleDetails()" name="bannerType" /> Doctor
+					</label> <label for="Patient"> <input type="radio" id="patientType"
+						onclick="bannerTitleDetails1()" value="patientTypeBanner"
+						name="bannerType" checked /> Patient
+					</label> <label for="Web"> <input type="radio" id="webType"
+						onclick="bannerTitleDetails2()" value="webTypeBanner"
+						name="bannerType" /> Web
+					</label>
+				</div>
+			</div>
+
+			<div class="col-md-6" id="bannertypee">
+				<div class="form-group">
+					<label>Banner Title</label>
+					<div class="select">
+						<select id="bannerTitle">
+							<option value="">--Select--</option>
+							<option value="topBnr">Top Banner</option>
+							<option value="mdlBnr">Middle Banner</option>
+							<option value="mdlBtn">Middle Button</option>
+							<option value="btn">Button</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+
+
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Caption</label> <input type="text" class="form-control"
+						id="bannerCaption" autocomplete="off"
+						placeholder="Banner Caption.....">
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Link</label> <input type="text" class="form-control"
+						id="bannerLink" autocomplete="off" placeholder="Banner Link.....">
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Status</label>
+					<div class="select">
+						<select id="status">
+							<option value="">--Select--</option>
+							<option value="0">Active</option>
+							<option value="1">In-Active</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- 	<div class="col-md-12">
+										<div class="form-group">
+											<label>Image Upload</label>
+											<textarea id="comment" class="form-group"
+												placeholder="immunization details ....."></textarea>
+										</div>
+									</div> -->
+
+			<div class="col-md-12">
+				<div class="user-dtlhd ">Image Upload</div>
+				<table id="docTbl">
+
+					<tbody id="doctbodyData">
+
+
+						<td><div class="form-group">
+								<img th:src="${profile}" id="imgLoc"
+									style="height: 50px; weight: 50px"></img>
+							</div></td>
+
+						<td>
+							<div class="control-group position-r">
+								<label class="custom-file-upload" for="fileUpload"
+									id="uploadFor_0"> <a class="btn btn-primary"
+									style="color: #FFF !important;"> <i id="clickImg_0"
+										class="ti ti-plus"></i> Add
+								</a>
+									<div id="uploadedBillDiv" align="center"
+										class="uploadedBillCls">
+										<div class=""></div>
+									</div>
+								</label>
+								<div class="controls">
+
+									<input type="file" id="fileUpload" name="userImage"
+										accept="image/*" onchange="saveFile()"
+										onblur="removeValid(event)">
+
+								</div>
+							</div> <input type="hidden" id="uploadHidden_0" class="uploadHidCls">
+							<div id="uploadedBillDiv_0" align="center"
+								class="uploadedBillCls"></div>
+							<div id="imageName_0" class="imageName"></div>
+							<div id="dltImage_0"></div>
+						</td>
+
+					</tbody>
+				</table>
+			</div>
+
+
+
+		</div>
+
+	</div>
+	</div>
+</body>
+</html>

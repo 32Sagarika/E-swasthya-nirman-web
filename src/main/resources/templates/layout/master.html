@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+<title>CureEazy</title>
+<!-- Styles -->
+<!-- font css -->
+<link href="../assets/css/lib/font-awesome.min.css" rel="stylesheet">
+<link href="../assets/css/extend/themify-icons.css" rel="stylesheet">
+
+
+<!-- for sidebar css -->
+<link href="../assets/css/lib/menubar/sidebar.css" rel="stylesheet">
+<!-- bootstrap css -->
+ <link href="../assets/css/lib/bootstrap.min.css" rel="stylesheet">
+  
+<!-- bootstrap Datepicker css -->
+<link rel="stylesheet" href="../assets/css/bootstrap-datepicker.css">
+<link rel="stylesheet"
+	href="../assets/css/jquery.datetimepicker.min.css">
+<!-- bootstrap datatable  -->
+<link href="../datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
+<link href="../assets/css/lightbox.min.css" rel="stylesheet">
+
+<!-- <script src="../assets/js/lib/jquery-3.4.1.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="../assets/js/lib/bootstrap.min.js"></script>
+
+<script src="../assets/highchart/high.js"></script>
+
+
+<!--  for extend  style css -->
+<link rel="stylesheet" href="../assets/css/extend/style-extend.css">
+
+<!-- Validator css Starts -->
+
+<link rel="stylesheet" href="../assets/css/sweetalert2.min.css">
+<!-- Validator css End -->
+<!-- Validator Js starts -->
+<script src="../assets/js/validate.js"></script>
+<script src="../assets/js/jquery.datetimepicker.js"></script>
+
+<script src="../assets/js/sweetalert2.all.min.js"></script>
+<script src="../assets/js/lightbox.min.js"></script>
+<!-- Validator Js Ends -->
+
+<script src="../assets/highchart/highcharts.js"></script>
+<script src="../assets/highchart/series-label.js"></script>
+<script src="../assets/highchart/exporting.js"></script>
+<script src="../assets/highchart/export-data.js"></script>
+<script src="../assets/highchart/high.js"></script>
+<!-- for ag grid -->
+
+<script src="../assets/js/extend/grid.js"></script>
+<script src="../assets/js/extend/tree-table.js"></script>
+<script src="../assets/js/extend/new-extend.js"></script>
+<script src="../assets/js/extend/date-format.js"></script>
+
+<!-- for Slimselect -->
+<script src="../assets/js/extend/slimselect.min.js"></script>
+<link rel="stylesheet" href="../assets/css/extend/slimselect.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+
+<!-- for Custom Multi Select -->
+<script src="../assets/js/customMultiselect.js"></script>
+<link rel="stylesheet" href="../assets/css/customMultiselect.css">
+<style type="text/css">
+.tr-bg {
+	background-color: #8093f3 !important;
+}
+.modal_chkbox
+{
+    top: 8px!important;
+    left: 0px;
+    width: 200px;
+}
+.m_right
+{
+background: rgba(255,255,255,0.9);
+    border: none;
+}
+
+/* .xdsoft_datetimepicker {
+	margin-left: -235px !important;
+	margin-top: -20px !important;
+} */
+</style>
+<script>
+
+$(document).ready(function() {
+	var id =$("#uhidSeession").val();
+	var role =$("#userRoleSesion").val();
+	
+	var mahaId= (id.substring(0,4));
+	
+	if(role =="[1]" && mahaId == "9127"){
+		$("#myModalArogyaKranti").show();
+	}else{
+		$("#myModalArogyaKranti").hide();
+	}
+	
+	
+
+	
+});
+	
+function ArogyaKrantiCancelBtnId() {
+	$("#myModalArogyaKranti").hide();
+}
+
+
+
+
+</script>
+<script>
+
+$(document).ready(function() {
+	/* fortopmenu */
+
+		 $('.toggle-menu').click(function(){
+			
+			 $('.exo-menu').toggleClass('display');
+
+			});
+	})
+
+	$(function() {
+		//Date picker
+		$('#datepicker').datepicker({
+			autoclose : true
+		})
+	})
+
+	$(document).ready(
+			function() {			
+				/* fortopmenu */
+				$('.loader').hide();
+				/* if (sessionStorage.getItem('clickcount')) {
+					sessionStorage.setItem('clickcount',
+							Number(sessionStorage.getItem('clickcount')) + 1);
+				} else {
+					sessionStorage.setItem('clickcount', 1);
+				}
+				if (sessionStorage.getItem('clickcount') > 1) {
+					window.location.href = '/logout';
+				} */
+
+				if (sessionStorage.getItem("userId")) {
+				} else {
+					 window.location.href="/login";
+				}
+				$(".activityClass").click(
+						function() {
+							var protocol = location.protocol;
+							var protocol = protocol + '//';
+							var hosturl = location.host;
+							var hrefurl = protocol + hosturl;
+							var href = $(this).attr('href');
+							var href = hrefurl + href;
+							var activityId = $(this).closest('li').attr('id');
+							var functionId = $(this).closest('ul')
+									.closest('li').attr('id');
+							var moduleId = $(this).closest('ul').closest('li')
+									.closest('ul').closest('li').attr('id');
+
+							sessionStorage.setItem("activityId", activityId);
+							sessionStorage.setItem("functionId", functionId);
+							sessionStorage.setItem("moduleId", moduleId);
+							sessionStorage.setItem("href", href);
+						});
+
+				var href = sessionStorage.getItem("href");
+				var moduleName = sessionStorage.getItem("moduleId");
+				var funtionName = sessionStorage.getItem("functionId");
+				var activityName = sessionStorage.getItem("activityId");
+
+				var CurURL = window.location.href;
+
+				var protocol1 = location.protocol;
+				var protocol1 = protocol1 + '//';
+				var hosturl1 = location.host;
+				var hrefurl1 = protocol1 + hosturl1;
+				var hrefurl1len = hrefurl1.length;
+				var hrefurl1len = parseInt(hrefurl1len) + 1;
+				var CurURL1 = window.location.href;
+				var urlfresh = CurURL1.slice(hrefurl1len);
+				var l = urlfresh.split("/");
+				var urlindb = l[1];
+				var f = urlindb.split("-");
+				var req = f[0] + 1;
+				var req = req.charAt(0).toUpperCase() + req.slice(1);
+				var funtionName1 = funtionName.slice(0, -1);
+				var activityName1 = funtionName1 + req;
+
+				if (href == CurURL) {
+					//remove active class
+					$("#dash").removeClass('active');
+					$(".moDule").removeClass('active').removeClass('open');
+					$(".funTion").removeClass('open');
+					$(".acTivity").removeClass('active');
+					//add Active class
+					$("#" + moduleName).addClass('active').addClass('open');
+					$("#" + funtionName).addClass('open');
+					$("#" + activityName).addClass('active');
+				}
+
+				if (href != CurURL) {
+					//remove active class
+					$("#dash").removeClass('active');
+					$(".moDule").removeClass('active').removeClass('open');
+					$(".funTion").removeClass('open');
+					$(".acTivity").removeClass('active');
+
+					//add Active class
+					$("#" + moduleName).addClass('active').addClass('open');
+					$("#" + funtionName).addClass('open');
+					$("#" + activityName1).addClass('active');
+				}
+			});
+</script>
+</head>
+<body>
+	<!--sidebar-->
+	<div class="loader">
+		<div style="margin: 30% auto;">
+			<img class="loading-image" src="../assets/images/loading.gif"
+				alt="../assets/images/loading.gif">
+		</div>
+	</div>
+	<div th:replace="layout/app-sidebar :: sidebar"></div>
+	<!-- /# sidebar -->
+	<!-- header-->
+	<div th:replace="layout/app-header :: header"></div>
+	<!-- content section starts -->
+	<div class="content-wrap">
+		<!-- Main content -->
+		<div layout:fragment="content"></div>
+
+		<div id="msgModal" class="modal fade show" aria-modal="true">
+			<div class="modal-dialog modal-confirm">
+				<div class="modal-content">
+					<div class="modal-header flex-column">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">
+							<i class="ti-close modal-close"></i>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p id="messageParagraph"></p>
+					</div>
+					<div class="modal-footer justify-content-center"
+						style="margin-top: -8px;">
+						<button type="button" class="btn3" id="msgOkModal"
+							onclick="hideMsgModal()">Ok</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--  Arogya kranti Login  Starts-->
+			
+			<div id="myModalArogyaKranti" class="modal fade show" aria-modal="true">
+				<div class="modal-dialog modal-right">
+					<div class="modal-content-md m_right">
+					
+					<div align="right">
+							<a  id="ArogyaKrantiCancelBtnId"
+								 onclick="ArogyaKrantiCancelBtnId()">
+								 <i class="ti ti-close"></i>
+								 </a>
+								
+							<!-- <button class="btn1" id="loginArogyaKranti"
+								onclick="loginArogyaKranti()">OK</button> -->
+						</div>
+					
+					
+						<div class="form-group d-flex">
+							<input type="checkbox" class="loc-chb" name="isActive"
+								id="qutActive" value="1">
+								 <label class="modal_chkbox">Log in as Dhan Arogya 
+					                    Kranti User</label>
+						</div>
+
+				
+				</div>
+			</div>
+			</div>
+			
+			<input type="hidden" id="uhidSeession" th:value="${session.USER_ID}">
+			
+			<input type="hidden" id="userRoleSesion" th:value="${session.USER_ROLES}">
+								
+			<!-- Arogya kranti Login Ends -->
+
+		<!-- footer-->
+		<div th:replace="layout/app-footer :: footer"></div>
+		<!-- footer -->
+	</div>
+	<!-- include script files -->
+	<div th:replace="layout/app-js :: includejs"></div>
+</body>
+</html>

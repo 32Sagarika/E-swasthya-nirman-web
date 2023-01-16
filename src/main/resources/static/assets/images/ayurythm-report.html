@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<style type="text/css">
+body {
+	margin: 0;
+	font-family: 'Poppins', sans-serif;
+	font-size: 13px;
+	color: #000;
+}
+
+img {
+	border: none;
+	outline: none;
+}
+
+.mainsec {
+	width: 792px;
+	background: #FFF;
+	margin: 0 auto;
+	padding: 0px;
+	position: relative;
+}
+
+.detailcontent {
+	margin-bottom: 15px;
+	margin-top: 5px;
+}
+
+td {
+	padding: 0px;
+	border: none !important;
+}
+
+td:last-child {
+	
+}
+
+.nobdr {
+	font-size: 10px;
+}
+
+p {
+	font-size: 13px;
+	padding: 2px 0 !important;
+	line-height: 14px;
+}
+
+.indent {
+	margin-left: 50px;
+}
+
+.top-title {
+	padding: 6px 0px;
+}
+
+.logoname {
+	font-size: 24px;
+	color: #3464b3;
+	font-weight: 600;
+	padding-bottom: 8px;
+	padding-top: 10px;
+}
+
+.heading {
+	font-size: 24px;
+	color: #333;
+	font-weight: 600;
+	padding-bottom: 8px;
+	padding-top: 10px;
+}
+
+.commentsec {
+	background: #f5f5f5;
+	padding: 10px;
+	line-height: 22px;
+}
+
+.commentheading {
+	background: #e4e5e6;
+	font-size: 14px;
+}
+
+.content-block, p {
+	page-break-inside: avoid;
+}
+
+html, body {
+	width: 210mm;
+	margin: 0 auto;
+}
+
+thead {
+	top: 0px;
+	left: 50%;
+	margin-left: -397px;
+	z-index: 99;
+}
+
+.formtable {
+	position: relative;
+}
+
+.formtable td {
+	padding: 4px 24px;
+}
+
+@page {
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.logo {
+	height: 186px;
+}
+
+.address {
+	padding: 10px;
+	text-align: right;
+	width: 200px;
+	float: right;
+}
+
+.logotext {
+	float: left;
+	width: 300px;
+	margin-left: 10px;
+}
+
+.label {
+	font-weight: bold;
+	line-height: 22px;
+	padding: 3px 10px;
+	display: inline-block;
+	margin-bottom: 8px;
+}
+
+.labelnxt {
+	font-weight: bold;
+	line-height: 22px;
+	padding: 3px 10px;
+	display: inline-block;
+	width: 230px;
+	margin-bottom: 8px;
+}
+
+.labelnew {
+	font-weight: bold;
+	line-height: 22px;
+	padding: 3px 10px;
+	display: inline-block;
+}
+
+.labeltxt {
+	font-weight: bold;
+	line-height: 22px;
+	padding: 3px 10px;
+	display: inline-block;
+	width: 80px;
+}
+
+.datelabel {
+	font-weight: bold;
+	padding: 0px 10px;
+}
+
+.titletxt {
+	font-weight: bold;
+}
+
+.redtxt {
+	font-weight: bold;
+	color: #FF0000;
+}
+
+.blue {
+	font-weight: bold;
+	color: #3869BF;
+}
+
+.green {
+	font-weight: bold;
+	color: #29AF35;
+}
+
+.electiontxt {
+	font-weight: bold;
+	float: right;
+}
+
+.formtable {
+	position: relative;
+	width: 100%;
+}
+
+.formtable td {
+	border: solid 1px #ccc !important;
+}
+
+.elesec {
+	margin-right: 66px;
+	float: right;
+}
+
+.dtsec {
+	float: left;
+}
+
+.line {
+	text-decoration: line-through;
+}
+
+.sundargardfooter {
+	bottom: 0 px;
+	height: auto;
+	left: 0;
+	width: 100%;
+	padding: 0px 30px;
+}
+
+.biharfooter {
+	bottom: 0 px;
+	height: auto;
+	left: 0;
+	width: 100%;
+	padding: 0px 30px;
+}
+
+.mahafooter {
+	bottom: 0 px;
+	height: auto;
+	left: 0;
+	width: 100%;
+	padding: 0px 30px;
+}
+
+.footer {
+	bottom: 0 px;
+	height: auto;
+	left: 0;
+	width: 100%;
+	padding: 0px 0px;
+}
+
+.nobdr {
+	position: relative
+}
+
+.nobdr tr td {
+	border: none;
+}
+
+.nobdr>tbody {
+	position: relative
+}
+
+.nobdr>tbody>tr>td {
+	border-bottom: none !important;
+}
+
+.footertxt {
+	color: #043E80;
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 36px;
+	margin-bottom: 20px;
+}
+
+.imgicon {
+	/*float:left;*/
+	
+}
+
+.bluetxt {
+	color: #3869BF;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 20px;
+	margin-left: 5px;
+	margin-top: 20px;
+	/* float:left;*/
+	margin-bottom: 12px;
+}
+
+.formtable .toptitle {
+	font-size: 16px;
+	font-weight: 500;
+	padding: 6px 0px;
+	background: #E1E4F3;
+	text-align: center;
+	color: #0A55A8;
+	width: 99.8%;
+}
+
+.bg {
+	background-position: left bottom;
+	left: 0;
+	bottom: 0;
+	position: relative;
+}
+
+.back-bg {
+	background-image: url("../images/header_report.png");
+	background-repeat: no-repeat;
+	height: 200px;
+	width: 100%;
+}
+
+.note {
+	padding-left: 30px;
+	padding-top: 20px;
+	padding-bottom: 10px;
+}
+
+.top-sec {
+	padding: 100px 10px 0px;
+}
+
+.ehealth-hd {
+	font-size: 24px;
+	color: #106cb5;
+	font-weight: bold;
+	text-align: center;
+}
+
+.ehealth-adrs {
+	font-size: 16px;
+	color: #797979;
+	text-align: center;
+}
+
+.call {
+	font-size: 20px;
+	color: #000;
+	font-weight: bold;
+	text-align: right;
+}
+
+.top-sec img {
+	width: 300px;
+}
+
+.logo img {
+	height: 80px;
+	width: 80px;
+}
+
+.logo1 img {
+	height: 50px;
+	width: 270px;
+}
+
+.ft-last {
+	background-color: #1f4e78;
+	color: #fff;
+	font-weight: 700;
+	padding: 15px;
+	text-align: center;
+	font-size: 20px;
+}
+
+.imgicon {
+	float: left;
+}
+</style>
+<script>
+	function download() {
+
+		window.print();
+
+	}
+	/* $(document).ready(function() {
+	 uhid = $("#uhid").text();
+	 alert(uhid);	
+	 }); */
+</script>
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="maincontentsec">
+				<div class="mainsec">
+
+
+
+					<div id="mahaHeader">
+						<div class="logo" align="center">
+
+							<div class="back-bg">
+
+								<div class="top-sec">
+
+									<table>
+										<tr>
+											<td width="150"></td>
+											<td width="700">
+												<div class="right-sec">
+													<div class="ehealth-hd">Maha eClinic</div>
+
+												</div>
+											</td>
+											<td width="150" align="center"><img
+												th:src="@{classpath:static/assets/images/logo_right.jpg}"
+												border="0" style="height: 60px;" /></td>
+
+											<!-- 	<img th:src="@{classpath:static/assets/images/sundargarh.png}" -->
+
+
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
+
+					<div style="height: auto;">
+						<table class="formtable" width="100%">
+							<tr align="center">
+								<td colspan="3" class="toptitle"><strong>User
+										Report</strong></td>
+
+							</tr>
+
+
+							<tr align="left">
+								<td width="33%"><strong>Report Date </strong></td>
+								<td width="37%"><strong>Report Time </strong></td>
+								<td width="30%"><strong>Patient Name</strong></td>
+							</tr>
+
+							<tr align="left">
+								<td width="33%"><span
+									th:text="${gatPatientdetails.testDate}"></span></td>
+								<td width="37%"><span
+									th:text="${gatPatientdetails.testTime}"> </span></td>
+								<td width="30%"><span th:text="${gatPatientdetails.name}"></span></td>
+							</tr>
+
+
+
+							<!-- <tr align="left">
+								<td width="33%"><strong>Report Date </strong></td>
+								<td width="37%"><strong>Report Time </strong></td>
+								<td width="30%"><strong>Patient Name</strong></td>
+							</tr> -->
+
+
+
+
+							<tr align="left">
+								<td>Age</td>
+								<td>Gender</td>
+								<td>Height</td>
+							</tr>
+
+							<tr align="left">
+								<td><span th:text="${gatPatientdetails.age}"></span></td>
+
+								<td><span th:text="${gatPatientdetails.gender}"></span></td>
+
+								<td><span th:text="${gatPatientdetails.height}"></span></td>
+							</tr>
+
+
+
+
+
+
+
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Questionnaire
+										Based Prakriti/Vikriti</strong></td>
+							</tr>
+
+
+							<tr align="left">
+								<td colspan="3">
+									<table class="formtable" width="100%">
+										<tr>
+											<td width="50%"><strong>Prakriti </strong></td>
+											<td width="50%"><strong>Vikriti </strong></td>
+										</tr>
+
+										<tr align="left">
+											<td><img
+												th:src="@{classpath:static/assets/images/kapha.png}"
+												border="0" height="14" width="14"></img> <strong>Kapha
+													:</strong><span th:text="${gatPatientdetails.prakriti[0].kapha}"></span>
+
+												<div style="clear: both;"></div> <img
+												th:src="@{classpath:static/assets/images/pitta.png}"
+												border="0" height="14" width="14"></img> <strong>Pitta
+													:</strong><span th:text="${gatPatientdetails.prakriti[0].pitta}"></span>
+												<div style="clear: both;"></div> <img
+												th:src="@{classpath:static/assets/images/vatta.png}"
+												border="0" height="14" width="14"></img> <strong>Vata
+													:</strong><span th:text="${gatPatientdetails.prakriti[0].vata}"></span></td>
+											<td><img
+												th:src="@{classpath:static/assets/images/kapha.png}"
+												border="0" height="14" width="14"></img> <strong>Kapha
+													:</strong><span th:text="${gatPatientdetails.vikriti[0].kapha}"></span>
+
+												<div style="clear: both;"></div> <img
+												th:src="@{classpath:static/assets/images/pitta.png}"
+												border="0" height="14" width="14"></img> <strong>Pitta
+													:</strong><span th:text="${gatPatientdetails.vikriti[0].pitta}"></span>
+												<div style="clear: both;"></div> <img
+												th:src="@{classpath:static/assets/images/vatta.png}"
+												border="0" height="14" width="14"></img> <strong>Vata
+													:</strong><span th:text="${gatPatientdetails.vikriti[0].vata}"></span></td>
+
+
+
+
+										</tr>
+
+
+
+									</table>
+
+
+								</td>
+
+							</tr>
+
+
+						
+
+
+
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Pulse
+										Assessment</strong></td>
+							</tr>
+
+
+
+							<tr>
+								<td colspan="3"></td>
+							</tr>
+
+
+						</table>
+					</div>
+
+					<div style="height: auto; width: 100%;">
+						<table class="formtable">
+							<tr>
+								<td width="16%"><strong>Bmr </strong></td>
+								<td width="12%"><strong>Dp </strong></td>
+								<td width="12%"><strong>Rytm </strong></td>
+								<td width="12%"><strong>O2r </strong></td>
+								<td width="12%"><strong>Pitta2 </strong></td>
+								<td width="12%"><strong>Vata2 </strong></td>
+								<td width="12%"><strong>Kath </strong></td>
+								<td width="12%"><strong>Pbreath </strong></td>
+							</tr>
+							<tr>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].bmr}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].dp}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].rythm}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].o2r}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].pitta2}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].vata2}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].kath}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].pbreath}"></span></td>
+
+
+
+							</tr>
+
+
+							<tr>
+								<td><strong>Bala </strong></td>
+								<td><strong>Tbpm </strong></td>
+								<td><strong>Sp </strong></td>
+								<td><strong>Bpm </strong></td>
+								<td><strong>kapha2 </strong></td>
+								<td><strong>Bmi </strong></td>
+								<td><strong>Gati </strong></td>
+								<td><strong></strong></td>
+
+							</tr>
+
+							<tr>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].bala}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].tbpm}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].sp}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].bpm}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].kapha2}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].bmi}"></span></td>
+								<td><strong></strong><span
+									th:text="${gatPatientdetails.sparshna[0].gati}"></span></td>
+								<td></td>
+
+
+
+							</tr>
+
+
+						</table>
+					</div>
+
+
+
+
+
+					<div style="height: auto;">
+						<table class="formtable" width="100%">
+
+
+
+							<tr align="left">
+								<td width="23%"><strong>Aggravation </strong></td>
+								<td width="77%" colspan="2" align="center"><strong>Report
+										Analysis</strong></td>
+
+							</tr>
+
+							<tr align="left">
+								<td width="23%"><strong> </strong></td>
+								<td width="37%"><strong>What it means? </strong></td>
+								<td width="40%"><strong>What to Do?</strong></td>
+							</tr>
+
+
+
+
+							<tr align="left"
+								th:each="k,itr:${gatPatientdetails.sparshna_master}">
+								<td width="23%"><img
+									th:src="@{classpath:static/assets/images/kapha-img.png}"
+									border="0" height="30" width="30"></img><br> kapha</br> <strong></strong></td>
+								<td width="37%"><span th:text="${k.what_it_means}"></span></td>
+								<td width="40%"><span th:text="${k.what_to_do}"></span></td>
+							</tr>
+
+
+
+
+
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Parameters</strong></td>
+							</tr>
+
+							<tr align="left"
+								th:each="k,itr:${gatPatientdetails.sparshna_result_desc}">
+								<td width="26%"><strong><span th:text="${k.title}"></span></strong></td>
+								<td width="37%"><strong>Short Description:</strong>
+									<p align="left">
+										<span th:text="${k.short_description}"></span>
+									</p></td>
+								<td width="37%"><strong>What It Means:</strong>
+									<p align="left">
+										<span th:text="${k.what_it_means}"></span>
+									</p></td>
+
+							</tr>
+
+
+						</table>
+					</div>
+
+
+
+
+
+
+
+					<div style="height: auto;">
+						<table class="formtable">
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Diet
+										and Lifestyle Recommendations For You</strong></td>
+							</tr>
+
+							<tr align="center"
+								th:each="k,itr:${gatPatientdetails.food_types}" valign="top">
+								<td width="10%"><strong><span
+										th:text="${k.food_type}"></span></strong></td>
+								<td width="40%"><strong>Favour:</strong><span
+									th:text="${k.favour_foods}"></span>
+									<p align="left">
+										<span th:text="${k.favour_foods}"></span>
+									</p></td>
+								<td width="40%"><strong>Avoid:</strong>
+									<p align="left">
+										<span th:text="${k.avoid_foods}"></span>
+									</p></td>
+
+							</tr>
+
+
+
+						</table>
+					</div>
+
+
+
+					<div style="height: auto;">
+						<table class="formtable">
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Activities
+										for you</strong></td>
+							</tr>
+
+
+
+
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Yogasana</strong></td>
+							</tr>
+
+
+							<tr align="left" valign="top"
+								th:each="k,itr:${gatPatientdetails.yogasana}">
+
+								<td width="20%"><p>
+										<strong> <span th:text="${k.name}"></span></strong>
+									</p></td>
+
+								<td>
+									<p>
+										<strong>Short Description:</strong><span
+											th:text="${k.shortdescription}"></span>
+									</p>
+									<p>
+										<strong>Steps:</strong><span th:text="${k.steps}"></span>
+									</p>
+
+									<p>
+										<strong>Benefits:</strong><span
+											th:text="${k.benefit_description}"></span>
+									</p>
+
+									<p>
+										<strong>Precautions:</strong><span th:text="${k.precautions}"></span>
+									</p>
+
+
+								</td>
+
+
+							</tr>
+
+
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Pranayama</strong></td>
+							</tr>
+
+
+							<tr align="left" valign="top"
+								th:each="k,itr:${gatPatientdetails.pranayama}">
+
+								<td width="20%"><p>
+										<strong> <span th:text="${k.name}"></span></strong>
+									</p></td>
+
+								<td>
+									<p>
+										<strong>Short Description:</strong><span
+											th:text="${k.shortdescription}"></span>
+									</p>
+									<p>
+										<strong>Steps:</strong><span th:text="${k.steps}"></span>
+									</p>
+
+									<p>
+										<strong>Benefits:</strong><span
+											th:text="${k.benefit_description}"></span>
+									</p>
+
+									<p>
+										<strong>Precautions:</strong><span th:text="${k.precautions}"></span>
+									</p>
+
+
+								</td>
+
+
+							</tr>
+
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Kriya</strong></td>
+							</tr>
+
+
+							<tr align="left" valign="top"
+								th:each="k,itr:${gatPatientdetails.kriya}">
+
+								<td width="20%"><p>
+										<strong> <span th:text="${k.name}"></span></strong>
+									</p></td>
+
+								<td>
+									<p>
+										<strong>Short Description:</strong><span
+											th:text="${k.shortdescription}"></span>
+									</p>
+									<p>
+										<strong>Steps:</strong><span th:text="${k.steps}"></span>
+									</p>
+
+									<p>
+										<strong>Benefits:</strong><span
+											th:text="${k.benefit_description}"></span>
+									</p>
+
+									<p>
+										<strong>Precautions:</strong><span th:text="${k.precautions}"></span>
+									</p>
+
+
+								</td>
+
+
+							</tr>
+
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Mudra</strong></td>
+							</tr>
+
+
+							<tr align="left" valign="top"
+								th:each="k,itr:${gatPatientdetails.mudra}">
+
+								<td width="20%"><p>
+										<strong> <span th:text="${k.name}"></span></strong>
+									</p></td>
+
+								<td>
+									<p>
+										<strong>Short Description:</strong><span
+											th:text="${k.shortdescription}"></span>
+									</p>
+									<p>
+										<strong>Steps:</strong><span th:text="${k.steps}"></span>
+									</p>
+
+									<p>
+										<strong>Benefits:</strong><span
+											th:text="${k.benefit_description}"></span>
+									</p>
+
+									<p>
+										<strong>Precautions:</strong><span th:text="${k.precautions}"></span>
+									</p>
+
+
+								</td>
+
+
+							</tr>
+
+							<tr align="center">
+								<td colspan="3" class="toptitle" bgcolor="#E1E4F3"><strong>Mediation</strong></td>
+							</tr>
+
+
+							<tr align="left" valign="top"
+								th:each="k,itr:${gatPatientdetails.meditation}">
+
+								<td width="20%"><p>
+										<strong> <span th:text="${k.name}"></span></strong>
+									</p></td>
+
+								<td>
+									<p>
+										<strong>Short Description:</strong><span
+											th:text="${k.shortdescription}"></span>
+									</p>
+									<p>
+										<strong>Steps:</strong><span th:text="${k.steps}"></span>
+									</p>
+
+									<p>
+										<strong>Benefits:</strong><span
+											th:text="${k.benefit_description}"></span>
+									</p>
+
+									<p>
+										<strong>Precautions:</strong><span th:text="${k.precautions}"></span>
+									</p>
+
+
+								</td>
+
+
+							</tr>
+
+
+
+
+						</table>
+
+					</div>
+
+
+					<div class="footer" style="margin-left: 0px;">
+
+						<div align="right" style="margin: 10px 0px;">
+							<strong>By eEhealthSystem LLP</strong>
+						</div>
+						<div style="margin: 10px 0px;">
+							<strong>Note:</strong>
+						</div>
+						<table width="100%" style="margin: 0;">
+							<tr>
+
+
+								<td colspan="3" align="center" style="margin-left: 0px;">
+									<table class="nobdr" style="width: 700px; margin: 0 auto;">
+										<tr align="left" width="50%">
+											<td>1. All the investigations are conducted by POCT
+												methods.</td>
+											<td>2. Test results are not valid for Medico-legal
+												purpose.</td>
+										</tr>
+										<tr align="left" width="50%">
+											<td>3. The results should be correlated with clinical
+												information.</td>
+											<td>4. Consult your doctor, if you have any health
+												concern. Do not self adjust medications.</td>
+										</tr>
+										<tr>
+											<td colspan="2">5. The Body composition, BMR and
+												metabolic age values are estimates and may very as per many
+												factors like ethnicity, activity levels diet and other
+												factors.</td>
+										</tr>
+
+									</table>
+
+								</td>
+
+							</tr>
+							
+							
+							
+							<!-- <td width="150" align="center"><img
+												th:src="@{classpath:static/assets/images/logo_right.jpg}"
+												border="0" style="height: 60px;" /></td> -->
+							
+							
+							<td colspan="3">
+								<table class="nobdr" style="width: 740px; margin: 0 auto;">
+									<tr>
+										<td width="240"><img th:src="@{classpath:static/assets/images/phone.png}"
+											class="imgicon" width="30" height="30" />
+											<div class="footertxt">
+												<strong>+020-26122114</strong>
+											</div></td>
+										<td width="240"><img th:src="@{classpath:static/assets/images/mail.png}"
+											class="imgicon" width="30" height="30" />
+											<div class="footertxt">
+												<strong>report@ehealthsystems.in</strong>
+											</div></td>
+										<td width="240"><img th:src="@{classpath:static/assets/images/location.png}"
+											class="imgicon" width="30" height="30" />
+											<div class="footertxt">
+												<strong>Pune,Maharastra.</strong>
+											</div></td>
+									</tr>
+								</table>
+
+							</td>
+						</table>
+					</div>
+
+
+
+
+				</div>
+
+				<div class="ft-last">
+					<span style="font-size: 12px;">Prepared by:</span> eHealthSystem
+					Technologies
+				</div>
+
+
+
+
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

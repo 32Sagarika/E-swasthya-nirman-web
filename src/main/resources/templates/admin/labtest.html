@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+<style type="text/css">	
+.edit {
+    font-size: 22px;
+    color: #210909;
+    margin-bottom: 18px;
+    font-weight: 100;
+}	
+</style>
+<script>
+	$(document).ready(function() {
+
+		var gridDiv = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv, gridOptions);
+
+		agGrid.simpleHttpRequest({
+			url : 'lab-test-viewDetails',
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions.api.setRowData(data);
+		})
+		$('#myGrid').show();
+		$('#new').show();
+		$('#addData').hide();
+		//$('#delete').hide();
+	});
+
+	/ -------------------search bar for mygrid------------------------ /
+
+	function onQuickFilterChanged() {
+		gridOptions.api
+				.setQuickFilter(document.getElementById('quickFilter').value);
+	}
+
+	function cancelBar() {
+		var id = document.getElementById("closeKey");
+		id.style.display = "block";
+
+		if ($('#quickFilter').val() == null || $('#quickFilter').val() == "") {
+			id.style.display = "none";
+		}
+	}
+	
+
+	//---------EDIT-------------
+	function editLabDetails(id) {
+		$("#addData").show();
+		$("#myGrid").hide();
+		$("#new").hide();
+		$("#delete").hide();
+		$("#searchRowDiv").hide();
+		$("#totalReq").hide();
+		$.ajax({
+			type : "GET",
+			url : "lab-test-neweditDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#labId").val(response.body.labId);
+					$("#code").val(response.body.code);
+					$("#name").val(response.body.name);
+					$("#methodology").val(response.body.methodology);
+					$("#sampletypevolume").val(response.body.sampletypevolume);
+					$("#processon").val(response.body.processon);
+					$("#tat").val(response.body.tat);
+					$("#frequently").val(response.body.frequently);
+					$("#featured").val(response.body.featured);
+					$("#price").val(response.body.price);
+					$("#discountprice").val(response.body.discountprice);
+					$("#b2b").val(response.body.b2b);
+					$("#yoursaving").val(response.body.yoursaving);
+					$("#yoursavingspercentage").val(response.body.yoursavingspercentage);
+					
+				} else
+					("error" + console.message)
+			}
+		});
+
+	}
+	/ ----------------ag grid for myGrid parent table----------- /
+
+	const columnDefs1 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+			},
+			 {
+				headerName : 'lab Id ',
+				field : "labId",
+				cellRenderer : function(params) {
+					return '<a id="" onclick=editLabDetails("'
+							+ params.data.labId
+							+ '") href="javascript:void(0)">'
+							+ params.data.labId + '</a>';
+				}
+			}, 
+			{
+
+				headerName : 'Code',
+				field : "code",
+				width : 300,
+				
+			},
+			{
+
+				headerName : 'Name',
+				field : "name",
+				width : 300,
+				
+				
+
+			},
+			{
+
+				headerName : 'Methodology',
+				field : "methodology",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Sampletypevolume',
+				field : "sampletypevolume",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Processon',
+				field : "processon",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'TAT',
+				field : "tat",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Frequently',
+				field : "frequently",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Featured',
+				field : "featured",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Price',
+				field : "price",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Discountprice',
+				field : "discountprice",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Description',
+				field : "description",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'B2B',
+				field : "b2b",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Yoursaving',
+				field : "yoursaving",
+				width : 300,
+				
+				
+
+			},{
+
+				headerName : 'Yoursavingspercentage',
+				field : "yoursavingspercentage",
+				width : 300,
+				
+				
+
+			}];
+
+	const gridOptions = {
+		columnDefs : columnDefs1,
+		defaultColDef : {
+
+			groupSelectsChildren : true,
+			suppressRowClickSelection : true,
+			suppressAggFuncInHeader : true,
+			rowHeight : 40,
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 295,
+			height : 10
+		},
+		rowSelection : 'single',
+		getRowNodeId : function(data) {
+			return data.labId;
+		},
+	};
+
+	/ ---------------------------function for new button------------------ /
+	function add() {
+		$("#labId").val('');
+		$("#code").val('');
+		$("#name").val('');
+		$("#methodology").val('');
+		$("#sampletypevolume").val('');
+		$("#processon").val('');
+		$("#tat").val('');
+		$("#frequently").val('');
+		$("#featured").val('');
+		$("#price").val('');
+		$("#discountprice").val('');
+		$("#b2b").val('');
+		$("#yoursaving").val('');
+		$("#yoursavingspercentage").val('');
+		$('#new').hide();
+		$('#delete').hide();
+		$('#addData').show();
+		$('#myGrid').hide();
+		$('#searchRowDiv').hide();
+		$('#totalReq').hide();
+
+	}
+	/ -------------function for cancel button-------------- /
+	function Cancel() {
+		$('#totalReq').show();
+		$('#searchRowDiv').show();
+		$('#new').show();
+		$('#delete').show();
+		$('#addData').hide();
+		$('#myGrid').show();
+		$("#labId").val('');
+		$("#code").val('');
+		$("#name").val('');
+		$("#methodology").val('');
+		$("#sampletypevolume").val('');
+		$("#processon").val('');
+		$("#tat").val('');
+		$("#frequently").val('');
+		$("#featured").val('');
+		$("#price").val('');
+		$("#discountprice").val('');
+		$("#b2b").val('');
+		$("#yoursaving").val('');
+		$("#yoursavingspercentage").val('');
+	}
+
+	/*************************************Save Data***********************************************/
+
+	function save() {
+		var obj = {};
+		var validation = true;
+		obj.labId = $("#labId").val();
+		obj.code = $("#code").val();
+		obj.name = $("#name").val();
+		obj.methodology = $("#methodology").val();
+		obj.sampletypevolume = $('#sampletypevolume').val();
+		obj.processon = $("#processon").val();
+		obj.tat = $('#tat').val();
+		obj.frequently = $("#frequently").val();
+		obj.featured = $("#featured").val();
+		obj.price = $("#price").val();
+		obj.discountprice = $('#discountprice').val();
+		obj.description = $("#description").val();
+		obj.b2b = $('#b2b').val();
+		obj.yoursaving = $("#yoursaving").val();
+		obj.yoursavingspercentage = $('#yoursavingspercentage').val();
+		/* if (data.imgCategory == null || data.imgCategory == "") {
+			validation = validationUpdated("Imgage Category  Required",
+					"imgCategory");
+		} */
+
+		console.log(obj)
+		if (validation) {
+
+			$.ajax({
+				type : "POST",
+				url : "lab-test-addDetails",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(obj),
+				success : function(response) {
+					if (response.message == "Success") {
+						$('#totalReq').show();
+						$('#searchRowDiv').show();
+						$('#new').show();
+						$('#delete').show();
+						agGrid.simpleHttpRequest({
+							url : 'lab-test-viewDetails',
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions.api.setRowData(data);
+						})
+						Cancel();
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+
+	}
+
+	function editView(id) {
+
+		window.open("/document/images/" + id, '_blank');
+	}
+
+
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions.api.getSelectedRows();
+		var id = selectedRows[0].labId;
+
+		$.ajax({
+			type : "POST",
+			url : "lab-labs-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : 'lab-labs-viewDetails',
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions.api.setRowData(data);
+					})
+
+					Cancel();
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+	
+	
+</script>
+</head>
+<!-- /*************************************Body Part***********************************************/	 -->
+<body>
+	<div layout:fragment="content" class="maincontent">
+	
+		<div class="panel-body">
+			<div class="" id="main_content">
+				
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="font-design" id="totalReq">
+								Lab Tests (<span></span>)
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row margin_topbot" id="searchRowDiv">
+								<div class="input-style row">
+									<input type="text" placeholder="Search.." name="search"
+										class="searchboxinput" onkeyup="cancelBar()"
+										oninput="onQuickFilterChanged()" id="quickFilter">
+									<div class="searchicon">
+										<a href="javascript:void(0)"><span
+											style="display: none; border-right: 1px solid #ccc; padding-right: 5px;"
+											id="closeKey"
+											onclick="gridOptions.api.setQuickFilter(null);$('#quickFilter').val('');document.getElementById('closeKey').style.display='none';"
+											class="close_i"><i class="ti-close srchicon"></i></span></a><a
+											href="javascript:void(0)"><i class="ti-search srchicon"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<button id="new" onclick="add()" class="btn1">Add Lab Test</button>
+								<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+						
+					</div>
+				</div>
+				<div id="myGrid" style="width: 100%; height: 500px;"
+					class="ag-theme-alpine"></div>
+			</div>
+		</div>
+		
+			<div class="row" id="addData"> 
+			<div class="col-md-4">
+				<div class="col-md-10 edit">Add New Lab</div>
+			</div>
+			<div class="col-md-12" id="btnDiv">
+				<button id="save" onclick="save()" class="btn1">Save</button>
+				<button class="btn4" id="Cancel" onclick="Cancel()">Cancel</button>
+			   </div>
+			   
+			   <input type="hidden" id="slNo"> <input type="hidden"
+				id="labId">
+			
+                                           <div class="col-md-6">
+								    	       <div class="form-group row">
+                                                   <label class="col-lg-3 col-form-label">Code</label>
+                                                   <div class="col-lg-9">
+                                                       <input type="text" name="slider[name]" id="code" class="form-control" placeholder="code" autocomplete="off">
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           <div class="col-md-6">
+								    	       <div class="form-group row">
+                                                   <label class="col-lg-3 col-form-label">Name</label>
+                                                   <div class="col-lg-9">
+                                                       <input type="text" name="slider[name]" id="name" class="form-control" placeholder="Name" autocomplete="off">
+                                                   </div>
+                                               </div>
+                                           </div>
+
+                                             <div class="col-md-6">
+								    	       <div class="form-group row">
+                                                   <label class="col-lg-3 col-form-label">Methodology</label>
+                                                   <div class="col-lg-9">
+                                                       <input type="text" name="slider[name]" id="methodology" class="form-control" placeholder="Methodology" autocomplete="off">
+                                                   </div>
+                                               </div>
+                                           </div>
+                                            
+                                             <div class="col-md-6">
+								    	       <div class="form-group row">
+                                                   <label class="col-lg-3 col-form-label">Sample Type Volume</label>
+                                                   <div class="col-lg-9">
+                                                       <input type="text" name="slider[name]" id="sampletypevolume" class="form-control" placeholder="Sample Type Volume" autocomplete="off">
+                                                   </div>
+                                               </div>
+                                           </div>
+                                            
+                                            <div class="col-md-6">
+								    	       <div class="form-group row">
+                                                   <label class="col-lg-3 col-form-label">Processed On</label>
+                                                   <div class="col-lg-9">
+                                                       <input type="text" name="slider[name]" id="processon" class="form-control" placeholder="Sample Type Volume" autocomplete="off">
+                                                   </div>
+                                               </div>
+                                           </div>
+											
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">TAT </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ifsc_code]" id="tat" value="" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                 <label class="col-lg-3 col-form-label">Frequently </label>
+                                                  <div class="col-lg-9">
+						                          <select id="frequently" class="form-control">
+							                 <option value="">--Select--</option>
+							                 <option value="yes">yes</option>
+							                 <option value="No">No</option>
+						                   </select>
+					                       </div>
+                                            </div>
+                                            </div>
+                                            
+                                               <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">Featured </label>
+                                                     <div class="col-lg-9">
+						                        <select id="featured" class="form-control">
+							                 <option value="">--Select--</option>
+							                 <option value="yes">yes</option>
+							              <option value="No">No</option>
+						                   </select>
+					                       </div>
+                                            </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">PRICE </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ifsc_code]" id="price" value="" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                             
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">DISCOUNT PRICE </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ifsc_code]" id="discountprice" value="" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                             
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">DESCRIPTION </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ifsc_code]" id="description" value="" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                             
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">B2B </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ifsc_code]" id="b2b" value="" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                             
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">YOUR SAVING </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ifsc_code]" id="yoursaving" value="" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+				
+				                          
+                                            <div class="col-md-6">
+								    	        <div class="form-group row">
+                                                    <label class="col-lg-3 col-form-label">YOUR SAVING% </label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" name="slider[bank_ifsc_code]" id="yoursavingspercentage" value="" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+			
+			                          </div>
+
+
+        					
+								        </div>
+</body>
+</html>

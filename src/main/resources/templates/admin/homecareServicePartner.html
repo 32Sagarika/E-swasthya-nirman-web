@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	//Document Ready For Page load
+
+	$(document).ready(function() {
+		$("#addTestList").hide();
+		$("#add").show();
+		$("#tab11").hide();
+		$("#edit").hide();
+		$("#deletes").show();
+		$("#add").show();
+		
+		$('#delete').attr('disabled', true);	
+		
+	});
+
+	$(document).ready(function() {
+		$("#showTab").show();
+		 var gridDiv2 = document.querySelector('#myGrid');
+			new agGrid.Grid(gridDiv2, gridOptions2);
+
+			agGrid.simpleHttpRequest({
+				url : "admin-homeCareServicePartner-view"
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalCandidate').find('span').html(len);
+				gridOptions2.api.setRowData(data);
+			});
+	});
+	
+	//---------EDIT-------------
+	function editServiceDetails(id) {
+		$("#addData").show();
+		$("#myGrid").hide();
+		$("#new").hide();
+		$("#delete").hide();
+		$("#searchRowDiv").hide();
+		$("#totalReq").show();
+		$.ajax({
+			type : "GET",
+			url : "admin-homeCareServicePartner-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					openNav();
+					$("#myGrid").show();
+					$("#partnerId").val(response.body.partnerId);
+					$("#partnerName").val(response.body.partnerName);
+					$("#mobile").val(response.body.mobile);
+					$("#email").val(response.body.email);
+					$("#location").val(response.body.location);
+					$("#password").val(response.body.password);
+					$("#accountNo").val(response.body.accountNo);
+					$("#regNo").val(response.body.regNo);
+					
+					
+				} else
+					("error" + console.message)
+			}
+		});
+
+	}
+	
+	/ ----------------ag grid for myGrid parent table----------- /	
+	
+	var columnDefs2 = [ {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	},{
+		headerName : 'Home Care Partner RegId ',
+		field : "regNo",
+		cellRenderer : function(params) {
+			return '<a id="" onclick=editServiceDetails("'
+					+ params.data.regNo
+					+ '") href="javascript:void(0)">'
+					+ params.data.regNo + '</a>';
+		}
+	}, {
+		headerName : "partner Id",
+		field : "partnerId",
+		width:420,
+		hide:true
+	}, {
+		headerName : "partner Name",
+		field : "partnerName",
+		width:320,
+	},
+	{
+		headerName : 'Mobile',
+		field : "mobile",
+		width:250
+	} ,
+	, {
+		headerName : 'Email',
+		field : "email",
+		width:300
+	},{
+		headerName : 'Location',
+		field : "location",
+		width:420,
+		/* cellStyle : {
+			textAlign : 'center'
+		}, */
+	
+	}];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,
+		
+		onSelectionChanged : deleteDetailsfor,
+		getRowNodeId : function(data) {
+			return data.regNo;
+		},
+
+	};
+
+	function deleteDetailsfor() {
+
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr('disabled', false);
+			$('#new').attr('disabled', true);
+		} else {
+			$('#delete').attr('disabled', true);
+			$('#new').attr('disabled', false);
+		}
+
+	}
+
+/ ---------------------------function for new button------------------ /
+function add() {
+	$("#serviceId").val('');
+	$("#title").val('');
+	$("#serviceName").val('');
+	$("#description").val('');
+	$('#new').hide();
+	$('#delete').hide();
+	$('#addData').show();
+	$('#myGrid').hide();
+	$('#searchRowDiv').hide();
+	$('#totalReq').hide();
+
+}
+/ -------------function for cancel button-------------- /
+function Cancel() {
+	$('#totalReq').show();
+	$('#searchRowDiv').show();
+	$('#new').show();
+	$('#delete').show();
+	$('#addData').hide();
+	$('#myGrid').show();
+	$("#serviceId").val('');
+	$("#title").val('');
+	$("#serviceName").val('');
+	$("#description").val('');
+}
+
+
+
+	function saveDetails() {
+		var item1 = {};
+		var validation =true;
+				item1.partnerId = $("#partnerId").val();
+				item1.regNo = $("#regNo").val();
+				item1.partnerName = $("#partnerName").val();
+				item1.mobile = $("#mobile").val();
+				item1.email = $("#email").val();
+				item1.location = $("#location").val();
+				item1.password = $("#password").val();
+				item1.accountNo = $("#accountNo").val();
+				
+				console.log(item1)
+		if(validation){
+		$.ajax({
+			type : "POST",
+			url : "admin-homeCareServicePartner-addDetails",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(item1),
+			success : function(response) {
+				if (response.message == "Success") {
+					console.log(response)
+					closeNav();
+					$('#new').show();
+					$('#delete').show();
+					
+					
+					agGrid.simpleHttpRequest({
+						url : "admin-homeCareServicePartner-view"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalCandidate').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+				}
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+		}
+	}
+
+	function openNav() {
+		$("#new").hide();
+		$("#delete").hide();
+		$('#add').attr('disabled', true);
+		$('#title').val("");
+		$('#serviceName').val("");
+		$('#description').val("");
+		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:-5.4px; overflow: hidden; height:auto; top:7px;";
+
+		document.getElementById("main_content").style.width = "75%";
+	}
+
+	function closeNav() {
+		$("#new").show();
+		$("#delete").show();
+		$('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+	
+	
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var id = selectedRows[0].regNo;
+
+		$.ajax({
+			type : "POST",
+			url : "admin-homeCareServicePartner-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : "admin-homeCareServicePartner-view"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalCandidate').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+
+</script>
+
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div id="managetestlist">
+						<div id ="main_content">		
+									<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="font-design" id="totalReq">
+								SERVICE PARTNER LIST
+							</div>
+						</div>
+						<div class="col-md-6">
+							<button id="new" onclick="openNav()" class="btn1">NEW</button>
+							<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+					</div>
+
+					<!-- <div id="myGridassinlist" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div> -->
+									
+						<div id="myGrid" style="width: 100%; height: 300px;"
+					class="ag-theme-alpine"></div>			
+								
+							</div>
+							</div>
+		<input type="hidden" id="serviceId"></input>
+			<div id="mySidenav" class="sidenav">
+				<div class="slidebox">
+					<div class="row" id="addData">
+						<div class="col-md-9">
+							<div class="edit">Add Service Partner Details</div>
+						</div>
+						<div class="col-md-3">
+							<div class="arrow">
+								<a href="javascript:void(0)" class="closebtn"
+									onclick="closeNav()"><i class="ti-arrow-right"></i></a>
+							</div>
+						</div>
+
+						<div class="chartbtnsec1">
+							<div align="right">
+								<button class="btn4" onclick="closeNav()">CANCEL</button>
+								<button class="btn1" onclick="saveDetails()">SAVE</button>
+
+							</div>
+						</div>
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Service Partner Name</label> <input type="text"
+									class="form-control transparenttxtbox" placeholder="Enter Name"
+									id="partnerName">
+								
+									<input type ="hidden" id ="regNo">
+									<input type ="hidden" id ="partnerId">
+									
+							</div>
+						</div>
+					
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Mobile</label> <input type="text" id="mobile"
+									autocomplete="off" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Email</label> <input type="text" id="email"
+									autocomplete="off" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Location</label> <input type="text" id="location"
+									autocomplete="off" class="form-control">
+							</div>
+						</div>
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Bank Account Number</label> <input type="text" id="accountNo"
+									autocomplete="off" class="form-control">
+							</div>
+						</div>
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Password</label> <input type="text" id="password"
+									autocomplete="off" class="form-control">
+							</div>
+						</div>
+							
+				</div>
+			    </div>
+			
+						
+							
+		       <div class="col-md-12 padding_5" id="addTestList">
+			   <div class="row" id="showTab">
+				<div class="col-md-5 buttonsec btn-hs"></div>
+				<div class="col-md-7 buttonsec btn-hs">
+					<button id="add" class="btn1" onclick="addTestNameDetails()">SAVE</button>
+					<button id="deletes" class="btn4" onclick="cancelEmp()">CANCEL</button>
+					<input type="hidden" id="pckgId">
+				</div>
+			    </div>
+		</div>
+	    </div>	
+</div>
+</div>
+</body>
+</html>

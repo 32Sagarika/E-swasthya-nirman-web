@@ -1,0 +1,3144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/ehslayout"
+	layout:decorate="~{ehslayout/ehs-master}">
+
+<head>
+<style type="text/css">
+@page {
+	
+}
+
+p {
+	margin-bottom: 10px;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show
+}
+
+td, th {
+	vertical-align: top;
+	font-size: 12pt;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	clear: both;
+}
+
+ol, ul {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+/* "li span.odfLiEnd" - IE 7 issue*/
+li span . {
+	clear: both;
+	line-height: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+
+span.footnodeNumber {
+	padding-right: 1em;
+}
+
+span.annotation_style_by_filter {
+	font-size: 95%;
+	font-family: Arial;
+	background-color: #fff000;
+	margin: 0;
+	border: 0;
+	padding: 0;
+}
+
+span.heading_numbering {
+	margin-right: 0.8rem;
+}
+
+* {
+	margin: 0;
+}
+
+.P1_borderStart {
+	font-size: 12pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P1 {
+	font-size: 12pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P1_borderEnd {
+	font-size: 12pt;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P10_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.282cm;
+	border-bottom-style: none;
+}
+
+.P10 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.282cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P10_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.282cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P11_borderStart {
+	font-size: 15pt;
+	line-height: 108%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #45403d;
+	font-weight: bold;
+	padding-bottom: 0.282cm;
+	border-bottom-style: none;
+}
+
+.P11 {
+	font-size: 15pt;
+	line-height: 108%;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #45403d;
+	font-weight: bold;
+	padding-bottom: 0.282cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P11_borderEnd {
+	font-size: 15pt;
+	line-height: 108%;
+	margin-bottom: 0.282cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #45403d;
+	font-weight: bold;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P12_borderStart {
+	font-size: 15pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-bottom: 0.282cm;
+	border-bottom-style: none;
+}
+
+.P12 {
+	font-size: 15pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-bottom: 0.282cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P12_borderEnd {
+	font-size: 15pt;
+	line-height: 100%;
+	margin-bottom: 0.282cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P13_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.635cm;
+	border-bottom-style: none;
+}
+
+.P13 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.635cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P13_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.635cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P14_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0.494cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P14 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0.494cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P14_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0.494cm;
+	border-top-style: none;
+}
+
+.P15_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0.494cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P15 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0.494cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P15_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0.494cm;
+	border-top-style: none;
+}
+
+.P16_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0.494cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P16 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0.494cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P16_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0.494cm;
+	border-top-style: none;
+}
+
+.P17_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0.494cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P17 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0.494cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P17_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0.494cm;
+	border-top-style: none;
+}
+
+.P18_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0.494cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P18 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0.494cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P18_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0.494cm;
+	border-top-style: none;
+}
+
+.P19_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0.494cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P19 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0.494cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P19_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0.494cm;
+	border-top-style: none;
+}
+
+.P2_borderStart {
+	font-size: 12pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #f8f8f8;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P2 {
+	font-size: 12pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #f8f8f8;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P2_borderEnd {
+	font-size: 12pt;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #f8f8f8;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P20_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P20 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P20_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P21_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P21 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P21_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P22_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P22 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P22_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P23_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	border-bottom-style: none;
+}
+
+.P23 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0.212cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P23_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.212cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P24_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P24 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P24_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P25_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P25 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P25_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P26_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P26 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P26_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P27_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P27 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P27_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	margin-left: 0cm;
+	margin-right: 0cm;
+	text-indent: -0.635cm;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P28_borderStart {
+	font-size: 15pt;
+	line-height: 100%;
+	margin-top: 0.494cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-bottom: 0.282cm;
+	border-bottom-style: none;
+}
+
+.P28 {
+	font-size: 15pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-bottom: 0.282cm;
+	padding-top: 0.494cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P28_borderEnd {
+	font-size: 15pt;
+	line-height: 100%;
+	margin-bottom: 0.282cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-top: 0.494cm;
+	border-top-style: none;
+}
+
+.P29_borderStart {
+	font-size: 15pt;
+	line-height: 100%;
+	margin-top: 0.494cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P29 {
+	font-size: 15pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-bottom: 0cm;
+	padding-top: 0.494cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P29_borderEnd {
+	font-size: 15pt;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-top: 0.494cm;
+	border-top-style: none;
+}
+
+.P3_borderStart {
+	font-size: 15pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P3 {
+	font-size: 15pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P3_borderEnd {
+	font-size: 15pt;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	color: #000000;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P31_borderStart {
+	color: #2e74b5;
+	font-size: 16pt;
+	line-height: 108%;
+	margin-top: 0cm;
+	text-align: left ! important;
+	font-family: Calibri Light;
+	writing-mode: lr-tb;
+	background-color: #0061ad;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P31 {
+	color: #2e74b5;
+	font-size: 16pt;
+	line-height: 108%;
+	text-align: left ! important;
+	font-family: Calibri Light;
+	writing-mode: lr-tb;
+	background-color: #0061ad;
+	padding: 10px;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P31_borderEnd {
+	color: #2e74b5;
+	font-size: 16pt;
+	line-height: 108%;
+	margin-bottom: 0cm;
+	text-align: left ! important;
+	font-family: Calibri Light;
+	writing-mode: lr-tb;
+	background-color: #0061ad;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P32_borderStart {
+	font-size: 13.5pt;
+	font-weight: bold;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P32 {
+	font-size: 13.5pt;
+	font-weight: bold;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+	margin-bottom: 15px;
+}
+
+.P32_borderEnd {
+	font-size: 13.5pt;
+	font-weight: bold;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P33_borderStart {
+	font-size: 13.5pt;
+	font-weight: bold;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P33 {
+	font-size: 13.5pt;
+	font-weight: bold;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P33_borderEnd {
+	font-size: 13.5pt;
+	font-weight: bold;
+	line-height: 100%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P34_borderStart {
+	color: #2e74b5;
+	font-size: 13pt;
+	line-height: 108%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri Light;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	border-bottom-style: none;
+}
+
+.P34 {
+	color: #2e74b5;
+	font-size: 13pt;
+	line-height: 108%;
+	text-align: justify ! important;
+	font-family: Calibri Light;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P34_borderEnd {
+	color: #2e74b5;
+	font-size: 13pt;
+	line-height: 108%;
+	margin-bottom: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri Light;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P4_borderStart {
+	font-size: 12pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.635cm;
+	border-bottom-style: none;
+}
+
+.P4 {
+	font-size: 12pt;
+	line-height: 100%;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.635cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P4_borderEnd {
+	font-size: 12pt;
+	line-height: 100%;
+	margin-bottom: 0.635cm;
+	text-align: justify ! important;
+	font-family: Times New Roman;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P5 {
+	font-size: 11pt;
+	line-height: 108%;
+	margin-bottom: 0.282cm;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+}
+
+.P6 {
+	font-size: 15pt;
+	line-height: 108%;
+	margin-bottom: 0.282cm;
+	margin-top: 0cm;
+	text-align: left ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+}
+
+.P7 {
+	font-size: 15pt;
+	line-height: 108%;
+	margin-bottom: 0.282cm;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Segoe UI;
+	writing-mode: lr-tb;
+}
+
+.P8_borderStart {
+	font-size: 11pt;
+	line-height: 108%;
+	margin-top: 0cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.282cm;
+	border-bottom-style: none;
+}
+
+.P8 {
+	font-size: 11pt;
+	line-height: 108%;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.282cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P8_borderEnd {
+	font-size: 11pt;
+	line-height: 108%;
+	margin-bottom: 0.282cm;
+	text-align: justify ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.P9_borderStart {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-top: 0cm;
+	text-align: center ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.282cm;
+	border-bottom-style: none;
+}
+
+.P9 {
+	font-size: 11pt;
+	line-height: 100%;
+	text-align: center ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-bottom: 0.282cm;
+	padding-top: 0cm;
+	border-top-style: none;
+	border-bottom-style: none;
+}
+
+.P9_borderEnd {
+	font-size: 11pt;
+	line-height: 100%;
+	margin-bottom: 0.282cm;
+	text-align: center ! important;
+	font-family: Calibri;
+	writing-mode: lr-tb;
+	background-color: #ffffff;
+	padding-top: 0cm;
+	border-top-style: none;
+}
+
+.Internet_20_link {
+	color: #0563c1;
+	text-decoration: underline;
+}
+
+.ListLabel_20_1 {
+	font-family: Segoe UI;
+	font-size: 12pt;
+}
+
+.Strong {
+	font-weight: bold;
+}
+
+.T1 {
+	font-family: Segoe UI;
+	font-size: 12pt;
+}
+
+.T10 {
+	color: #000000;
+	font-family: Segoe UI;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.T11 {
+	color: #000000;
+	font-family: Segoe UI;
+	font-size: 12pt;
+	font-weight: normal;
+}
+
+.T12 {
+	color: #000000;
+	font-family: Segoe UI;
+	font-size: 12pt;
+	font-weight: normal;
+}
+
+.T13 {
+	color: #000000;
+	font-family: Segoe UI;
+	font-size: 12pt;
+}
+
+.T14 {
+	color: #000000;
+	font-family: Segoe UI;
+	font-size: 12pt;
+	text-decoration: underline;
+}
+
+.T15 {
+	color: #45403d;
+	font-family: Segoe UI;
+	font-size: 12pt;
+	font-weight: normal;
+}
+
+.T2 {
+	font-family: Segoe UI;
+	font-size: 12pt;
+}
+
+.T3 {
+	color: #ffffff;
+	font-family: Segoe UI;
+	font-size: 15pt;
+	font-weight: bold;
+}
+
+.T4 {
+	color: #45403d;
+	font-family: Segoe UI;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.T5 {
+	color: #070083;
+	font-family: Segoe UI;
+	font-size: 15pt;
+}
+
+.T6 {
+	color: #45403d;
+	font-family: Segoe UI;
+	font-size: 12pt;
+}
+
+.T7 {
+	color: #000000;
+	font-family: Segoe UI;
+	font-size: 12pt;
+	line-height: 20px;
+}
+
+.T8 {
+	color: #000000;
+	font-family: Segoe UI;
+	font-size: 12pt;
+	line-height: 20px;
+}
+
+.T9 {
+	color: #000000;
+	font-family: Segoe UI;
+	font-size: 12pt;
+}
+/* ODF styles with no properties representable as CSS */
+</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+
+		<main id="main">
+		<div class="container">
+			<div dir="ltr">
+				<h1 class="P31">
+					<a id="a__Privacy_Policy"><span /></a><span class="T3">Privacy
+						Policy</span>
+				</h1>
+				<p class="P7"> </p>
+				<h3 class="P8">
+					<a id="a__Privacy"><span /></a><span class="T4">Privacy</span>
+				</h3>
+				<p class="P13_borderStart">
+					<span class="T7">THIS PRIVACY POLICY IS AN ELECTRONIC RECORD
+						IN THE FORM OF AN ELECTRONIC CONTRACT FORMED UNDER THE INFORMATION
+						TECHNOLOGY ACT, 2000 AND THE RULES MADE THEREUNDER AND THE AMENDED
+						PROVISIONS PERTAINING TO ELECTRONIC </span><span class="T14">DOCUMENTS</span><span
+						class="T7"> / RECORDS IN VARIOUS STATUTES AS AMENDED BY THE
+						INFORMATION TECHNOLOGY ACT, 2000. THIS PRIVACY POLICY DOES NOT
+						REQUIRE ANY PHYSICAL, ELECTRONIC OR DIGITAL SIGNATURE.</span>
+				</p>
+				<p class="P13">
+					<span class="T7">THIS PRIVACY POLICY IS A LEGALLY BINDING
+						DOCUMENT BETWEEN YOU AND EHEALTHSYSTEM. THE TERMS OF THIS PRIVACY
+						POLICY WILL BE EFFECTIVE UPON YOUR ACCEPTANCE OF THE SAME
+						(DIRECTLY OR INDIRECTLY IN ELECTRONIC FORM, BY CLICKING ON THE “I
+						ACCEPT” TAB OR BY USE OF THE WEBSITE OR BY OTHER MEANS) AND WILL
+						GOVERN THE RELATIONSHIP BETWEEN YOU AND EHEALTHSYSTEM FOR YOUR USE
+						OF THE WEBSITE. BY USING THIS SITE, YOU AGREE TO THE COLLECTION
+						AND USE OF INFORMATION IN ACCORDANCE WITH THIS POLICY AND THAT YOU
+						HAVE READ, UNDERSTOOD AND AGREED TO THE ENTIRE TERMS OF THE POLICY
+						IN ITS LETTER AND SPIRIT.</span>
+				</p>
+				<p class="P13">
+					<span class="T7">EHEALTHSYSTEM ("us", "we", or "our")
+						operates </span><a href="http://www.eHealthSystem.com"
+						class="ListLabel_20_1"><span class="Internet_20_link"><span
+							class="T2">http://www.eHealthSystem.com</span></span></a><span class="T7">
+						(the "Site"). This page informs you of our policies regarding the
+						collection, use and disclosure of Personal Information we receive
+						from users of the Site.</span>
+				</p>
+				<p class="P13">
+					<span class="T7">At  www.ehealthsystem.com  we recognize
+						that privacy is important. This Privacy Policy applies to all
+						products and services provided by us “EHEALTHSYSTEM’s
+						eHealthSystem Services”.</span>
+				</p>
+				<p class="P13">
+					<span class="T7">THIS PRIVACY POLICY IS AN ELECTRONIC RECORD
+						IN THE FORM OF AN ELECTRONIC CONTRACT FORMED UNDER THE INFORMATION
+						TECHNOLOGY ACT, 2000 AND THE RULES MADE THEREUNDER AND THE AMENDED
+						PROVISIONS PERTAINING TO ELECTRONIC DOCUMENTS / RECORDS IN VARIOUS
+						STATUTES AS AMENDED BY THE INFORMATION TECHNOLOGY ACT, 2000. THIS
+						PRIVACY POLICY DOES NOT REQUIRE ANY PHYSICAL, ELECTRONIC OR
+						DIGITAL SIGNATURE.</span>
+				</p>
+				<p class="P13">
+					<span class="T7">THIS PRIVACY POLICY IS A LEGALLY BINDING
+						DOCUMENT BETWEEN YOU AND EHEALTHSYSTEM. THE TERMS OF THIS PRIVACY
+						POLICY WILL BE EFFECTIVE UPON YOUR ACCEPTANCE OF THE SAME
+						(DIRECTLY OR INDIRECTLY IN ELECTRONIC FORM, BY CLICKING ON THE “I
+						ACCEPT” TAB OR BY USE OF THE WEBSITE OR BY OTHER MEANS) AND WILL
+						GOVERN THE RELATIONSHIP BETWEEN YOU AND EHEALTHSYSTEM FOR YOUR USE
+						OF THE WEBSITE. BY USING THIS SITE, YOU AGREE TO THE COLLECTION
+						AND USE OF INFORMATION IN ACCORDANCE WITH THIS POLICY AND THAT YOU
+						HAVE READ, UNDERSTOOD AND AGREED TO THE ENTIRE TERMS OF THE POLICY
+						IN ITS LETTER AND SPIRIT.</span>
+				</p>
+				<p class="P9_borderEnd">
+					<span class="T7">EHEALTHSYSTEM (“us”, “we”, or “our”)
+						operates https://www.ehealthsystem.com (the “Site”). This page
+						informs you of our policies regarding the collection, use and
+						disclosure of Personal Information we receive from users of the
+						Site.</span>
+				</p>
+				<h3 class="P8">
+					<a id="a__Collection_Of_Information"><span /></a><span class="T4">Collection
+						Of Information</span>
+				</h3>
+				<p class="P13_borderStart">
+					<span class="T7">We collect various information when you
+						register with EHEALTHSYSTEM, during your usage of our
+						eHealthSystem, and when you visit pages of our partners. We may
+						combine information about you that we have with information we
+						obtain from other partners or other companies in order to provide
+						you a better experience or to improve the quality of our services.
+						When you sign in to our services, you are not anonymous to us. We
+						automatically receive and record information from your computer
+						and browser, </span><span class="T7">including your IP address,
+						our cookie information, software and hardware attributes the page
+						you request and other standard browser parameters, the pages of
+						our Site that you visit, the time and date of your visit, the time
+						spent on those pages,</span><span class="T1"> </span><span class="T7">including
+						the pages of our Site that you visit, the time and date of your
+						visit, the time spent on those pages and other statistics and
+						other statistics..</span>
+				</p>
+				<p class="P13">
+					<span class="T7">When you use our services, we send one or
+						more cookies – a small file containing a string of characters – to
+						your device that uniquely identifies your browser. We use cookies
+						to improve the quality of our service, including for storing user
+						preferences, tracking user trends, and providing you with a better
+						experience. We may set one or more cookies in your browser when
+						you use our services or one of our partner’s services. When you
+						send messages, publish content, post material, transmit
+						information or email through our services, we may retain the same
+						in order to process your inquiries, respond to your requests and
+						improve our services.</span>
+				</p>
+				<p class="P10_borderEnd">
+					<span class="T7">Our infrastructure consists of servers
+						deployed at multiple data-centres that are owned and operated by
+						us or our partners. All information collected within our services
+						resides on this network of servers.</span>
+				</p>
+				<h3 class="P8">
+					<a id="a__Use_Of_Information"><span /></a><span class="T4">Use
+						Of Information</span>
+				</h3>
+				<p class="P13_borderStart">
+					<span class="T7">In the ordinary course of business we
+						collect, use and share personal information of the users for the
+						purposes described in EHEALTHSYSTEM’s terms and conditions and
+						this Privacy Policy. Obtaining this information is important to
+						our ability to conduct our operations and to deliver the highest
+						level of service. Such information may also include your personal
+						information which may be sensitive including financial information
+						such as payment instructions and bank account details, physical or
+						mental health condition, medical records and history and
+						information received by EHEALTHSYSTEM from third parties under
+						contract for processing. Any financial information provided by you
+						will not be utilized or </span><span class="T7">shared with any
+						third party unless required in relation to fraud verifications or
+						by law, regulation or court order or in accordance with the terms
+						of the Privacy Policy.</span>
+				</p>
+				<p class="P13_borderEnd">
+					<span class="T7">The purposes for which such personal
+						information may be used shall include but shall not be limited to:</span>
+				</p>
+				<ol>
+					<li>
+						<p class="P14" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">1.</span><span
+								class="T7">Communicating with you</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P20" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">2.</span><span
+								class="T7">Supplying such information to our partners,
+								associates and contractors for their processing and assessment</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P20" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">3.</span><span
+								class="T7">Making the sites or services easier to use by
+								eliminating the need for you to repeatedly enter the same
+								information</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P20" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">4.</span><span
+								class="T7">Providing Health Care Services;</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P20" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">5.</span><span
+								class="T7">Dealing with requests, enquiries or complaints
+								and other customer care related activities; and all other
+								general administrative and business purposes;</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P20" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">6.</span><span
+								class="T7">Carrying out market and product analysis and
+								marketing our companies’ products and services and communicate
+								updates, offers and promotion.</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P20" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">7.</span><span
+								class="T7">Carrying out activities connected with running
+								of our business such as personnel training, quality control,
+								network monitoring, testing and maintenance of computer and
+								other systems and in connection with the transfer of any part of
+								our business in respect of which you are a customer or a
+								potential customer;</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P20" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">8.</span><span
+								class="T7">Ensuring the technical functioning of our
+								network</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P20" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">9.</span><span
+								class="T7">Developing new services</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+				</ol>
+				<p class="P28_borderStart" />
+				<p class="P28_borderEnd" />
+				<h3 class="P8">
+					<a id="a__No-Spam_Policy"><span /></a><span class="T4">No-Spam
+						Policy</span>
+				</h3>
+				<p class="P10">
+					<span class="T7">We have a strict No-Spam Policy prohibiting
+						the use of any data collected to send spam. We will not sell any
+						contact information to third parties. However we may use your
+						Personal Information to contact you with updates, offers,
+						promotions and other technical or services related informations
+						that are relevant and necessary to you. However we may use your
+						Personal Information to contact you with updates, offers,
+						promotions and other technical or services related informations
+						that are relevant and necessary to you.</span>
+				</p>
+				<h3 class="P8">
+					<a id="a__Choices_For_Personal_Information"><span /></a><span
+						class="T4">Choices For Personal Information</span>
+				</h3>
+				<p class="P10">
+					<span class="T7">When you sign up for a particular service
+						that requires registration, we ask you to provide personal
+						information and we will ask for your consent prior to use thereof.
+						Most browsers are initially set up to accept cookies, but you can
+						reset your browser to refuse all cookies or to indicate when a
+						cookie is being sent. However, some of our features and services
+						may not function properly if your cookies are disabled. You can
+						decline to submit personal information to any of our services, in
+						which case we may not be able to provide those services to you.</span>
+				</p>
+				<h3 class="P8">
+					<a id="a__Information_Sharing"><span /></a><span class="T4">Information
+						Sharing</span>
+				</h3>
+				<p class="P13_borderStart">
+					<span class="T7">You hereby unconditionally agree and permit
+						that EHEALTHSYSTEM may transfer, share, disclose or part with all
+						or any of Your Information, within and outside of the Republic of
+						India to various EHEALTHSYSTEM entities and to third party service
+						providers / partners  for one or more of the Purposes or as may be
+						required by applicable law. In such case we will contractually
+						oblige the receiving parties of the Information to ensure the same
+						level of data protection that is adhered to by EHEALTHSYSTEM under
+						applicable law.</span>
+				</p>
+				<p class="P13">
+					<span class="T7">EHEALTHSYSTEM may share statistical data
+						and other details (other than Your Personal Information) without
+						your express or implied consent, from time to time,  to facilitate
+						highest level of service. We may transfer/disclose/share
+						Information (other than Your Personal </span><span class="T7">Information)
+						to those parties who support our business, such as providing
+						technical infrastructure services, analyzing how our services are
+						used, measuring the effectiveness of advertisements, providing
+						customer services, facilitating payments, or conducting academic
+						research and surveys. These affiliates and third party service
+						providers shall adhere to confidentiality obligations consistent
+						with this Privacy Policy.</span>
+				</p>
+				<p class="P13">
+					<span class="T7">However, we will not be responsible for any
+						unauthorized data or information sharing caused due to the
+						negligence of the user and sharing of personal credentials such as
+						login Ids and passwords by the user themselves.</span>
+				</p>
+				<p class="P13_borderEnd">
+					<span class="T7">We only share personal information with
+						other companies or individuals in the following limited
+						circumstances:</span>
+				</p>
+				<ol>
+					<li>
+						<p class="P15" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">1.</span><span
+								class="T7">We have your consent</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P24" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">2.</span><span
+								class="T7">Sharing the information with our subsidiaries,
+								affiliated companies or other trusted businesses or persons for
+								the purpose of processing personal information on our behalf. We
+								require that these parties agree to process such information
+								based on our instructions and in compliance with this Privacy
+								Policy and any other appropriate confidentiality and security
+								measures.</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+				</ol>
+				<p class="P13_borderStart">
+					<span class="T7">We have a good faith belief that access,
+						use, preservation or disclosure of such information is reasonably
+						necessary to:</span>
+				</p>
+				<p class="P13">
+					<span class="T7">(a) satisfy any applicable law, regulation,
+						legal process or enforceable governmental request,</span>
+				</p>
+				<p class="P13">
+					<span class="T7">(b) enforce applicable Terms of Service,
+						including investigation of potential violations thereof,</span>
+				</p>
+				<p class="P13">
+					<span class="T7">(c) detect, prevent, or otherwise address
+						fraud, security or technical issues, or</span>
+				</p>
+				<p class="P13_borderEnd">
+					<span class="T7">(d) protect against harm to rights,
+						property or safety, of our users, us or the public as required or
+						permitted by law.</span>
+				</p>
+				<ol>
+					<li>
+						<p class="P16" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">4.</span><span
+								class="T7">We may share with third parties certain pieces
+								of aggregated, non-personal information, such as the number of
+								users by demographic. Such information does not identify you
+								individually.</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+				</ol>
+				<h3 class="P8">
+					<a id="a__Information_Security"><span /></a><span class="T4">Information
+						Security</span>
+				</h3>
+				<p class="P13_borderStart">
+					<span class="T7">We take appropriate security measures to
+						protect unauthorized access to or unauthorized alteration,
+						disclosure or destruction of data. These include internal reviews
+						of our data collection, storage and processing practices and
+						security measures, as well as physical security measures to guard
+						against unauthorized access to systems where we store personal
+						data. We maintain information pertaining to you in our business
+						records as per current regulatory requirements</span>
+				</p>
+				<p class="P13">
+					<span class="T7">The security of your Personal Information
+						is important to us, but remember that no method of transmission
+						over the Internet, or method of electronic storage, is 100%
+						secure. While we strive to use commercially acceptable means to
+						protect your Personal Information, we cannot guarantee its
+						absolute security.</span>
+				</p>
+				<p class="P10_borderEnd">
+					<span class="T7">We restrict access to personal information
+						to our employees, contractors and agents who need to know the
+						information in order to operate, develop or improve our services.
+						These individuals are bound by confidentiality obligations and may
+						be subject to discipline, including termination and criminal
+						prosecution, if they fail to meet these obligations.</span>
+				</p>
+				<h3 class="P8">
+					<a id="a__Accessing_And_Updating_Personal_Information"><span /></a><span
+						class="T4">Accessing And Updating Personal Information</span>
+				</h3>
+				<p class="P10">
+					<span class="T7">When you use our services, we make good
+						faith efforts to provide you with access to your personal
+						information and to correct this data if it is inaccurate.</span>
+				</p>
+				<h3 class="P8">
+					<a id="a__Changes_To_This_Privacy_Policy"><span /></a><span
+						class="T4">Changes To This Privacy Policy</span>
+				</h3>
+				<p class="P13_borderStart">
+					<span class="T7">This Privacy Policy is effective as of
+						(date) and will remain in effect except with respect to any
+						changes in its provisions or terms in the future, which will be in
+						effect immediately after being posted on this page.</span>
+				</p>
+				<p class="P13">
+					<span class="T7"> Our business changes constantly and our
+						Privacy Notice and the Conditions of Use will change also. We
+						reserve the right to update or change our Privacy Policy at any
+						time and you should check this Privacy Policy periodically. We may
+						e-mail periodic reminders of our notices and conditions, unless
+						you have instructed us not to, but you should check our website
+						frequently to see recent changes.  Your continued use of the
+						Service after we post any modifications to the Privacy Policy on
+						this page will constitute your acknowledgment of the modifications
+						and your consent to abide and be bound by the modified Privacy
+						Policy.</span>
+				</p>
+				<p class="P13_borderEnd">
+					<span class="T7">Unless stated otherwise, our current
+						Privacy Notice applies to all information that we have about you
+						and your account. We stand behind the promises we make, however,
+						and will never materially change our policies and practices to
+						make them less protective of customer information collected in the
+						past without the consent of affected customers.</span>
+				</p>
+				<h3 class="P8">
+					<a id="a__CONTACT_US"><span /></a><span class="T4">CONTACT
+						US</span>
+				</h3>
+				<p class="P10_borderStart">
+					<span class="T7">If you have any concern about our privacy
+						policy, please contact us with a thorough description and we will
+						try to resolve the issue for you.</span>
+				</p>
+				<p class="P12_borderEnd" />
+				<h1 class="P31">
+					<a id="a__Conditions_Of_Use"><span /></a><span class="T3">Conditions
+						Of Use</span>
+				</h1>
+				<p class="P12"> </p>
+				<h2 class="P34">
+					<a
+						id="a__EHEALTHSYSTEM_Policy_Relating_to_the_use_of_eHealthSystem"><span /></a><span
+						class="Strong"><span class="T15">EHEALTHSYSTEM
+							Policy Relating to the use of eHealthSystem</span></span>
+				</h2>
+				<p class="P6"> </p>
+				<p class="P1_borderStart">
+					<span class="T8">Welcome to EHEALTHSYSTEM   MARKETING LLP.
+						EHEALTHSYSTEM and its affiliates provide access to the website
+						www.eHealthSystem .com (the “</span><span class="Strong"><span
+						class="T9">website</span></span><span class="T8">“) to you subject
+						to the conditions set out on this page.</span>
+				</p>
+				<p class="P1">
+					<span class="Strong"><span class="T9">Please read
+							these conditions carefully before using the www.</span></span><span class="T8">
+					</span><span class="T10">eHealthSystem </span><span class="Strong"><span
+						class="T9">.com website. By using the www.</span></span><span class="T10">eHealthSystem
+					</span><span class="Strong"><span class="T9">.com website,
+							you signify your agreement to be bound by these conditions.</span></span><span
+						class="T8"> In addition, when you use any current or future
+						www. eHealthSystem .com services (“</span><span class="Strong"><span
+						class="T9">EHEALTHSYSTEM SERVICES</span></span><span class="T8">“),
+						you will also be subject to the terms and conditions and user
+						guidelines applicable to that EHEALTHSYSTEM’s EHEALTHSYSTEM
+						SERVICES. (“</span><span class="Strong"><span class="T9">Terms</span></span><span
+						class="T8">“). If these Conditions of Use are inconsistent
+						with such Terms, the Terms will control.</span>
+				</p>
+				<p class="P1">
+					<span class="Strong"><span class="T9">THESE WEBSITE
+							CONDITIONS OF USE (“CONDITIONS OF USE”) IS AN ELECTRONIC RECORD
+							IN THE FORM OF AN ELECTRONIC CONTRACT FORMED UNDER INFORMATION
+							TECHNOLOGY ACT, 2000 AND RULES MADE THEREUNDER AND THE AMENDED
+							PROVISIONS PERTAINING TO ELECTRONIC DOCUMENTS / RECORDS IN
+							VARIOUS STATUTES AS AMENDED BY THE INFORMATION TECHNOLOGY ACT,
+							2000. THESE TERMS OF USE DOES NOT REQUIRE ANY PHYSICAL,
+							ELECTRONIC OR DIGITAL SIGNATURE.</span></span>
+				</p>
+				<p class="P1">
+					<span class="Strong"><span class="T9">THESE
+							CONDITIONS OF USE IS A LEGALLY BINDING DOCUMENT BETWEEN USER AND
+							EHEALTHSYSTEM. THESE CONDITIONS OF USE WILL BE EFFECTIVE UPON
+							YOUR ACCEPTANCE OF THE SAME (DIRECTLY OR INDIRECTLY IN ELECTRONIC
+							FORM OR BY MEANS OF AN ELECTRONIC RECORD) AND WILL GOVERN THE
+							RELATIONSHIP BETWEEN USER AND EHEALTHSYSTEM FOR THE USE OF THE
+							WEBSITE.</span></span>
+				</p>
+				<p class="P1">
+					<span class="Strong"><span class="T9">THIS DOCUMENT
+							IS PUBLISHED AND SHALL BE CONSTRUED IN ACCORDANCE WITH THE
+							PROVISIONS OF RULE 3 (1) OF THE INFORMATION TECHNOLOGY
+							(INTERMEDIARIES GUIDELINES) RULES, 2011 UNDER INFORMATION
+							TECHNOLOGY ACT, 2000 THAT REQUIRE PUBLISHING THE RULES AND
+							REGULATIONS, </span></span><span class="Strong"><span class="T9">PRIVACY
+							POLICY AND USER AGREEMENT FOR ACCESS OR USAGE OF THE WEBSITE.</span></span>
+				</p>
+				<p class="P1">
+					<span class="Strong"><span class="T9">These
+							Conditions of Use of the website located at the URL www.</span></span><span
+						class="T8"> </span><span class="T10">eHealthSystem </span><span
+						class="Strong"><span class="T9">.com is between
+							EHEALTHSYSTEM   Marketing LLP (hereinafter referred to as
+							“EHEALTHSYSTEM” or “We” or “Us” or “Our”) and the guest users or
+							registered users of the Website (hereinafter referred to as “You”
+							or “Your” or “Yourself” or “User”) describe the terms on which
+							EHEALTHSYSTEM offers You access to the Website and such other
+							services as are incidental and ancillary thereto (“Services”).</span></span>
+				</p>
+				<p class="P4">
+					<span class="Strong"><span class="T9">Important Note
+							Regarding Website Content</span></span>
+				</p>
+				<p class="P1">
+					<span class="T8">The information and content (collectively,
+						“</span><span class="Strong"><span class="T9">Content</span></span><span
+						class="T8">“) on this website is for your general
+						information only. The Content cannot replace the relationship that
+						you have with your health care professionals and any information
+						provided to you on this website will not amount to professional
+						advice. The Content on this website should not be considered
+						medical advice. </span><span class="Strong"><span class="T9">If
+							you are experiencing a medical emergency, you should not rely on
+							any information on this site and should seek appropriate
+							emergency medical assistance</span></span><span class="T8">. You should
+						always talk to your health care professionals for diagnosis and
+						treatment, including information regarding which drugs or
+						treatment may be appropriate for you. None of the information on
+						this website represents or warrants that any particular drug or
+						treatment is safe, appropriate or effective for you. Health
+						Information is dynamic in nature and has a tendency to change with
+						changing medical advancement and development. Therefore, it is
+						always recommended by us to confirm information with your health
+						care professionals.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">The Content may include information
+						regarding therapeutic and generic alternatives for certain
+						prescription drugs, and may describe use for products or therapies
+						that have not been approved by the Food and Drug Administration.
+						This should not be construed as professional medical advice. This
+						Content is for informational, cost-</span><span class="T8">comparison
+						purposes only. It is not medical advice and does not replace
+						consultation with a doctor, pharmacist or other health care
+						professionals. Talk to your health care provider to determine if
+						an alternative prescription drug is right for you.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__Agreement_And_Terms "><span /></a><span class="T5">Agreement
+						And Terms </span>
+				</h3>
+				<p class="P4_borderStart">
+					<span class="T8">The Terms of Use (“Terms”) set forth herein
+						describes the rules for using this website and its Content. These
+						Terms constitute a legally binding agreement between you, the
+						person using this website, and www.eHealthSystem .com. If you are
+						helping another person use this website, these Terms constitute a
+						legally binding agreement between both the helper and the person
+						being helped and www.eHealthSystem .com. Terms such as “we” or
+						“our” and “Company” refer to www. eHealthSystem .com and its
+						affiliate entities.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">By using this website, you agree to the
+						most-recent Terms of Use as well as the most-recent version of our
+						Privacy Policy. We reserve the right to amend these Terms at any
+						time without requiring providing you with prior notice thereof,
+						and such changes will be posted on this page or a similar page of
+						this website. It is your responsibility to review these Terms each
+						time you use this website. By continuing to use this website, you
+						consent to any such changes to our Terms. In our sole discretion
+						and without prior notice or liability, we may discontinue, modify
+						or alter any aspect of the website.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">If you enter into any other agreement with
+						the Company, for example regarding health plan coverage, then
+						these Terms is in addition to the terms of such other agreement.
+						Neither entering into this agreement, nor visiting this website,
+						nor any of these Terms, guarantee that you are eligible to receive
+						coverage from us for any plan offered through this website or
+						otherwise.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__1__Your_Account"><span /></a><span class="T5">1.
+						Your Account</span>
+				</h3>
+				<p class="P4_borderStart">
+					<span class="T8">If you use the website, you are responsible
+						for maintaining the confidentiality of your account and password
+						and for restricting access to your computer to prevent
+						unauthorised access to your account. You agree to accept
+						responsibility for all activities that occur under your account or
+						password. You should take all necessary steps to ensure that the
+						password is kept confidential and secure and should inform us
+						immediately if you have any reason to believe that your password
+						has become known to anyone else, or if the password is being, or
+						is likely to be, used in an unauthorised manner.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">Please ensure that the details you provide
+						us are correct and complete and inform us immediately of any
+						changes to such information. You can access and update much of the
+						information you provided us within the Your Account area of the
+						website.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">www.eHealthSystem .com reserves the right
+						to refuse access to the website, terminate accounts, remove or
+						edit content at any time without notice to you.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__2__Privacy"><span /></a><span class="T5">2.
+						Privacy</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">Please review our Privacy Policy, which
+						also governs your visit to www. eHealthSystem .com, to understand
+						our practices pertaining to data security and confidentiality. The
+						personal information / data provided to us by you during the
+						course of your usage of www.eHealthSystem .com will be treated as
+						strictly confidential and with utmost security in accordance with
+						the Privacy Policy and applicable laws and regulations.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__3__E-Platform_For_Communication"><span /></a><span
+						class="T5">3. E-Platform For Communication</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">You agree, understand and acknowledge that
+						the website is an online platform i.e. LiveWire that enables you
+						to purchase products listed on the website at the price indicated
+						therein at any time from any location. You further agree and
+						acknowledge that in case of third party products (other than
+						products) www. </span><span class="T8">eHealthSystem .com is only
+						a facilitator and cannot be held liable for and be a party to or
+						control in any manner, any transactions on the website.
+						Accordingly, the contract of sale of third party products on the
+						website shall be strictly bipartite contracts between you and the
+						sellers on www. eHealthSystem .com.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__4__ACCESS_TO_WWW_EHEALTHSYSTEM__COM"><span /></a><span
+						class="T6">4. ACCESS TO WWW.EHEALTHSYSTEM .COM</span>
+				</h3>
+				<p class="P4_borderStart">
+					<span class="T8">We will do our utmost to ensure that
+						availability of the website will be uninterrupted and that
+						transmissions will be error-free. However, due to the nature of
+						the Internet, this cannot be guaranteed. Also, your access to the
+						website may also be occasionally suspended or restricted to allow
+						for repairs, maintenance, or the introduction of new facilities or
+						services at any time without prior notice. We will attempt to
+						limit the frequency and duration of any such suspension or
+						restriction.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">EHEALTHSYSTEM grants you a limited
+						permission to access and make personal use of this website, but
+						not to download (other than page caching) or modify it, or any
+						portion of it, except with express written consent of
+						EHEALTHSYSTEM and / or its affiliates, as may be applicable. This
+						license does not include any resale or commercial use of this
+						website or its contents; any collection and use of any product
+						listings, descriptions, or prices; any derivative use of this
+						website or its contents; any downloading or copying of account
+						information for the benefit of another seller; or any use of data
+						mining, robots, or similar data gathering and extraction tools.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">This website or any portion of this website
+						(including but not limited to any copyrighted material,
+						trademarks, or other proprietary information) may not be
+						reproduced, duplicated, copied, sold, resold, visited, distributed
+						or otherwise exploited for any commercial purpose without
+						expressing in written consent of EHEALTHSYSTEM and / or its
+						affiliates, as may be applicable.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">You may not frame or use framing techniques
+						to enclose any trademark, logo, or other proprietary information
+						(including images, text, page layout, or form) of www.
+						eHealthSystem .com and its affiliates without expressing in
+						written consent. You may not use any meta tags or any other
+						“hidden text” utilising EHEALTHSYSTEM’s or its affiliates’ names
+						or trademarks without the express written consent of EHEALTHSYSTEM
+						and / or its affiliates, as applicable. Any unauthorised use
+						terminates the permission or license granted by EHEALTHSYSTEM and
+						/ or its affiliates, as applicable.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">All rights, title and interest in and to
+						the website, including the Content, and all intellectual property
+						rights, including all copyright, trademark, patent and trade
+						secret rights therein shall remain with the Company and our
+						licensors and vendors, and no ownership interest is transferred to
+						you or any other entity by virtue of making the Content available
+						on the website, granting the foregoing licenses or entering into
+						this Agreement.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">Some websites operated by the Company
+						include trademarks or logos belonging to other third-party
+						licensors and are used pursuant to an agreement with such third
+						parties.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__5__Your_Conduct"><span /></a><span class="T5">5.
+						Your Conduct</span>
+				</h3>
+				<p class="P4_borderStart">
+					<span class="T8">You must not use the website in any way
+						that causes, or is likely to cause, the website or access to it to
+						be interrupted, damaged or impaired in any way.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">You understand that, you and not
+						www.eHealthSystem .com, are responsible for all electronic
+						communications and content sent from your computer to us and you
+						must use the website for lawful purposes and permitted uses only.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__You_Must_Not_Use_The_Website_For_Any_Of_The_Following_"><span /></a><span
+						class="T5">You Must Not Use The Website For Any Of The
+						Following:</span>
+				</h3>
+				<p class="P4_borderStart">
+					<span class="T8">1.For fraudulent purposes, or in connection
+						with a criminal offense or other unlawful activity</span>
+				</p>
+				<p class="P4">
+					<span class="T8">2.To send, use or reuse any material that
+						does not belong to you; or is illegal, offensive, deceptive,
+						misleading, abusive, indecent, harassing,</span>
+				</p>
+				<p class="P4">
+					<span class="T8">blasphemous, defamatory, libellous,
+						obscene, pornographic, paedophilic or menacing; ethnically
+						objectionable, disparaging or in</span>
+				</p>
+				<p class="P4">
+					<span class="T8">breach of copyright, trademark,
+						confidentiality, privacy or any other proprietary information or
+						right; or is otherwise injurious to third parties;</span>
+				</p>
+				<p class="P4">
+					<span class="T8">or</span>
+				</p>
+				<p class="P4">
+					<span class="T8">Impersonates another person; or threatens
+						the unity, integrity, security or sovereignty of India or friendly
+						relations with foreign States;</span>
+				</p>
+				<p class="P4">
+					<span class="T8">or</span>
+				</p>
+				<p class="P4">
+					<span class="T8">Objectionable or otherwise unlawful in any
+						manner whatsoever; or which consists of or contains software
+						viruses, political campaigning, commercial solicitation, chain
+						letters, mass mailings or any spam</span>
+				</p>
+				<p class="P4">
+					<span class="T8">To cause annoyance, inconvenience or
+						needless anxiety</span>
+				</p>
+				<p class="P4">
+					<span class="T8">Not to use this website or Content in any
+						way not explicitly permitted by these Terms or the text of the
+						website itself;</span>
+				</p>
+				<p class="P4_borderEnd">
+					<span class="T8">Not to copy, modify or create derivative
+						works involving the Content, except you may print a reasonable
+						number of copies for your personal use;</span>
+				</p>
+				<ol>
+					<li>
+						<p class="P17" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">3.</span><span
+								class="T8">Not to misrepresent your identity or provide
+								us with any false information in any information-collection
+								portion of this website, such as a registration or enrollment
+								application page;</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P21" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">4.</span><span
+								class="T8">Not to take any action intended to interfere
+								with the operation of this website;</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P21" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">5.</span><span
+								class="T8">Not to access or attempt to access any portion
+								of this website to which you have not been explicitly granted
+								access;</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P21" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">6.</span><span
+								class="T8">Not to share any password assigned to you with
+								any third parties or use any password granted to a third party;</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P25" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">7.</span><span
+								class="T8">Not to directly or indirectly authorize anyone
+								else to take actions prohibited in this section;</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+				</ol>
+				<p class="P4_borderStart">
+					<span class="T8">You must comply with all applicable laws
+						and regulations while using this website or the Content. You
+						represent and warrant that you are at least 18 years of age.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">In the event a user uses a false e-mail
+						address, impersonates any person or entity, or otherwise misleads
+						as to the origin of any content. www. eHealthSystem .com reserves
+						the right (but not the obligation) to remove, refuse, delete or
+						edit any content that in the sole judgement of www. eHealthSystem
+						.com violates these Conditions of use and, or terminate your
+						permission to access or use this website.</span>
+				</p>
+				<p class="P4_borderEnd">
+					<span class="T8">You represent and warrant that you own or
+						otherwise control all of the rights to the content that you post
+						or that you otherwise provide on or through the website; that, as
+						at the date that the content or material is submitted to www.
+						eHealthSystem .com:</span>
+				</p>
+				<ol>
+					<li>
+						<p class="P18" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">1.</span><span
+								class="T8">The content and material is accurate;</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P22" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">2.</span><span
+								class="T8">Use of the content and material you supply
+								does not breach any applicable www.</span><span class="T7">
+								eHealthSystem </span><span class="T8">.com policies or
+								guidelines and will not cause injury to any person or entity
+								(including that the content or material is not defamatory);</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P26" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">3.</span><span
+								class="T8">The content is lawful. You agree to indemnify
+								EHEALTHSYSTEM and its affiliates for all claims brought by a
+								third party against it or its affiliates arising out of or in
+								connection with a breach of any of these warranties.</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+				</ol>
+				<p class="P4_borderStart">
+					<span class="T8">You are solely responsible for the content
+						of any postings you submit and the Company assumes no
+						responsibility or liability for any content submitted by you or
+						any other site visitor. We may, but are not obligated to, restrict
+						or remove any and all content from a message that we determine in
+						our sole discretion violates these Terms or is otherwise harmful
+						to us, our customers, or any third party. We reserve the right to
+						remove the content you provide at any time, but you understand
+						that we may preserve and access a backup-copy, and we may disclose
+						the content if required to do so by law or in a good faith belief
+						that such access, preservation, or disclosure is required by law
+						or in the best interests of the Company.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">Any content you submit is for
+						non-commercial use only. Any content you submit will be routed
+						through the Internet and you understand and acknowledge that you
+						have no expectation of privacy with regard to any content you
+						submit. Never assume that you are anonymous and cannot be
+						identified by your posts.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__6__Claims_Against_Objectionable_Content"><span /></a><span
+						class="T5">6. Claims Against Objectionable Content</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">www.eHealthSystem .com operates on a
+						“notice and takedown” basis. If you believe that any content on
+						the website is illegal, offensive, deceptive, misleading, abusive,
+						indecent, harassing, blasphemous, defamatory, libellous, obscene,
+						pornographic, paedophilic or menacing; ethnically objectionable,
+						disparaging; or is otherwise injurious to third parties; or
+						relates to or promotes money laundering or gambling; or is harmful
+						to minors in any way; or impersonates another person; or threatens
+						the unity, integrity, security or sovereignty of India or friendly
+						relations with foreign States; or objectionable or otherwise
+						unlawful in any manner whatsoever; or which consists of or
+						contains software viruses, </span><span class="T8">(“</span><span
+						class="Strong"><span class="T9">Objectionable
+							Content</span></span><span class="T8">“), please notify us immediately
+						by email on info@ eHealthSystem .com. Once this procedure has been
+						followed, www. eHealthSystem .com will make all reasonable
+						endeavours to remove such Objectionable Content complained about
+						within a reasonable time.</span>
+				</p>
+				<p class="P3" />
+				<p class="P3" />
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__7__Copyright__Authors’_Rights_And_Database_Rights"><span /></a><span
+						class="T5">7. Copyright, Authors’ Rights And Database
+						Rights</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">All content included on the website, such
+						as text, graphics, and and software, is the property of
+						EHEALTHSYSTEM, its affiliates or its content suppliers and is
+						protected by India and international copyright,. The Website and
+						the processes, and their selection and arrangement, including but
+						not limited to all text, graphics, logos, button icons, images,
+						audio clips, digital downloads, data compilations, user
+						interfaces, visual interfaces, sounds and music (if any), artwork
+						and computer code (collectively, the “Content”) on the Website is
+						owned and controlled by EHEALTHSYSTEM or its licensors and the
+						design, structure, selection, coordination, expression, look and
+						feel and arrangement of such Content is protected by copyright,
+						patent and trademark laws, authors’ rights and database right laws
+						and various other intellectual property rights. Except as
+						expressly provided herein, You acknowledge and agree that You
+						shall not copy, republish, post, display, translate, transmit,
+						reproduce or distribute any Content through any medium without
+						obtaining the necessary authorization from EHEALTHSYSTEM or thirty
+						party owner of such Content.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__8__Restrictions_On_Use_Of_Materials"><span /></a><span
+						class="T5">8. Restrictions On Use Of Materials</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">Unless otherwise specified, we grant you a
+						non-exclusive, non-transferable, limited right to access, use and
+						display this website and the material provided hereon for your
+						personal, non-commercial use, provided that you comply fully with
+						the provisions of these Terms of Use. You acknowledge that this
+						website contains </span><span class="T8">information, software,
+						photos, video, text, graphics, music, sounds, questions, creative
+						suggestions, messages, comments, feedback, ideas, recipes, notes,
+						drawings, articles and other materials (collectively, “Content”)
+						that are protected by copyrights, patents, trademarks, trade
+						secrets and/or other proprietary rights, and that these rights are
+						valid and protected in all forms, media and technologies existing
+						now or hereafter developed. All Content is copyrighted under the
+						applicable copyright laws of India (and, if applicable, similar
+						foreign laws), and we own a copyright in the selection,
+						coordination, arrangement and enhancement of such Content. All
+						trademarks appearing on this website are trademarks of their
+						respective owners. EHEALTHSYSTEM’s eHealthCard is the trade name
+						and the registered trademark and service mark. You may not modify,
+						publish, transmit, distribute, perform, participate in the
+						transfer or sale, create derivative works of, or in any way
+						exploit, any of the Content, in whole or in part. The compilation
+						of all content on this website is the exclusive property of
+						EHEALTHSYSTEM and its affiliates and is protected by laws of India
+						and international copyright and database right laws. All software
+						used on this website is the property of EHEALTHSYSTEM, its
+						affiliates or its software suppliers and is protected by India and
+						international copyright and author’ rights laws. If Content is
+						downloaded to your computer, you do not obtain any ownership
+						interest in such Content. Modification of the Content or use of
+						the Content for any other purpose, including, but not limited to,
+						use of any Content in printed form or on any other website or
+						networked computer environment is strictly prohibited unless you
+						receive our prior written consent. You may also not create and/ or
+						publish your own database that features substantial (e.g.: prices
+						and product listings) parts of this website without EHEALTHSYSTEM
+						and / or its affiliate’s (as may be applicable) express</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<ol>
+					<li><h class="P33" style="margin-left:0cm;">
+						<span style="display: block; float: left; min-width: 0.635cm;">8.</span>
+						<a id="a_8__Intellectual_Property_Claims"><span class="T5">Intellectual
+								Property Claims</span></a>
+						<span class="odfLiEnd" /> </h></li>
+				</ol>
+				<p class="P4_borderStart">
+					<span class="T8">EHEALTHSYSTEM and its affiliates respect
+						the intellectual property of others. If you believe that your
+						intellectual property rights have been used in a way that gives
+						rise to concerns of infringement, please email us on
+						info@eHealthSystem .com</span>
+				</p>
+				<p class="P4_borderEnd">
+					<span class="T8">The notice must include the following
+						information:</span>
+				</p>
+				<ol>
+					<li>
+						<p class="P19" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">1.</span><span
+								class="T8">A physical or electronic signature of a person
+								authorized to act on behalf of the owner of an exclusive right
+								that is allegedly infringed;</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P23" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">2.</span><span
+								class="T8">Identification of the copyrighted
+								work/trademark/design claimed to have been infringed;</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P23" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">3.</span><span
+								class="T8">Identification of the material that is claimed
+								to be infringing or the subject of infringing activity;</span><span
+								class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P23" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">4.</span><span
+								class="T8">The name, address, telephone number, and email
+								address of the complaining party;</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P23" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">5.</span><span
+								class="T8">A statement that the complaining party has a
+								good faith belief that use of the material in the manner
+								complained of is not authorized by the copyright owner, its
+								agent or the law;</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+					<li>
+						<p class="P27" style="margin-left: 0cm;">
+							<span style="display: block; float: left; min-width: 0.635cm;">6.</span><span
+								class="T8">A statement that the information in the
+								notification is accurate and, under penalty of perjury, that the
+								complaining party is authorized to act on behalf of the owner of
+								an exclusive right that is allegedly infringed If you believe in
+								good faith that a notice of copyright infringement has been
+								wrongly filed against you.</span><span class="odfLiEnd" /> 
+						</p>
+					</li>
+				</ol>
+				<p class="P29"> </p>
+				<h3 class="P32">
+					<a id="a__10__Trademarks"><span /></a><span class="T5">10.
+						Trademarks</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">EHEALTHSYSTEM, THE EHEALTHSYSTEM LOGO,
+						PERSONALISED HEALTHCARE, eHealthCard SOFTWARE and other marks
+						indicated on our website are trademarks or registered trademarks
+						of EHEALTHSYSTEM or its subsidiaries (collectively
+						“EHEALTHSYSTEM”), in the India and/or other jurisdictions.
+						www.eHealthSystem .com’s graphics, logos, page headers, button
+						icons, scripts and service </span><span class="T8">names are the
+						trademarks or trade dress of EHEALTHSYSTEM. EHEALTHSYSTEM’s
+						trademarks and trade dress may not be used in connection with any
+						product or service that is not EHEALTHSYSTEM’s, in any manner that
+						is likely to cause confusion among customers or in any manner that
+						disparages or discredits EHEALTHSYSTEM. All other trademarks not
+						owned by EHEALTHSYSTEM that appear on this website are the
+						property of their respective owners, who may or may not be
+						affiliated with, connected to, or sponsored by EHEALTHSYSTEM.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__11__Patents"><span /></a><span class="T5">11.
+						Patents</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">One or more patents apply to the website
+						and to the features and services accessible via the website and
+						all corresponding foreign counterparts.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__12__Disclaimer"><span /></a><span class="T5">12.
+						Disclaimer</span>
+				</h3>
+				<p class="P4_borderStart">
+					<span class="T8">You acknowledge and undertake that you are
+						accessing the services on the website and transacting at your own
+						risk and are using your best and prudent judgment before entering
+						into any transactions through the website. We shall neither be
+						liable nor responsible for any actions or inactions of third party
+						sellers nor any breach of conditions, representations or
+						warranties by the third party sellers or manufacturers of the
+						products and hereby expressly disclaim and any all responsibility
+						and liability in that regard. We shall not mediate or resolve any
+						dispute or disagreement between you and the third party sellers or
+						manufacturers of the products.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">We further expressly disclaim any
+						warranties or representations (express or implied) in respect of
+						quality, suitability, accuracy, reliability, completeness,
+						timeliness, performance, safety, merchantability, fitness for a
+						particular purpose, or legality of the products listed or
+						displayed or transacted or the content (including product
+						information and/or specifications) on the website. While we have
+						taken precautions to avoid inaccuracies in content, this website,
+						all content, information, software, products, services and </span><span
+						class="T8">related graphics are provided as is, without
+						warranty of any kind. We do not implicitly or explicitly support
+						or endorse the sale or purchase of any products on the website.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">At no time shall any right, title or
+						interest in the products sold through or displayed on the website
+						vest with EHEALTHSYSTEM nor shall EHEALTHSYSTEM have any
+						obligations or liabilities in respect of any transactions on the
+						website.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__13__Indemnity_And_Release"><span /></a><span class="T5">13.
+						Indemnity And Release</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">You agree to indemnify, defend and hold
+						harmless EHEALTHSYSTEM, its subsidiaries, affiliates, vendors,
+						agents and their respective directors, officers, employees,
+						contractors and agents (herein after individually and collectively
+						referred to as “indemnified parties”) from and against any and all
+						losses, liabilities, claims, suits, proceedings, penalties,
+						interests, damages, demands, costs and expenses (including legal
+						and other statutory fees and disbursements in connection therewith
+						and interest chargeable thereon) asserted against or incurred by
+						the indemnified parties that arise out of, result from, or in
+						connection with (i) Your breach of the Agreement(s); or (ii) any
+						claims made by any third party due to, or arising out of, or in
+						connection with, Your use of the Website; or (iii) any claim that
+						any Third Party Content / content, information or materials
+						provided by You caused damage to a third party; or (iv) Your
+						violation of any rights of another, including any intellectual
+						property rights.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__14__Children"><span /></a><span class="T5">14.
+						Children</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">The Services are not available to minors
+						under the age of eighteen (18) or to any Users suspended or
+						removed from the EHEALTHSYSTEM system by EHEALTHSYSTEM for any
+						reason whatsoever. If You are disqualified as per the preceding
+						sentence, You shall not be permitted to avail of the Services or
+						use the Website. You represent that You are of legal age to form a
+						binding contract and are not a person barred from receiving the
+						Services </span><span class="T8">under the laws as applicable in
+						India. Notwithstanding the foregoing, if You are below the age of
+						eighteen (18) years, please read through these Terms of Use with
+						your parent or legal guardian, and in such a case these Terms of
+						Use shall be deemed to be a contract between EHEALTHSYSTEM and
+						Your legal guardian or parent and to the extent permissible under
+						applicable laws, enforceable against You.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__15__Other_Businesses"><span /></a><span class="T5">15.
+						Other Businesses</span>
+				</h3>
+				<p class="P4_borderStart">
+					<span class="T8">We provide links to the websites of
+						affiliated companies and certain other businesses. We are not
+						responsible for examining or evaluating, and we do not warrant or
+						endorse the offerings of any of these businesses or individuals,
+						or the content of their websites. EHEALTHSYSTEM does not assume
+						any responsibility or liability for the actions, products, and
+						content of any of these and any other third-parties. You can tell
+						when a third-party is involved in your transactions, and we may
+						share customer information related to those transactions with that
+						third-party. You should carefully review their privacy statements
+						and other conditions of use.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">In the event any Third Party Content
+						contains links to third party websites, and You visit any such
+						external link, You agree to do so at your own risk, responsibility
+						and liability. EHEALTHSYSTEM makes no warranty or representation
+						regarding, and does not endorse, any website linked to the Website
+						/ Services or the information appearing thereon or any of the
+						products or services described thereon.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__16__Communications"><span /></a><span class="T5">16.
+						Communications</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">When you visit www.eHealthSystem .com or
+						send e-mails to us, you are communicating with us electronically.
+						You will be required to provide a valid phone number while placing
+						an order with us. We may communicate with you by e-mail, SMS,
+						phone call or by posting notices on the website or by any other
+						mode of communication. For contractual purposes, you consent to
+						receive </span><span class="T8">communications including SMS,
+						e-mail or phone calls from us with respect to your order.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__17__Losses"><span /></a><span class="T5">17.
+						Losses</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">We will not be responsible for any business
+						loss (including loss of profits, revenue, contracts, anticipated
+						savings, data, goodwill or wasted expenditure) or any other
+						indirect or consequential loss that is not reasonably foreseeable
+						to both you and us when you commenced using the website.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a
+						id="a__18__Alteration_Of_Service_Or_Amendments_To_The_Conditions"><span /></a><span
+						class="T5">18. Alteration Of Service Or Amendments To The
+						Conditions</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">We reserve the right to make changes to our
+						website, policies, and these Conditions of Use at any time without
+						requiring giving you a prior notice. You will be subject to the
+						policies and Terms of Use in force at the time that you use the
+						website or that you order goods from us, unless any change to
+						those policies or these conditions is required to be made by law
+						or government authority (in which case it will apply to orders
+						previously placed by you). If any of these conditions is deemed
+						invalid, void, or for any reason unenforceable, that condition
+						will be deemed severable and will not affect the validity and
+						enforceability of any remaining condition.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__19__Events_Beyond_Our_Reasonable_Control"><span /></a><span
+						class="T5">19. Events Beyond Our Reasonable Control</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">If performance of any service or obligation
+						under these Terms of Use or other Agreement by EHEALTHSYSTEM is,
+						or other third parties in fulfillment of any  transaction are,
+						prevented, restricted, delayed or interfered with by reason of
+						labor disputes, strikes, acts of God, floods, lightning, severe
+						weather, rationing, utility or communication failures,
+						earthquakes, war, revolution, acts of terrorism, civil commotion,
+						acts of public enemies, blockade, embargo or any law, order,
+						proclamation, regulation, ordinance, demand or requirement having
+						legal effect of any government or any judicial authority or
+						representative of any such government, or </span><span class="T8">any
+						other act whatsoever, whether similar or dissimilar to those
+						referred to in this clause, which are beyond the reasonable
+						control of EHEALTHSYSTEM or its third parties and could not have
+						been prevented by reasonable precautions (each, a “Force Majeure
+						Event”), then EHEALTHSYSTEM shall be excused from such performance
+						to the extent of and during the period of such Force Majeure Event
+						and doesn’t not affect its statutory rights. EHEALTHSYSTEM shall
+						exercise all reasonable efforts to continue to perform its
+						obligations hereunder.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__20__Waiver"><span /></a><span class="T5">20.
+						Waiver</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">Any failure or delay by EHEALTHSYSTEM to
+						enforce or exercise any provision of the Agreement, or any related
+						right or remedies, shall not constitute a waiver by EHEALTHSYSTEM
+						of that provision or right or remedy.  Any waiver by EHEALTHSYSTEM
+						shall only be made in writing and executed by a duly authorized
+						officer of EHEALTHSYSTEM.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__21__Governing_Law_And_Jurisdiction"><span /></a><span
+						class="T5">21. Governing Law And Jurisdiction</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">These Terms of Use and all transactions
+						entered into on or through the Website and the relationship
+						between You and EHEALTHSYSTEM shall be governed in accordance with
+						the laws of India. You agree that all claims, differences and
+						disputes arising under or in connection with or in relation hereto
+						the Website, these Terms of Use, the Agreement(s) or any
+						transactions entered into on or through the Website or the
+						relationship between You and EHEALTHSYSTEM shall be subject to the
+						exclusive jurisdiction of the courts at Pune, India and You hereby
+						accede to and accept the jurisdiction of such courts.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__22__Our_Details"><span /></a><span class="T5">22.
+						Our Details</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">This website is operated by EHEALTHSYSTEM.
+						For the www.eHealthSystem .com website, you could contact us by
+						visiting: www.eHealthSystem .com</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__23__EHEALTHSYSTEM_Software_Terms"><span /></a><span
+						class="T5">23. EHEALTHSYSTEM Software Terms</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">In addition to these Conditions of Use, the
+						terms apply to any software (including any updates or upgrades to
+						the software and any related documentation) that we make available
+						to you from time to time for your use in connection with
+						EHEALTHSYSTEM Services (the “EHEALTHSYSTEM’s eHealthSystem
+						Software”).</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__24__Links"><span /></a><span class="T5">24. Links</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">While visiting this website you may click
+						on a link to other websites and leave this website. We provide
+						links to other websites that may contain information that may be
+						useful or interesting to you. We do not endorse, and are not
+						responsible for, the content and accuracy of linked websites
+						operated by third parties or for any of your dealings with such
+						third parties. You are solely responsible for your dealings with
+						such third parties and we encourage you to read the terms of use
+						and privacy policies on such third-party websites.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__25__No_Warrenties"><span /></a><span class="T5">25.
+						No Warrenties</span>
+				</h3>
+				<p class="P4_borderStart">
+					<span class="T8">ALL CONTENT ON THIS WEBSITE IS PROVIDED TO
+						YOU ON “AS IS WHERE IS” or “AS AVAILABLE” BASIS. THE COMPANY, ALL
+						THIRD PARTIES, IF ANY, PROVIDING CONTENT FOR THIS WEBSITE, AND ALL
+						THIRD PARTIES PROVIDING SUPPORT OR INFORMATION FOR THIS WEBSITE
+						(COLLECTIVELY, “WEBSITE-RELATED-PARTIES”) HEREBY DISCLAIM ALL
+						WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, STATUTORY OR
+						OTHERWISE INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF
+						MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+						NON-INFRINGEMENT.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">THE WEBSITE-RELATED-PARTIES MAKE NO
+						WARRANTY AS TO THE ACCURACY, COMPLETENESS, CURRENCY, OR
+						RELIABILITY OF ANY CONTENT AVAILABLE THROUGH THIS WEBSITE. WITHOUT
+						LIMITING THE FOREGOING, THE WEBSITE-RELATED-PARTIES SPECIFICALLY
+						DO NOT REPRESENT OR WARRANT THAT ANY </span><span class="T8">INFORMATION
+						REGARDING PARTICULAR PLAN BENEFITS OR SCOPE OF COVERAGE IS
+						ACCURATE OR COMPLETE. THE WEBSITE-RELATED-PARTIES MAKE NO
+						REPRESENTATIONS OR WARRANTIES THAT USE OF THIS WEBSITE WILL BE
+						UNINTERRUPTED OR ERROR-FREE. YOU ARE RESPONSIBLE FOR TAKING ALL
+						PRECAUTIONS NECESSARY TO ENSURE THAT ANY CONTENT YOU MAY OBTAIN
+						FROM THIS WEBSITE IS FREE OF VIRUSES AND ANY OTHER POTENTIALLY
+						DESTRUCTIVE COMPUTER CODE.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">Some states do not allow limitations on
+						implied warranties, so one or more of the above limitations may
+						not apply to you.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__26__Limitation_Of_Liablity"><span /></a><span class="T5">26.
+						Limitation Of Liablity</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">YOU AGREE THAT NONE OF THE
+						WEBSITE-RELATED-PARTIES SHALL BE LIABLE FOR ANY DAMAGE RESULTING
+						FROM YOUR USE OR INABILITY TO USE THIS WEBSITE OR THE CONTENT.
+						THIS PROTECTION COVERS CLAIMS BASED ON WARRANTY, CONTRACT, TORT,
+						STRICT LIABILITY, AND ANY OTHER LEGAL THEORY. THIS PROTECTION
+						COVERS THE WEBSITE-RELATED-PARTIES, INCLUDING ALL AFFILIATES, AND
+						THEIR OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS. THIS PROTECTION
+						COVERS ALL LOSSES INCLUDING, WITHOUT LIMITATION, DIRECT OR
+						INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, EXEMPLARY, AND
+						PUNITIVE DAMAGES, PERSONAL INJURY/WRONGFUL DEATH, LOST PROFITS, OR
+						DAMAGES RESULTING FROM LOST DATA OR BUSINESS INTERRUPTION. THE
+						TOTAL, CUMULATIVE, LIABILITY OF THE WEBSITE-RELATED-PARTIES,
+						INCLUDING ALL AFFILIATES, AND THEIR OFFICERS, DIRECTORS,
+						EMPLOYEES, AND AGENTS, IF ANY, FOR LOSSES OR DAMAGES SHALL BE
+						LIMITED TO THE AMOUNT OF YOUR ACTUAL DAMAGES, NOT TO EXCEED U.S.
+						$100.00. THE LIMIT OF LIABILITY MAY NOT BE EFFECTIVE IN SOME
+						STATES. IN NO EVENT SHALL THE WEBSITE-RELATED-PARTIES, INCLUDING
+						ALL AFFILIATES, AND THEIR OFFICERS, DIRECTORS, EMPLOYEES, AND
+						AGENTS, BE LIABLE TO YOU FOR ANY LOSSES OR DAMAGES OTHER THAN THE
+						AMOUNT DESCRIBED ABOVE. ALL OTHER DAMAGES, </span><span class="T8">DIRECT
+						OR INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, EXEMPLARY, OR
+						PUNITIVE, RESULTING FROM ANY USE OF THE WEBSITE OR CONTENT ARE
+						EXCLUDED EVEN IF THE WEBSITE-RELATED-PARTIES HAVE BEEN ADVISED OF
+						THE POSSIBILITY OF SUCH DAMAGES. YOU AGREE THAT YOU USE THIS SITE
+						AT YOUR OWN RISK. IF YOU ARE DISSATISFIED WITH THIS WEBSITE OR THE
+						CONTENT, YOUR SOLE AND EXCLUSIVE REMEDY IS TO DISCONTINUE USING
+						THE WEBSITE.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__27__Additional_Terms"><span /></a><span class="T5">27.
+						Additional Terms</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">Your obligations under the following
+						sections survive termination of this Agreement: Important Note
+						Regarding Website Content; Agreement and Terms; portions of
+						License to use this website and content ownership; Restrictions on
+						use of this website; Posting messages, comments or content;
+						Copyright Infringement – DMCA Notice; Changes to website content;
+						Links; NO WARRANTIES; LIMITATION OF LIABILITY; Governing law and
+						statute of limitations; Additional terms. If any provision of
+						these Terms is found to be invalid by any court having competent
+						jurisdiction, the invalidity of such provision shall not affect
+						the validity of the remaining provisions of these Terms, which
+						shall remain in full force and effect. No waiver of any of these
+						Terms shall be deemed a further or continuing waiver of such term
+						or condition or any other term or condition. You agree to defend,
+						indemnify, Website-Related-Parties and their subsidiaries,
+						affiliates, officers, directors, employees, and agents, harmless
+						from any claim, demand, or damage, including reasonable attorneys’
+						fees, arising out of or related to your breach of this Agreement
+						or your use or misuse of the Content or website. You may not
+						transfer or assign any rights or obligations under this Agreement.
+						The Company may transfer or assign its rights and obligations
+						under this Agreement.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__28_PAYMENT_RELATED_INFORMATION"><span /></a><span
+						class="T6">28.PAYMENT RELATED INFORMATION</span>
+				</h3>
+				<p class="P1">
+					<span class="T8">You agree to provide correct and accurate
+						financial information, such as credit/debit card details to the
+						approved payment gateway or pre-paid payment instrument account
+						details for availing Services on the Website. You shall not use
+						the credit/debit card or pre-paid payment instrument which is not
+						lawfully owned by You, i.e. in any transaction, You must use Your
+						own credit/debit card or pre-paid instrument account. The
+						information provided by You will not be utilized or shared with
+						any third party unless required in relation to fraud verifications
+						or by law, regulation or court order or in accordance with the
+						terms of the Privacy Policy. You will be solely responsible for
+						the security and confidentiality of Your credit/debit card details
+						or pre-paid instrument account. EHEALTHSYSTEM expressly disclaims
+						all liabilities that may arise as a consequence of any
+						unauthorized use of Your credit/ debit card or pre-paid instrument
+						account.</span>
+				</p>
+				<p class="P7"> </p>
+				<h1 class="P31">
+					<a id="a__Software_Terms"><span /></a><span class="T3">Software
+						Terms</span>
+				</h1>
+				<p class="P7"> </p>
+				<p class="P1_borderStart">
+					<span class="Strong"><span class="T9">Use Of The
+							EHEALTHSYSTEM’s EHEALTHSYSTEM (“EHEALTHSYSTEM EHEALTHSYSTEM”)</span></span>
+				</p>
+				<p class="P1">
+					<span class="Strong"><span class="T9">EHEALTHSYSTEM
+							eHealthSystem has been provided on the website </span></span><span
+						class="Strong"><span class="T11">www.eHealthSystem
+							.com</span></span><span class="Strong"><span class="T9"> </span></span><span
+						class="Strong"><span class="T12">s</span></span><span class="T8">olely
+						for the purpose of enabling you to use and enjoy the
+						EHEALTHSYSTEM’S eHealthSystem Services as offered by
+						EHEALTHSYSTEM, and as permitted by the Terms of Use, Privacy
+						Policies, Software Terms, Pricing and other terms and conditions,
+						policies of EHEALTHSYSTEM Health Care Services (“EHEALTHSYSTEM
+						Policies”) and applicable laws and regulations which are in force
+						from time to time..<br />It is clearly understood by you that
+						EHEALTHSYSTEM’s eHealthSystem is solely owned by EHEALTHSYSTEM  
+						Marketing LLP, India and you may not tamper/deal with the software
+						program of EHEALTHSYSTEM Software in whatsoever manner or compile
+						any
+					</span><span class="T8">portion of it in combination with your own
+						programs, or transfer it for use with another service, or sell,
+						rent, lease, lend, loan, distribute or sub-license the
+						EHEALTHSYSTEM’s eHealthSystem or otherwise assign any rights to
+						the EHEALTHSYSTEM’s eHealthSystem in whole or in part.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">You may not use the EHEALTHSYSTEM’s
+						eHealthSystem for any purpose other than provided for in
+						EHEALTHSYSTEM Policies or for such purposes that are prohibited
+						under the applicable laws. Your rights to use the EHEALTHSYSTEM’s
+						eHealthSystem will automatically terminate without notice from us
+						if you fail to comply with any of these EHEALTHSYSTEM Policies.</span>
+				</p>
+				<p class="P4">
+					<span class="T8">Additional third party terms contained
+						within or distributed with certain EHEALTHSYSTEM’s eHealthSystem
+						that are specifically identified in related documentation may
+						apply to that EHEALTHSYSTEM’s eHealthSystem (or software
+						incorporated with the EHEALTHSYSTEM’s eHealthSystem Software) and
+						will govern the use of such software in the event of a conflict
+						with these Terms of Use.</span>
+				</p>
+				<p class="P1">
+					<span class="T8">All software used in any EHEALTHSYSTEM’s
+						eHealthSystem is the property of EHEALTHSYSTEM and/or its
+						affiliates or its software suppliers and protected by laws of
+						India including but not limited to any other applicable copyright
+						laws. EHEALTHSYSTEM has the right to cease providing EHEALTHSYSTEM
+						Software services or prohibit you from using its services at any
+						time without providing you with any prior notice thereof.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__Use_Of_Third_Party_Services"><span /></a><span class="T5">Use
+						Of Third Party Services</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">When you use the EHEALTHSYSTEM’s
+						eHealthSystem, you also agree to use the services of one or more
+						third parties, such as a wireless carrier or a mobile platform
+						provider. Your use of these third party services may be subject to
+						separate policies, terms of use, and fees of these third parties.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__No_Reverse_Engineering"><span /></a><span class="T5">No
+						Reverse Engineering</span>
+				</h3>
+				<p class="P1_borderStart">
+					<span class="T8">You may not, and you will not encourage,
+						assist or authorize any other person to copy, modify, reverse
+						engineer, decompile or disassemble, or otherwise tamper with, the
+						EHEALTHSYSTEM’s eHealthSystem, whether in whole or in part, or
+						create any derivative works from or of the EHEALTHSYSTEM’s
+						eHealthSystem.</span>
+				</p>
+				<p class="P3_borderEnd" />
+				<h3 class="P32">
+					<a id="a__Updates"><span /></a><span class="T5">Updates</span>
+				</h3>
+				<p class="P1">
+					<span class="T8">In order to keep the EHEALTHSYSTEM’s
+						eHealthSystem up-to-date, we may offer automatic or manual updates
+						from time to time without requiring giving you any prior notice
+						thereof. At such times, the working of the EHEALTHSYSTEM’s
+						eHealthSystem may be affected temporarily and you agree that such
+						suspension of services shall not amount to deficiency of services
+						on part of EHEALTHSYSTEM.</span>
+				</p>
+				<p class="P7"> </p>
+				<h1 class="P31">
+					<a id="a__Health_Disclaimer"><span /></a><span class="T3">Health
+						Disclaimer</span>
+				</h1>
+				<p class="P7"> </p>
+				<p class="P2_borderStart">
+					<span class="T13">All the material published on the
+						www.eHealthSystem .com site is for information purposes only. The
+						information contained on this site is not a substitute for, and is
+						not intended to replace, independent professional advice. Users
+						should consider the need to obtain any appropriate professional
+						advice relevant to their own particular circumstances. The tips
+						are for healthy living and wellness and they are not a direct
+						substitute to professional pain management.</span>
+				</p>
+				<p class="P2">
+					<span class="T13">The material contained on this site may
+						include the views or recommendations of third parties, and does
+						not necessarily reflect the views on a person specificity as the
+						healthcare is case-specific and patient eccentric process. It does
+						not indicate a commitment to a particular course of action.</span>
+				</p>
+				<p class="P2">
+					<span class="T13">This site may contain references to other
+						sites and these are provided for convenience only and should not
+						be construed as an endorsement by the Indian Medical Association
+						and World Health </span><span class="T13">Organization; conversely
+						omissions should not be construed as non endorsement.</span>
+				</p>
+				<p class="P2">
+					<span class="T13">The Indian Medical Council does not
+						warrant or represent that the information contained on this site
+						is accurate, current or complete. Users should exercise their own
+						independent skill or judgement or seek professional advice before
+						relying on it. EHEALTHSYSTEM does not accept any legal liability
+						or responsibility for any injury, loss or damage incurred by the
+						use of, or reliance on, or interpretation of, the information
+						contained on this site or any medical advice given by the
+						healthcare professional registered or connected through
+						EHEALTHSYSTEM’s eHealthSystem. The details provided by the service
+						providers regarding their timings, location and other informations
+						may change without timely notice to EHEALTHSYSTEM, thus Users
+						should verify all details before availing the services.
+						EHEALTHSYSTEM shall not be responsible for any mismatch between
+						the data provided by EHEALTHSYSTEM’s eHealthSystem and the
+						original data.</span>
+				</p>
+				<p class="P2_borderEnd">
+					<span class="T13">The medical advice/treatment/services are
+						given by professional in their individual capacity and
+						EHEALTHSYSTEM’s eHealthSystem only acts as a bridge to connect the
+						Users with the service providers and holds no responsibility for
+						any wrong advice/services.</span>
+				</p>
+				<p class="P5"> </p>
+
+
+
+				<h1 class="P31">
+					<span class="T3">Cancellations & Refund Policy:</span>
+				</h1>
+
+				<p>www.ehealthsystem.com is our online booking portal with
+					Integrated Payment Gateway for the customers who wish to avail our
+					service by making a payment to eHealthSystem Technologies.</p>
+
+				<p>Enlisted herewith are the refund policies in the event of
+					cancellation of order.</p>
+
+				<p>Can I cancel my subscription before the expiry of the
+					subscription period? Sure. You can call our customer support to
+					cancel the subscription and get a refund as per the cancellation
+					policy given below.</p>
+
+				<h4>Cancellation policy for subscription:</h4>
+				<ul>
+
+					<li>In case of cancellation of the order after 6 months of
+						registration, no refund will be made.</li>
+					<li>If you cancel an order, a cancellation service charge will
+						be deducted and the balance amount on a pro rata basis will be
+						refunded within 14 business days from the date of cancellation
+						request.</li>
+					<li>In case of insurance and other facilities are already
+						availed as a part of the subscription, the amount for the same
+						will be deducted from the refunded amount.</li>
+					</li>
+				</ul>
+
+				</p>
+
+
+			</div>
+		</div>
+
+		</main>
+
+		<!-- End #main -->
+	</div>
+
+</body>
+
+</html>

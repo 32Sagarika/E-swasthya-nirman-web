@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	//Document Ready For Page load
+
+	$(document).ready(function() {
+		$("#addTestList").hide();
+		$("#add").show();
+		$("#tab11").hide();
+		$("#edit").hide();
+		$("#deletes").show();
+		$("#add").show();
+		$('#delete').attr('disabled', true);
+		
+		$("#fromDateCalendar").datetimepicker({
+			format : 'd-m-Y',
+			closeOnDateSelect : true,
+			timepicker : false,
+			maxDate : 0,
+			scrollMonth : true
+		}).on("change", function() {
+			$('#fromdate').val($(this).val());
+		})
+
+		$('#fromdate').blur(function() {
+			$("#fromDateCalendar").val($(this).val());
+		})
+		
+		$("#toDateCalendar").datetimepicker({
+			format : 'd-m-Y',
+			closeOnDateSelect : true,
+			timepicker : false,
+			maxDate : 0,
+			scrollMonth : true
+		}).on("change", function() {
+			$('#todate').val($(this).val());
+		})
+
+		$('#todate').blur(function() {
+			$("#toDateCalendar").val($(this).val());
+		})
+	});
+
+	$(document).ready(function() {
+		$("#showTab").show();
+		var gridDiv2 = document.querySelector('#myGrid');
+		new agGrid.Grid(gridDiv2, gridOptions2);
+
+		agGrid.simpleHttpRequest({
+			url : "admin-coupon-viewDetails"
+		}).then(function(data) {
+			var len = data.length;
+			$('#totalReq').find('span').html(len);
+			gridOptions2.api.setRowData(data);
+		});
+	});
+
+	var columnDefs2 = [
+			{
+				headerCheckboxSelection : true,
+				headerCheckboxSelectionFilteredOnly : true,
+				checkboxSelection : true,
+				width : 10,
+				sortable : false,
+				filter : false,
+				resizable : true
+
+			},
+			{
+				headerName : "Coupon Id",
+				field : "couponId",
+				width : 250,
+				cellRenderer : function(params) {
+					return '<a id="" onclick=editCouponDetails("'
+							+ params.data.couponId
+							+ '") href="javascript:void(0)">'
+							+ params.data.couponId + '</a>';
+				}
+			}, {
+				headerName : 'Coupon Name',
+				field : "couponName",
+				width : 250
+			}, {
+				headerName : 'Discount Price',
+				field : "discountPrice",
+				width : 480,
+				hide:true
+			},{
+				headerName : 'Start Date',
+				field : "fromdate",
+				width : 250
+			},{
+				headerName : 'End Date',
+				field : "todate",
+				width : 250
+			},{
+				headerName : 'Percentage',
+				field : "percentage",
+				width : 250
+			}];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		onSelectionChanged : deleteDetailsfor,
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,
+
+	};
+	
+	
+	function deleteDetailsfor() {
+
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr('disabled', false);
+			$('#add').attr('disabled', true);
+		} else {
+			$('#delete').attr('disabled', true);
+			$('#add').attr('disabled', false);
+		}
+
+	}
+
+	
+	function editCouponDetails(id) {
+		$("#add").attr('disabled', true);
+		$("#totalReq").hide();
+		openNav();
+		$.ajax({
+			type : "GET",
+			url : "admin-coupon-editDetails?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					$("#couponId").val(response.body.couponId);
+					$("#couponName").val(response.body.couponName);
+					$("#discountPrice").val(response.body.discountPrice);
+					$("#fromdate").val(response.body.fromdate);
+					$("#todate").val(response.body.todate);
+					$("#percentage").val(response.body.percentage);
+
+				} else
+					("error" + console.message)
+			}
+		});
+	}
+
+	function saveCoupon() {
+		var item1 = {};
+		var validation = true;
+		item1.couponId = $("#couponId").val();
+		item1.couponName = $("#couponName").val();
+		item1.discountPrice = $("#discountPrice").val();
+		item1.fromdate = $("#fromdate").val();
+		item1.todate = $("#todate").val();
+		item1.percentage = $("#percentage").val();
+		console.log(item1)
+
+		if (validation) {
+			$.ajax({
+				type : "POST",
+				url : "admin-coupon-addDetails",
+				dataType : "json",
+				contentType : "application/json",
+				data : JSON.stringify(item1),
+				success : function(response) {
+					if (response.message == "Success") {
+						$('#totalReq').show();
+						$('#delete').attr('disabled', true);
+						$('#add').attr('disabled', false);
+						console.log(response)
+						closeNav();
+						agGrid.simpleHttpRequest({
+							url : "admin-coupon-viewDetails"
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions2.api.setRowData(data);
+						});
+
+					}
+				},
+				error : function(response) {
+					console.log(response);
+				}
+			})
+		}
+	}
+	
+	//delete coupon
+	function deleteDetails() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var id = selectedRows[0].couponId;
+
+		$.ajax({
+			type : "POST",
+			url : "admin-coupon-delete?id=" + id,
+			success : function(response) {
+				if (response.message == "Success") {
+					agGrid.simpleHttpRequest({
+						url : "admin-coupon-viewDetails"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+
+				//	Cancel();
+				}
+			},
+			error : function(data) {
+				console.log(data);
+			}
+		})
+	}
+
+	function openNav() {
+		$('#add').attr('disabled', true);
+		$('#couponName').val("");
+		$('#discountPrice').val("");
+		$('#fromdate').val("");
+		$('#todate').val("");
+		$('#percentage').val("");
+		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:-5.4px; overflow: hidden; height:auto; top:7px;";
+
+		document.getElementById("main_content").style.width = "75%";
+	}
+
+	 function closeNav() {
+		$('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	} 
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div id="managetestlist">
+			<div id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="font-design" id="totalReq">
+								Coupon List (<span></span>)
+							</div>
+						</div>
+						<div class="col-md-6">
+							<button id="add" onclick="openNav()" class="btn1"> COUPON </button>
+							<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+					</div>
+
+					<!-- <div id="myGridassinlist" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div> -->
+
+					<div id="myGrid" style="width: 100%; height: 300px;"
+						class="ag-theme-alpine"></div>
+
+				</div>
+			</div>
+
+			<div id="mySidenav" class="sidenav">
+				<div class="slidebox">
+					<div class="row">
+						<div class="col-md-9">
+							<div class="edit">Coupon</div>
+						</div>
+						 <div class="col-md-3">
+							<div class="arrow">
+								<a href="javascript:void(0)" class="closebtn"
+									onclick="closeNav()"></a>
+							</div>
+						</div> 
+
+						<div class="chartbtnsec1">
+							<div align="right">
+								<button class="btn4" onclick="closeNav()">CANCEL</button>
+								<button class="btn1" onclick="saveCoupon()">SAVE</button>
+
+							</div>
+						</div>
+
+
+						 <input type="hidden"
+							id="couponId">
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Coupon Name</label> <input type="text"
+									class="form-control transparenttxtbox" placeholder="Enter Name"
+									id="couponName">
+									<input type ="hidden" id ="testId">
+							</div>
+						</div>
+				<!-- 		<div class="col-md-12">
+							<div class="form-group">
+								<label>Discount Price</label> <input type="text"
+									class="form-control transparenttxtbox" id="discountPrice">
+							</div>
+						</div> -->
+						<div class="col-md-12">
+									<div class="form-group">
+										<label> From Date</label> <input type="text"
+											id="fromdate" class="form-control" placeholder="Enter Date Of Birth" disabled ="disabled"
+											onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('dtofbirth','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="fromDateCalendar"></i> 
+									</div>
+								</div>
+								
+								<div class="col-md-12">
+									<div class="form-group">
+										<label> To Date</label> <input type="text"
+											id="todate" class="form-control" placeholder="Enter Date Of Birth" disabled ="disabled"
+											onblur="removeValid(event)"
+											th:attr="onkeyup=|formatDate('dtofbirth','${session.DATEFORMAT_JS}')|">
+										<i class="ti-calendar picker_calendar" id="toDateCalendar"></i> 
+									</div>
+								</div>
+								
+								<div class="col-md-12">
+							<div class="form-group">
+								<label>Percentage</label> <input type="text"
+									class="form-control transparenttxtbox" id="percentage">
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

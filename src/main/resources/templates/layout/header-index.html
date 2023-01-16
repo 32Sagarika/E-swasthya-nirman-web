@@ -1,0 +1,41 @@
+
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+<div class="header">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-2">
+				<div class="logo"  style="width: 80px;"   >
+					<a th:href="${'/'+session.DASHBOARD}"> <img
+						src="../assets/images/ehsmainlog.jpg" alt=""
+						class="img-fluid" />
+					</a>
+				</div>
+			</div>
+			<div class="col-lg-7"></div>
+			<div class="col-lg-3">
+				<div class="headerright" align="right">
+
+					<div class="dropdown">
+						<div id="moduleName" class="module_name"></div>
+						<div class="headicon sidebar-toggle" id="dropdownMenuLink3"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="ti-user"></i>
+						</div>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink3">
+							<a class="dropdown-item" href="#"><i class="ti-lock"></i>
+								Lock Screen</a> <a class="dropdown-item" href="#"><i
+								class="ti-email"></i> Profile</a> <a class="dropdown-item"
+								href="/notification"><i class="ti-power-off"></i>
+								Notification</a> <a class="dropdown-item" href="/logout"><i
+								class="ti-power-off"></i> Log Out</a>
+
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</html>

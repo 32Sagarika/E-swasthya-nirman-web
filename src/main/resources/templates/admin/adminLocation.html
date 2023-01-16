@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/master}">
+<head>
+
+<!-- <link rel="stylesheet" href="../assets/css/extend/style-extend.css"> -->
+<style>
+element.style {
+	margin-left: -5px;
+	font-weight: 100;
+	font-size: 14px;
+	color: #ccc;
+}
+
+.sugg-cls ul {
+	height: 100px;
+	overflow: scroll;
+	border: 1px solid #ccc;
+	padding: 26px;
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	//Document Ready For Page load
+
+	$(document).ready(function() {
+		$("#addTestList").hide();
+		$("#add").show();
+		$("#tab11").hide();
+		$("#edit").hide();
+		$("#deletes").show();
+		$("#add").show();
+		$('#delete').attr('disabled', true);
+	});
+
+	$(document).ready(function() {
+		$("#showTab").show();
+		 var gridDiv2 = document.querySelector('#myGrid');
+			new agGrid.Grid(gridDiv2, gridOptions2);
+
+			agGrid.simpleHttpRequest({
+				url : "admin-location-viewDetails"
+			}).then(function(data) {
+				var len = data.length;
+				$('#totalReq').find('span').html(len);
+				gridOptions2.api.setRowData(data);
+			});
+	});
+		
+	var columnDefs2 = [  {
+		headerCheckboxSelection : true,
+		headerCheckboxSelectionFilteredOnly : true,
+		checkboxSelection : true,
+		width : 10,
+		sortable : false,
+		filter : false,
+		resizable : true
+
+	}, {
+		headerName : "Location Id",
+		field : "locationId",
+		width:300,
+		cellRenderer : function(params) {
+			return '<a id="" onclick=editLocationDetails("' + params.data.locationId
+					+ '") href="javascript:void(0)">'
+					+ params.data.locationId + '</a>';
+       }
+	}, {
+		headerName : 'Location',
+		field : "locationName",
+		width:300
+	} ,
+	, {
+		headerName : 'City Name',
+		field : "cityName",
+		width:350
+	}, {
+		headerName : 'Pincode',
+		field : "pinCode",
+		width:300
+	}];
+
+	var gridOptions2 = {
+		columnDefs : columnDefs2,
+		defaultColDef : {
+			sortable : true,
+			filter : true,
+			resizable : true,
+			width : 300,
+			height : 10
+		},
+		onSelectionChanged : deleteDetailsfor,
+		rowSelection : 'multiple',
+		suppressRowClickSelection : true,
+		
+
+	};
+	function deleteDetailsfor() {
+
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		var rowCount = 0;
+		selectedRows.forEach(function(selectedRow, index) {
+			rowCount = rowCount + 1;
+		});
+
+		if (rowCount > 0) {
+			$('#delete').attr('disabled', false);
+			$('#add').attr('disabled', true);
+		} else {
+			$('#delete').attr('disabled', true);
+			$('#add').attr('disabled', false);
+		}
+
+	}
+	
+	//Delete 
+	function deleteDetails() {
+		var selectedRows = gridOptions2.api.getSelectedRows();
+		 var id=selectedRows[0].locationId;
+		
+		
+			$.ajax({
+				type : "POST",
+				url : "admin-location-delete?id="+ id,
+				success : function(response) {
+				 if (response.message == "Success") {
+					 agGrid.simpleHttpRequest({
+							url : "admin-location-viewDetails"
+						}).then(function(data) {
+							var len = data.length;
+							$('#totalReq').find('span').html(len);
+							gridOptions2.api.setRowData(data);
+						});
+
+					 Cancel();
+				} 
+				},
+				error : function(data) {
+				console.log(data);
+				}
+			})
+	} 	
+function editLocationDetails(id){
+	$("#add").attr('disabled', true);
+	$("#totalReq").hide();
+	openNav();
+	$.ajax({
+		type : "GET",
+		url : "admin-location-editDetails?id=" + id,
+		success : function(response) {
+			if (response.message == "Success") {
+				$("#status").val(response.body.status);
+				$("#cityId").val(response.body.cityId);
+				$("#locationId").val(response.body.locationId);
+				$("#locationName").val(response.body.locationName);
+				$("#cityName").val(response.body.cityName);
+				$("#pinCode").val(response.body.pinCode);
+				
+				if(response.body.locationFor=="lab"){
+					$("#Labs").prop('checked', true);
+				}else{
+					$("#HomeServices").prop('checked', true);
+				}
+			}else("error"+console.message)
+		}
+	}); 
+}
+
+function cancelEmp(){
+	$("#managetestlist").show();
+	$("#addTestList").hide();
+}
+
+	
+	function saveLoc() {
+		var item1 = {};
+		var validation =true;
+				item1.locationId = $("#locationId").val();
+				item1.locationName = $("#locationName").val();
+				item1.cityName = $("#cityId").val();
+				item1.locationFor = $("input[type='radio'][name='loc']:checked").val()
+				item1.pinCode = $("#pinCode").val();
+				console.log(item1)
+	
+		if(validation){
+		$.ajax({
+			type : "POST",
+			url : "admin-location-addDetails",
+			dataType : "json",
+			contentType : "application/json",
+			data : JSON.stringify(item1),
+			success : function(response) {
+				if (response.message == "Success") {
+					 $('#totalReq').show();
+					$('#delete').attr('disabled', true);
+					$('#add').attr('disabled', false);
+					console.log(response)
+					closeNav();
+					agGrid.simpleHttpRequest({
+						url : "admin-location-viewDetails"
+					}).then(function(data) {
+						var len = data.length;
+						$('#totalReq').find('span').html(len);
+						gridOptions2.api.setRowData(data);
+					});
+			
+				}
+			},
+			error : function(response) {
+				console.log(response);
+			}
+		})
+		}
+	}
+	
+	
+
+	function openNav() {
+		  $('#add').attr('disabled', true);
+		$('#cityName').val("");
+		$('#locationName').val("");
+		$('#pinCode').val("");
+		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:13.6px; overflow: hidden; height:auto; top:7px;";
+
+		document.getElementById("main_content").style.width = "75%";
+	}
+
+	function closeNav() {
+	 $('#add').attr('disabled', false);
+		document.getElementById("mySidenav").style.width = "0";
+		document.getElementById("main_content").style.width = "100%";
+	}
+	
+	//AutoSearch 
+
+	function getCityTypeList() {
+		var search = $("#cityName").val();
+		if(search == ""){
+			$("#suggesstion-box1_").hide();
+		}
+		if (search) {
+			$
+					.ajax({
+						type : "POST",
+						url : "admin-location-autosearch-city",
+						dataType : 'json',
+						contentType : 'application/json',
+						data : search,
+						success : function(response) {
+							if (response.message == "success") {
+								if (response.body.length != 0) {
+									$("#search").css("background", "#FFF");
+									var content = '<ul id="autocomplete-list1" style="margin-left:-40px; font-weight:100; font-size:14px; color:#ccc;">';
+									for (var i = 0; i < response.body.length; i++) {
+										content += '<li class="autocompletedata cp" onClick="selectAutocompleteValue1(\''
+												+ response.body[i].cityId
+												+ '\',\''
+												+ response.body[i].cityName
+												+ '\',\''
+												+ response.body[i].cityId
+												+ '\')">'
+												+ response.body[i].cityName
+												+ '</li>';
+									}
+									content += '</ul>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+
+								} else {
+									$("#search").css("background", "#FFF");
+									var content = '<div id="autocomplete-list1">';
+									content += '<div onClick="selectAutocompleteValue()">'
+											+ "No Data Found" + '</div>';
+									content += '</div>';
+									$("#suggesstion-box1_").show();
+									$("#suggesstion-box1_").html(content);
+								}
+							}
+						},
+						error : function(data) {
+							console.log(data);
+						}
+					})
+		}
+
+	}
+	function selectAutocompleteValue1(cityId, cityName) {
+
+		if (cityId) {
+			$("#cityId").val(cityId);
+			$("#cityName").val(cityName);
+			$("#search").val(cityName);
+			$("#search").attr('data-procat', cityId);
+			$("#suggesstion-box1_").hide();
+
+		} else {
+			$("#cityId").val("");
+
+			$("#cityName").val("");
+
+			$("#search").val("");
+			$("#search").attr('data-procat', "");
+			$("#suggesstion-box1_").hide();
+
+		}
+	}
+	function selectAutocompleteValue() {
+
+		$("#noticeIdMstr").val("");
+
+		$("#noticeType").val("");
+
+		$("#search").val("");
+		$("#search").attr('data-procat', "");
+		$("#suggesstion-box1_").hide();
+
+	}
+</script>
+
+</head>
+<body>
+	<div layout:fragment="content" class="maincontent">
+		<div id="managetestlist">
+			<div id="main_content">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="font-design" id="totalReq">
+								Location (<span></span>)
+							</div>
+						</div>
+						<div class="col-md-6">
+							<button id="add" onclick="openNav()" class="btn1">ADD
+								LOCATION</button>
+							<button id="delete" onclick="deleteDetails()" class="btn4">DELETE</button>
+						</div>
+					</div>
+
+					<!-- <div id="myGridassinlist" style="width: 100%; height: 500px;"
+											class="ag-theme-alpine"></div>
+									</div> -->
+
+					<div id="myGrid" style="width: 100%; height: 300px;"
+						class="ag-theme-alpine"></div>
+
+				</div>
+			</div>
+
+			<div id="mySidenav" class="sidenav">
+				<div class="slidebox">
+					<div class="row">
+						<div class="col-md-9">
+							<div class="edit">Add Location</div>
+						</div>
+						<div class="col-md-3">
+							<div class="arrow">
+								<a href="javascript:void(0)" class="closebtn"
+									onclick="closeNav()"></a>
+							</div>
+						</div>
+
+						<div class="chartbtnsec1">
+							<div align="right">
+								<button class="btn4" onclick="closeNav()">CANCEL</button>
+								<button class="btn1" onclick="saveLoc()">SAVE</button>
+
+							</div>
+						</div>
+
+
+						<input type="hidden" id="locationId"> <input type="hidden"
+							id="cityId">
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>City</label> <input type="text" id="cityName"
+									autocomplete="off" class="form-control"
+									onkeyup='getCityTypeList()'>
+								<div id="suggesstion-box1_" class="sugg-cls"></div>
+
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Location</label> <input type="text"
+									class="form-control transparenttxtbox" id="locationName">
+							</div>
+						</div>
+						<div class="col-md-12" id="location">
+							<div class="form-group">
+								 <label for="Labs"> <input
+									type="radio" id="Labs" value="lab" name="loc" /> Lab
+								</label> <label for="HomeServices"> <input type="radio" id="HomeServices"
+									value="homeService" name="loc" checked /> HomeService
+								</label>
+							</div>
+						</div>
+
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>PinCode</label> <input type="text"
+									class="form-control transparenttxtbox" id="pinCode">
+							</div>
+						</div>
+
+
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
