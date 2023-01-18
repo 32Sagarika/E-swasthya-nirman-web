@@ -103,6 +103,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/save-payment-status-web").permitAll()
 				.antMatchers("/user/create-order-webview").permitAll()
 				.antMatchers("/user/view-order-patient").permitAll()
+				.antMatchers("/admin/view-patient-documentation-report").permitAll()
+				.antMatchers("/admin/view-patient-document-details").permitAll()
 				
 				.and().formLogin().loginPage("/login").permitAll().successHandler(customAuthenticationSuccessHandler)
 				.and().authorizeRequests().antMatchers("/**").authenticated()

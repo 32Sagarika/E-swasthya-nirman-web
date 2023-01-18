@@ -22,7 +22,8 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter{
 					"/login-with-otp","/login-send-otp"
 				
 					,"/login-clear-otp-column","/welcomex",
-					"/thanku","/user/create-order-web","/user/save-payment-status-web","/user/create-order-webview","/user/view-order-patient"
+					"/thanku","/user/create-order-web","/user/save-payment-status-web","/user/create-order-webview"
+					,"/user/view-order-patient","/admin/view-patient-documentation-report","/admin/view-patient-document-details"
 
 );;
 	}

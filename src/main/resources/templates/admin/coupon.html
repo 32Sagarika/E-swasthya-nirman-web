@@ -25,7 +25,7 @@
 			format : 'd-m-Y',
 			closeOnDateSelect : true,
 			timepicker : false,
-			maxDate : 0,
+			//maxDate : 0,
 			scrollMonth : true
 		}).on("change", function() {
 			$('#fromdate').val($(this).val());
@@ -39,7 +39,7 @@
 			format : 'd-m-Y',
 			closeOnDateSelect : true,
 			timepicker : false,
-			maxDate : 0,
+			//maxDate : 0,
 			scrollMonth : true
 		}).on("change", function() {
 			$('#todate').val($(this).val());
@@ -48,6 +48,8 @@
 		$('#todate').blur(function() {
 			$("#toDateCalendar").val($(this).val());
 		})
+		
+		$('#onClickLoc').hide();
 	});
 
 	$(document).ready(function() {
@@ -106,6 +108,18 @@
 				headerName : 'Percentage',
 				field : "percentage",
 				width : 250
+			},{
+				headerName : 'Absolute Value',
+				field : "absoluteValue",
+				width : 250
+			},{
+				headerName : 'Types',
+				field : "types",
+				width : 250
+			},{
+				headerName : 'Location',
+				field : "location",
+				width : 250
 			}];
 
 	var gridOptions2 = {
@@ -158,6 +172,19 @@
 					$("#fromdate").val(response.body.fromdate);
 					$("#todate").val(response.body.todate);
 					$("#percentage").val(response.body.percentage);
+					$("#absoluteValue").val(response.body.absoluteValue);
+					$("#Types").val(response.body.types);
+					$("#location").val(response.body.location);
+					
+					if(response.body.Types=="doctor"){
+						$("#doctor").prop('checked', true);
+					}
+					else if(response.body.Types=="Lab"){
+						$("#Lab").prop('checked', true);
+					}
+					else{
+						$("#homeService").prop('checked', true);
+					}
 
 				} else
 					("error" + console.message)
@@ -174,6 +201,10 @@
 		item1.fromdate = $("#fromdate").val();
 		item1.todate = $("#todate").val();
 		item1.percentage = $("#percentage").val();
+		item1.absoluteValue = $("#absoluteValue").val();
+		item1.types = $("input[type='radio'][name='Types']:checked").val()
+		item1.location = $("#location").val();
+		item1.locationType = $("input[type='radio'][name='LocTypes']:checked").val()
 		console.log(item1)
 
 		if (validation) {
@@ -206,6 +237,13 @@
 			})
 		}
 	}
+	
+	//onclick city
+	function locationOnClick() {
+		$('#onClickLoc').show();
+	}
+	
+	
 	
 	//delete coupon
 	function deleteDetails() {
@@ -241,6 +279,10 @@
 		$('#fromdate').val("");
 		$('#todate').val("");
 		$('#percentage').val("");
+		$('#absoluteValue').val("");
+		$('#types').val("");
+		$('#location').val("");
+		$('#location').val("");
 		document.getElementById("mySidenav").style.cssText = "width: 321px; position: absolute; right:-5.4px; overflow: hidden; height:auto; top:7px;";
 
 		document.getElementById("main_content").style.width = "75%";
@@ -346,6 +388,44 @@
 									class="form-control transparenttxtbox" id="percentage">
 							</div>
 						</div>
+						
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Absolute Value</label> <input type="text"
+									class="form-control transparenttxtbox" id="absoluteValue">
+							</div>
+						</div>
+						
+						<div class="col-md-12" id="types">
+							<div class="form-group">
+							<p>Types:-</p>
+								 <label for="Doctor"> <input type="radio" id="doctor" value="Doctor" name="Types" /> Doctor </label>
+								<label for="Lab"> <input type="radio" id="Lab" value="Lab" name="Types" /> Lab </label>
+                                <label for="HomeService"> <input type="radio" id="homeService" value="homeService" name="Types" /> HomeService </label>
+							</div>
+						</div>
+						
+						<div class="col-md-12" id="Loctypes">
+							<div class="form-group">
+							<p>Location Type:-</p>
+								 <label for="Doctor"> <input type="radio" id="Country" value="Country" name="LocTypes" /> Country </label>
+								<label for="Lab"> <input type="radio" id="State" value="State" name="LocTypes" /> State </label>
+                                <label for="HomeService"> <input type="radio" id="City" onclick="locationOnClick()" value="City" name="LocTypes" /> City </label>
+							</div>
+						</div>
+						
+						<div class="col-md-6" id="onClickLoc">
+									<div class="form-group">
+										<label>Location </label>
+										<div class="select">
+											<select  id="location">
+												<option value="">--Select--</option>
+												<option th:each="c,iter:${getLocationList}"
+													th:value="${c.key}" th:text="${c.name}"></option>
+											</select>
+										</div>
+									</div>
+								</div>
 					</div>
 
 				</div>

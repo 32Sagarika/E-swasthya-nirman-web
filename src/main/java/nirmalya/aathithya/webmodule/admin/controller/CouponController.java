@@ -1,5 +1,6 @@
 package nirmalya.aathithya.webmodule.admin.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import nirmalya.aathithya.webmodule.admin.model.CityLanguageWebModel;
 import nirmalya.aathithya.webmodule.admin.model.CouponDetailsModel;
+import nirmalya.aathithya.webmodule.common.utils.DropDownModel;
 import nirmalya.aathithya.webmodule.common.utils.EnvironmentVaribles;
 import nirmalya.aathithya.webmodule.common.utils.JsonResponse;
 
@@ -41,9 +43,21 @@ public class CouponController {
 	@GetMapping(value = { "admin-coupon" })
 
 	public String adminbnciti(Model model, HttpSession session) {
-		logger.info("Method :city starts");
+		logger.info("Method :coupon starts");
+		
+		try {
+			DropDownModel[] specialist = restTemplate.getForObject(env.getAdminUrl() + "getLocationList",
+					DropDownModel[].class);
+			List<DropDownModel> getLocationList = Arrays.asList(specialist);
 
-		logger.info("Method : city ends");
+			model.addAttribute("getLocationList", getLocationList);
+			System.out.println("getGenderList"+getLocationList);
+
+		} catch (RestClientException e) {
+			e.printStackTrace();
+		}
+		
+		logger.info("Method : coupon ends");
 		return "admin/coupon";
 	}
 	

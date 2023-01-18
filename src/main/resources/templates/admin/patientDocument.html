@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"><html>
+<head>
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+   
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   
+    <title>Cureez Document</title>
+    <style>
+
+.table1 {
+        border-collapse: separate;
+        border-spacing: 10px 10px;
+      }
+      /* Style the header with a grey background and some padding */
+.header {
+  overflow: hidden;
+  /* background-color: #f1f1f1; */
+  padding: 10px 10px;
+}
+.back-bg {
+	/* background-image: url("../assets/images/header_report.png"); */
+	/* background-repeat: no-repeat; */
+	height: 100px;
+	width: 100%;
+	/* background-size: cover; */
+}
+.top-sec {
+	padding: 100px 0px 0px;
+}
+p {
+   
+    font-size: 14px;
+}
+body {
+     background-color: #f9f9fa
+ }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 4px;
+    line-height: 1;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+ .flex {
+     -webkit-box-flex: 1;
+     -ms-flex: 1 1 auto;
+     flex: 1 1 auto
+ }
+
+ @media (max-width:991.98px) {
+     .padding {
+         padding: 1.5rem
+     }
+ }
+
+ @media (max-width:767.98px) {
+     .padding {
+         padding: 1rem
+     }
+     
+ 
+ }
+
+ .mainsec
+  {
+    width: 792px; background: #FFF; margin:0 auto; padding:0px; position: relative;
+  }
+ .padding {
+     padding: 5rem
+ }
+
+ .card {
+     background: #fff;
+     border-width: 0;
+     border-radius: .25rem;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+     margin-bottom: .5rem;
+     font-family: calibri;
+     font-size: 15px!important;
+ }
+
+ .card {
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     min-width: 0;
+     word-wrap: break-word;
+     background-color: #fff;
+     background-clip: border-box;
+     border: 1px solid rgba(19, 24, 44, .125);
+     border-radius: .25rem
+ }
+
+ .card-header {
+     padding: .58rem 1.25rem;
+     margin-bottom: 0;
+     background-color: rgba(19, 24, 44, .03);
+     border-bottom: 1px solid rgba(19, 24, 44, .125);
+     font-family: calibri;
+     font-size: 18px;
+ }
+
+ .card-header:first-child {
+     border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
+ }
+
+ card-footer,
+ .card-header {
+     background-color: transparent;
+     border-color: rgba(160, 175, 185, .15);
+     background-clip: padding-box
+ }
+/* Style the header links */
+.header a {
+  float: left;
+  color: black;
+  text-align: right;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+.header a.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/* Float the link section to the right */
+.header-right {
+  float: right;
+}
+
+.logoimg{
+  position:relative;
+}
+
+.logoimg img{
+  width:80px;
+}
+
+
+/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+
+@media screen and (max-width: 768px) {
+	.back-bg {
+    background-image: url(../assets/images/header_report.png);
+    background-repeat: no-repeat;
+    height: auto;
+    width: 100%;
+    background-size: cover;
+    margin-bottom:20px;
+}
+	
+.top-sec {
+    padding: 100px 10px 0px;
+}
+
+}
+
+
+@media screen and (max-width: 640px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .header-right {
+    float: none;
+  }
+  
+  .top-sec {
+    padding: 90px 10px 0px;
+}
+
+.ehealth-hd {
+    font-size: 24px!important;
+    color: #106cb5;
+    font-weight: bold;
+    text-align: center;
+}
+
+.back-bg {
+    background-image: url(../assets/images/header_report.png);
+    background-repeat: no-repeat;
+    height: auto;
+    width: 100%;
+    background-size: cover;
+    margin-bottom:20px;
+}
+
+.logoimg img {
+    width: 60px;
+}
+
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  background: radial-gradient(circle at 20px 20px, #5cabff, #000);
+}
+
+.ehealth-hd {
+	font-size: 32px;
+	color: #106cb5;
+	font-weight: bold;
+	text-align: center;
+}
+
+td{
+	font-size: 15px!important;
+}
+.footer-bg {
+    background-repeat: no-repeat;
+    /*height: 100px;*/
+    width: 100%;
+}
+
+    </style>
+</head>
+<body>
+ <div >
+
+</div>
+  <div class="mainsec" >
+<!--   <div id = "page1">
+  <div class="back-bg"> -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" >
+<tbody>
+<tr>
+<!--   <td>
+    <h3>CureEZ HealthTech Pvt Ltd</h3>
+    No. 128, Ground Floor, Amarjyothi Layout<br/>
+    Domlur, Bangalore, KA, India - 560071.<br/>
+  </td> -->
+  <td align="center">
+    
+    <h2>CLINICIAN APPOINTMENT SIGN OFF</h2>
+  </td>
+</tr>
+      <tr>
+        <td align="center" colspan="2">
+          <h6>DOS AND DON'TS FOR FAMILIES USING HOMECARE</h6>
+        </td>
+      </tr>
+  </tbody>
+</table>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" >
+ 
+      <tr>
+        <td>
+          <p>At CureEZ and its home healthcare service Partners, we select our medical staff after detailed 
+          checks and background verifications. They are constantly   trained and rigorously tested to ensure 
+          the safety and comfort of your loved ones. It is important that our caregivers are provided a safe 
+          and comfortable environment where they can work towards the wellbeing of the patient.
+          <br><br>
+          <p>For long term care - Caregiving is a stressful job and requires adequate rest and energy. Good sleeping conditions and food that is simple, yet nourishing is important to maintain the health of caregivers. We ask that you treat them with kindness and understanding to help them bond with the patient and provide the best care and efforts. We look forward to
+0
+your co-operation in making their living conditions with you adequately comfortable and friendly. Here are some
+guidelines that will help you accommodate the caregiver into the routines of your family.
+          
+        </td>
+      </tr>
+
+
+<tr>
+        <td align="left" colspan="2">
+          <h5>DOS</h5>
+        </td>
+      </tr>
+      
+      <tr>
+      <td>
+      •	Ensure that the clinician or care given is treated with kindness and caring. Keep an open channel of 
+      communication where the clinician 
+      feels comfortable to talk to you and tell you their complaints/ observations.
+      <br><br>
+      
+      •	Ensure that the clinician is allowed to work in-a safe environment - away from.<br><br>
+      •	Provide the clinician with palatable food. Vegetarian I Non-Vegetarian at least thrice each day (breakfast, lunch, dinner). This could be the normal food as you cook for your family.
+      <br><br>
+      •	Provide clean and functional sleeping conditions- bed, pillow, bedsheet & blanket. Please ensure that they do not sleep in kitchens, corridors or other areas which are unhygienic and where they are likely to be disturbed or be uncomfortable.
+      <br><br>
+      
+      •	Allow the clinician at-least 6 hours of sleep, (especially if the patient requires 24/7 care, Family members may relieve the clinician/parttime nurse could be used as reliever)
+•	Allow the clinician to read / listen to music as long as this does not in convenience the patient or distract the clinician from his/her duties.
+•	Provide tips and suggestions to help the caregiver understand the preferences of the patient better.<br><br>
+
+•	Reasonable requests such as reading to the patient or talking-to the patient can be made to improve bonding.<br><br>
+
+•	Provide caregiver with break to relieve stress at periodic intervals (at least two small breaks and 1 meal break in a 12-hour shift.) You may even allow them to sit with the rest of your family and participate in activities such as games or watching TV for an hour or so each day.
+•	Ensure that caregiver is in   regular   communication   with  at  least   one  member   of   the   family (other than patient) every day. It helps if the caregiver can keep someone informed of his/her observations.<br><br>
+      
+      </td>
+      </tr><br><br>
+      
+      <tr>
+        <td align="left" colspan="2">
+          <h5>DONT'S</h5>
+        </td>
+      </tr>
+      <br><br>
+      <tr>
+      <td>
+      
+•	Do not Shun, ill-treat dictate duties to the care - givers. They are aware of their duties, 
+and they will be quality checked by CureEZ and its home healthcare service Partners for appropriate actions continually.<br><br>
+
+•	Do not treat care givers like servants by providing leftover food, poor sleeping conditions etc.<br><br>
+
+•	Do not threaten abuses or insult the caregivers. If you feel that they are doing something, 
+wrong bring it to our notice and we will take appropriate measures to meet your requirements.<br><br>
+
+•	Dot does not provide caregiver with house hold task (such as cooking, shopping, cleaning) other than 
+caring for the patient. The caregivers are not allowed to help in other household chores apart from those 
+required for patients’ wellbeing.<br><br>
+
+•	The caregiver is not a housekeeper, do not transfer you house hold payment, responsibilities and communications 
+to the caregiver.<br><br>
+
+•	Do not lend money to care givers. They are paid  salaries  by  CureEZ and its home healthcare service 
+Partners  and  can  approach the organization for any help required.<br><br>
+
+•	Don't share financial information with homecare workers. There simply is no reason to do this even if they 
+are trustworthy. Do not give them access to any accounts that have significant amounts of money in them. 
+Require that they give you receipts for money spent when you have dispensed money with them. This is standard
+ practice and should not be met with any resistance whatsoever.<br><br>
+
+•	Don't reward the care-given with money or through gifting valuables. When you see that they have gone
+ beyond the call of duty during a crisis, reward theming some small manner with kindness and thoughtfulness.<br><br>
+
+•	Do not discuss your private family matters with the caregivers. Though our caregivers are trustworthy 
+there is no necessity for them to be involved in your family matters,<br><br>
+      
+      </td>
+      </tr>
+    </table>
+ 
+<!-- </div>
+</div> -->
+</div>
+</body>
+<script>
+
+	
+</script>
+</html>
+

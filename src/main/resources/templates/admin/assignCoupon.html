@@ -253,9 +253,9 @@ function save(){
 		item1.patientId = patientId;
 		item1.couponList = selectedRowsCoupon;
 		console.log(item1)
-	/* 	$.ajax({
+		$.ajax({
 			type : "POST",
-			url : "admin-coupon-assign",
+			url : "admin-coupon-assign-add",
 			dataType : "json",
 			contentType : "application/json",
 			data : JSON.stringify(item1),
@@ -263,25 +263,22 @@ function save(){
 				
 			 	if (response.message == "Success") {
 $("#myModalCoupon").modal('hide');
-					//window.reload();
-					
-					var gridDiv = document.querySelector('#myGrid');
-					new agGrid.Grid(gridDiv, gridOptions);
+					//window.location.reload();
+$("#messageParagraph").text("Assigned Successfully");
+$("#msgOkModal").removeClass("btn3");
+$("#msgOkModal").addClass("btn1");
+$("#msgModal").modal('show');
 
-					agGrid.simpleHttpRequest({
-						url : 'admin-assigncoupon-viewDetails',
-					}).then(function(data) {
-						var len = data.length;
-						$('#totalReq').find('span').html(len);
-						gridOptions.api.setRowData(data);
-					})
-					$('#myGrid').show();
+//$("#myGrid").show();
+//$("#salespersonDetails").hide();
+$('#manageTCsModel').modal('hide');
+					
 				} 
 			},
 			error : function(response) {
 				console.log(response);
 			}
-		}) */
+		}) 
 
 	}
 </script>
@@ -300,7 +297,7 @@ $("#myModalCoupon").modal('hide');
 												</div>
 											</div>
 											
-											<div class="col-md-6">
+											<div class="col-md-12">
 							<button id="assign" onclick="assignCoupon()" class="btn1"> ASSIGN </button>
 							
 						</div>
